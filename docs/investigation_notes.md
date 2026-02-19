@@ -40,11 +40,29 @@ Evaluated Hugo, Astro, Eleventy, Next.js, Jekyll, and plain HTML against project
 - **Eleventy**: Excellent minimalism but fewer marketing-ready themes
 - **Plain HTML**: No templating means duplicated headers/footers across every page — maintenance scales poorly
 
-## Hosting (not yet decided)
+## Hosting
 
-Top candidates for Hugo:
-- **GitHub Pages** (free, via GitHub Actions) — simplest since repo is already on GitHub
-- **Netlify** (free tier) — adds deploy previews, built-in form handling
-- **Cloudflare Pages** (free tier) — fastest CDN, more infrastructure-oriented
+The marketing site does not host any forms — patient intake forms are in Avaros (PIPEDA compliance requires confidential medical data stays in the EMR). The site only links to Avaros. Form handling was not a selection criterion.
 
-All are free for this use case. Decision deferred.
+Evaluated GitHub Pages, Netlify, and Cloudflare Pages. All are free for this use case.
+
+| | GitHub Pages | Netlify | Cloudflare Pages |
+|---|---|---|---|
+| Hugo setup | Medium (custom Actions YAML) | Easy (auto-detects) | Easy (auto-detects) |
+| Deploy previews | Manual/complex | Automatic per PR | Automatic per PR |
+| Built-in analytics | No | Limited | Yes (free, privacy-first) |
+| Free bandwidth | 100 GB/mo | 100 GB/mo | Unlimited |
+| TTFB | Decent | ~227ms | ~57ms |
+| DDoS protection | Basic | Basic | Included |
+
+**Chose Cloudflare Pages** because:
+- Fastest TTFB (~57ms) — matters for ad campaign landing pages (quality scores, SEO, conversion rates)
+- Free built-in privacy-first analytics with Core Web Vitals tracking
+- Unlimited bandwidth — no cap to worry about during ad-driven traffic spikes
+- Auto-detects Hugo, same setup simplicity as Netlify
+- Automatic deploy previews per PR — Andrea can review changes before they go live
+- DDoS protection included
+
+**Netlify was the runner-up** — slightly more intuitive dashboard, and built-in form handling (not relevant here). Would be the pick if the simpler UI mattered or if TTFB differences were negligible for the use case.
+
+**Ruled out GitHub Pages** — requires custom Actions YAML for Hugo builds, no automatic deploy previews, no built-in analytics. Adds complexity without additional benefit.

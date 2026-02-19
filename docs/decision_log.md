@@ -6,6 +6,7 @@
 | Which electronic medical records provider to use? | Closed | Avaros                                                     | Already in use                                                                        |
 | What site design technology?                      | Closed | No dedicated design tool — use SSG template, customize in code | Solo build workflow; templates solve 80% of design; eliminates design-to-code export friction; zero cost |
 | Which static site technology?                     | Closed | Hugo                                                       | Largest marketing theme ecosystem, single binary (no JS/Node dependency), sub-second builds, mature community. See investigation_notes.md for full comparison. |
+| Which hosting platform?                           | Closed | Cloudflare Pages                                           | Fastest TTFB (~57ms), free built-in analytics, unlimited bandwidth, auto-detects Hugo, automatic deploy previews. See investigation_notes.md. |
 
 ## Open Questions
 
@@ -19,7 +20,6 @@
 | Question                                                                  | Notes                                                              |
 |---------------------------------------------------------------------------|--------------------------------------------------------------------|
 | One website with two sections, or two separate websites?                  | Two brand names may warrant separate sites or a single shared site |
-| Which hosting platform?                                                   | e.g. GitHub Pages, Netlify, Cloudflare Pages, etc.                 |
 | What is the specific list of services to display?                         | Andrea to provide                                                  |
 | What is the "who is a good candidate?" content?                           | Andrea to provide                                                  |
 | Will there be a logo/brand identity, or text-only?                        |                                                                    |
