@@ -1,9 +1,11 @@
 ## Decisions
 
-| Description                                       | Status | Decision                             | Notes                                                                                 |
-|---------------------------------------------------|--------|--------------------------------------|---------------------------------------------------------------------------------------|
-| Which email provider to use?                      | Closed | Microsoft 365 Hosted Exchange Plan 1 | IMAP, works with iPhone and Outlook, supports aliases convertible to shared mailboxes |
-| Which electronic medical records provider to use? | Closed | Avaros                               | Already in use                                                                        |
+| Description                                       | Status | Decision                                                   | Notes                                                                                 |
+|---------------------------------------------------|--------|------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| Which email provider to use?                      | Closed | Microsoft 365 Hosted Exchange Plan 1                       | IMAP, works with iPhone and Outlook, supports aliases convertible to shared mailboxes |
+| Which electronic medical records provider to use? | Closed | Avaros                                                     | Already in use                                                                        |
+| What site design technology?                      | Closed | No dedicated design tool — use SSG template, customize in code | Solo build workflow; templates solve 80% of design; eliminates design-to-code export friction; zero cost |
+| Which static site technology?                     | Closed | Hugo                                                       | Largest marketing theme ecosystem, single binary (no JS/Node dependency), sub-second builds, mature community. See investigation_notes.md for full comparison. |
 
 ## Open Questions
 
@@ -17,8 +19,6 @@
 | Question                                                                  | Notes                                                              |
 |---------------------------------------------------------------------------|--------------------------------------------------------------------|
 | One website with two sections, or two separate websites?                  | Two brand names may warrant separate sites or a single shared site |
-| What site design technology?                                              | e.g. plain HTML, Figma, Canva, etc.
-| Which static site technology?                                             | e.g. plain HTML, Hugo, Astro, etc.                                 |
 | Which hosting platform?                                                   | e.g. GitHub Pages, Netlify, Cloudflare Pages, etc.                 |
 | What is the specific list of services to display?                         | Andrea to provide                                                  |
 | What is the "who is a good candidate?" content?                           | Andrea to provide                                                  |
