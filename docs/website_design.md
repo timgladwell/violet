@@ -26,7 +26,7 @@ See @docs/project_overview.md for context and scope of the overall project
   - Link to the start of the Customer Acquisition funnel (an online booking form hosted by Avaros, the eletronic medical records system)
 
 ## Site Content
-- Structure and content will be iterative and authored by Andrea in @content_and_structure.md 
+- Structure and content will be iterative and authored by Andrea
 - Replace any undefined content with lorem ipsum text.
 
 ### "About Andrea" section
