@@ -4,22 +4,30 @@
 
 See @docs/project_overview.md for context and scope of the overall project
 
-- Andrea will be operating under two business names as she is offering two distinct types of services: menopause treatments covered by OHIP, and cosmetic services that are paid by  the patient.
+- The primary purpose of this site is marketing - helping potential clients understand what services Andrea provides, why a potential client would choose Andrea over a competitor, and starting the "potential client" -> "client" conversion process by funnelling potential clients into a meet-and-greet with Andrea 
+- Andrea will be operating under two business names as she is offering two distinct types of services: menopause treatments covered by OHIP, and cosmetic services that are paid by  the patient. 
     - Name 1: "Ontario Menopause Clinic"
     - Name 2: "Violet"
 - This is a similar scope of practice to existing businesses, and this website should be structured relatively the same way.
 
-## Requirements
-- Provide a list of services offered
-- Provide an "about Andrea" section
-- Provide a "who is a good candidate?" section
+## Technical Requirements
+- The site must be responsive - must work equally well on desktop and mobile screens
+- The site must conform to best practices at all times. Especially consider adaptability requirements.
+- The site will be built via the Hugo template / site builder.
 - Be ready for search engine and LLM service indexing - the site should be very easy to discover.
-- Be ready for advertisments - Andrea will start online campaigns immediately and this website will be the top of her customer acquistion funnel
-- Provide a link to the Avaros patient self-scheduled intake process
-- Be responsive - should work on both desktop and mobile
+- Be ready for to support advertising - Andrea will start online campaigns immediately and this website will be the top of her customer acquistion funnel
+- Will be hosted on Cloudflare Pages
 
-## Content notes
-- The site is entirely for marketing - helping potential clients understand what services Andrea provides, and why a potential client would choose Andrea over a competitor
+## Structure Requirements
+- As a marketing site, the primary purpose of the site is to introduce potential clients to Andrea and the sevices offered by her business. This will include
+  - A list of services offered
+  - A short section describing who is and isn't a good candidate
+  - Link to an "About Andrea" section
+  - Link to the start of the Customer Acquisition funnel (an online booking form hosted by Avaros, the eletronic medical records system)
+
+## Site Content
+- Structure and content will be iterative and authored by Andrea in @content_and_structure.md 
+- Replace any undefined content with lorem ipsum text.
 
 ### "About Andrea" section
 - Trained at Sinai under Dr. Wolfman, Dr. Christakis and Dr. Shirreff  
