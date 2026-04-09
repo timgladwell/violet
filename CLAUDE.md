@@ -1,7 +1,5 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Context
 
 See @docs/project_overview.md
@@ -23,11 +21,12 @@ See @docs/website_design.md
 
 ```
 docs/
-  project_overview.md    # Business context, scope, and technical principles.
-  project_tracking.md    # Project tasks with associated status and dependencies
-  decision_log.md        # Tracks project questions as they become decisions
-  website_design.md      # Website requirements, content notes, reference sites
-  investigation_notes.md # Research notes on technical decisions, process experiments, etc.
+  project_overview.md                           # Business context, scope, and technical principles.
+  project_tracking.md                           # Project tasks with associated status and dependencies
+  decision_log.md                               # Tracks project questions as they become decisions
+  website_design.md                             # Website requirements, content notes, reference sites
+  investigation_notes.md                        # Research notes on technical decisions, process experiments, etc.
+  competitive_analysis_and_recommendations.md   # Claude-authored analysis of similar websites
 ```
 
 This repository is currently in the planning/documentation phase. No source code or build system exists yet.
