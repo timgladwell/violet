@@ -9,7 +9,7 @@
 | Hosting  | Which hosting platform?                                 | Closed | Cloudflare Pages                                           | Fastest TTFB (~57ms), free built-in analytics, unlimited bandwidth, auto-detects Hugo, automatic deploy previews. See investigation_notes.md. |
 | Domains  | Which specific domain names to register for each brand? | Open   |                                                            | Two brands: "Ontario Menopause Clinic" and "Violet"                |
 | Domains  | Which domain register to use?                           | Open   |                                                            ||
-| Website  | One website with two sections, or two separate websites? | Open   |                                                           | Two brand names may warrant separate sites or a single shared site |
+| Website  | One website with two sections, or two separate websites? | Closed | One website to start, for Ontario Menopause Clinic         | Violet brand deferred; revisit when scope warrants a second site   |
 | Website  | What is the specific list of services to display?       | Open   |                                                           | Andrea to provide                                                  |
 | Website  | What is the "who is a good candidate?" content?         | Open   |                                                           | Andrea to provide                                                  |
 | Website  | Will there be a logo/brand identity, or text-only?      | Open   |                                                           |                                                                    |
