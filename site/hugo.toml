@@ -1,0 +1,5 @@
+baseURL = 'https://ontariomenopauseclinic.ca/'
+languageCode = 'en-ca'
+title = 'Ontario Menopause Clinic'
+
+disableKinds = ['taxonomy', 'term']

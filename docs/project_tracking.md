@@ -26,8 +26,8 @@
 
 ## Website
 
-- Decide site architecture (one site vs two, technology, hosting)
-  - *Blocked by: architecture questions*
+- ~~Decide site architecture (one site vs two, technology, hosting)~~ ✓
+  - One site (Ontario Menopause Clinic), Hugo, Cloudflare Pages
 - Finalize services list content
   - *Andrea to provide*
 - Write "About Andrea" copy
@@ -44,7 +44,9 @@
   - *Blocked by: analytics tool question, website build*
 - Integrate Avaros intake link
   - *Blocked by: website build, intake URL question*
-- Deploy website and configure DNS
+- ~~Deploy website (staging) to Cloudflare Pages~~ ✓
+  - Staging: https://violet-nzf.pages.dev — branch: claude/sharp-driscoll
+- Deploy website (production) and configure DNS
   - *Blocked by: website build, domain registration*
 
 ## Avaros
