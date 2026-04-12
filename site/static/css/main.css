@@ -187,6 +187,20 @@ ul { list-style: none; }
   flex-direction: column;
 }
 
+.nav__logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.nav__logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
 .nav__logo-sub {
   font-family: var(--sans);
   font-size: 0.5625rem;
@@ -841,6 +855,20 @@ ul { list-style: none; }
 }
 
 .about-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.about-cert-badges {
+  display: flex;
+  gap: var(--s-4);
+  margin-bottom: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.cert-badge {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
 .about-creds { display: flex; flex-direction: column; gap: var(--s-3); }
 
