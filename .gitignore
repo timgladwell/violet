@@ -1,3 +1,6 @@
+# Claude stuff
+.claude/worktrees/
+
 # Hugo build output
 public/
 resources/_gen/
