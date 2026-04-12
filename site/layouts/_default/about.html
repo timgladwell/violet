@@ -1,0 +1,84 @@
+{{ define "main" }}
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="page-hero__eyebrow">About</span>
+      <h1 class="page-hero__heading">Andrea, NP</h1>
+      <p class="page-hero__lead">Nurse practitioner. Menopause specialist. Over 20 years in healthcare, dedicated to helping women feel heard and well cared for.</p>
+    </div>
+  </section>
+
+  <section class="about-layout">
+    <div class="container">
+      <div class="about-layout__grid">
+
+        <aside class="about-sidebar">
+          <div class="about-photo">
+            <img src="/images/andrea_headshot.jpg" alt="Andrea, NP — Ontario Menopause Clinic">
+          </div>
+          <div class="about-cert-badges">
+            <img src="/images/mscp_certification_logo.png" alt="2025 Menopause Society Certified Practitioner" class="cert-badge" width="80" height="80">
+            <img src="/images/bria_certification_logo.png" alt="Bria Health Menopause Mental Health Certified" class="cert-badge" width="80" height="80">
+          </div>
+          <div class="about-creds">
+            <div class="about-cred">Nurse Practitioner (NP), licensed in Ontario</div>
+            <div class="about-cred">Master of Science in Nursing (MScN), University of Ottawa</div>
+            <div class="about-cred">Certified Practitioner, The Menopause Society</div>
+            <div class="about-cred">Menopause Mental Health Practitioner, Bria Health</div>
+            <div class="about-cred">Clinical experience in menopause care at Mount Sinai Hospital</div>
+            <div class="about-cred">Guest Lecturer, University of Ottawa (NP Program &mdash; Perimenopause &amp; Menopause Care)</div>
+          </div>
+        </aside>
+
+        <div class="about-content">
+          <h2>My Story</h2>
+          <p>
+            I didn&rsquo;t set out to specialize in menopause care &mdash; but over time, it became clear that this is where women were being missed.
+          </p>
+          <p>
+            After more than 20 years working in healthcare, I started seeing more and more women in their 40s and 50s struggling with symptoms that weren&rsquo;t being fully addressed. They were doing everything right &mdash; showing up, asking questions, trying to advocate for themselves &mdash; but often leaving appointments without clear answers or real support.
+          </p>
+          <p>
+            Working in a menopause-focused clinic, I saw something important. For many women, it was the first time they finally felt heard &mdash; especially after being dismissed or told their symptoms were just part of aging. But I also saw that care was often focused primarily on hormone therapy, without enough time to address everything else women were going through.
+          </p>
+          <p>
+            Because menopause isn&rsquo;t just about hormones. It&rsquo;s your sleep, your mood, your energy, your weight, your relationships &mdash; how you feel every day.
+          </p>
+          <p>
+            That&rsquo;s what led me to build this clinic. I wanted to create a space where women feel heard, where there&rsquo;s time to look at the full picture, and where care reflects all aspects of what women are going through. I also chose to make the clinic fully virtual to improve access &mdash; so women across Ontario can get the care they need without having to travel long distances to find it.
+          </p>
+          <p>
+            And as someone in this stage of life myself, I understand how much of a difference it makes to feel supported in a way that actually helps.
+          </p>
+
+          <h2>My Approach</h2>
+          <p>
+            Medicine understands menopause &mdash; but it doesn&rsquo;t always see the whole woman.
+          </p>
+          <p>
+            My approach is grounded in evidence-based care, but it goes beyond that. I take the time to understand how your symptoms are affecting your life &mdash; not just individually, but together. That means looking at sleep, mood, weight, energy, sexual health, and overall well-being as part of one picture.
+          </p>
+          <p>
+            Care is personalized, practical, and designed to evolve over time. For some women, that includes hormone therapy. For others, non-hormonal options or lifestyle changes. Most often, it&rsquo;s a combination.
+          </p>
+          <p>
+            The goal is simple: to help you feel better in a way that actually fits your life.
+          </p>
+
+          <h2>Credentials &amp; Training</h2>
+          <p>
+            I completed my Master of Science in Nursing at the University of Ottawa and hold certification from The Menopause Society &mdash; one of the leading professional bodies in menopause medicine. I am a Bria Health Menopause Mental Health Practitioner, and I gained clinical experience in menopause care at Mount Sinai Hospital. I also serve as a Guest Lecturer in the Nurse Practitioner Program at the University of Ottawa, teaching perimenopause and menopause care.
+          </p>
+
+          <div style="margin-top: 2.5rem;">
+            <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Book a Consultation with Andrea</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+{{ end }}

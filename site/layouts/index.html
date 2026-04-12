@@ -1,6 +1,281 @@
 {{ define "main" }}
-<main>
-  <h1>{{ .Site.Title }}</h1>
-  <p>{{ .Content }}</p>
-</main>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__content">
+        <span class="hero__eyebrow">Ontario Menopause Clinic</span>
+        <h1 class="hero__heading">
+          Specialized menopause care, designed for <em>the whole you.</em>
+        </h1>
+        <p class="hero__body">
+          Personalized care that looks beyond symptoms, bringing together medical expertise and real-life understanding so you feel heard, supported, and more like yourself again.
+        </p>
+        <div class="hero__actions">
+          <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--white">Book Your Visit</a>
+          <a href="#how-it-works" class="btn btn--outline-white">How It Works</a>
+        </div>
+      </div>
+      <div class="hero__photo">
+        <img src="/images/andrea_headshot.jpg" alt="Andrea, NP — Ontario Menopause Clinic" width="380" height="507">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== IS THIS YOU? ==================== -->
+<section class="symptoms section" id="symptoms">
+  <div class="container">
+    <span class="section-eyebrow">Is This You?</span>
+    <h2 class="section-heading">Tired of not feeling like yourself&nbsp;&mdash; and not feeling heard?</h2>
+    <p class="section-lead symptoms__intro">
+      Menopause can quietly change everything &mdash; your sleep, your mood, your energy, your confidence. And too often, you're told it's &ldquo;just part of aging,&rdquo; dismissed or rushed through appointments, or left to figure it out on your own.
+    </p>
+
+    <p style="font-size: 1rem; color: #555; margin-bottom: 1.5rem; font-weight: 500;">You might be dealing with:</p>
+
+    <div class="symptoms__grid" aria-label="Common menopause symptoms">
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Hot flashes or waking up drenched at night</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Trouble sleeping, even when exhausted</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Feeling more anxious, irritable, or unlike yourself</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Brain fog that makes it hard to focus or keep up</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Weight changes that don't make sense</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Constant fatigue, no matter how much you rest</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Changes in your libido or how you feel in your body</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Vaginal dryness or discomfort</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Hair thinning or skin changes</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Aches and joint pain that weren&rsquo;t there before</div>
+    </div>
+
+    <p class="symptoms__closing">If this sounds familiar, you&rsquo;re not imagining it &mdash; and you&rsquo;re not alone.</p>
+    <p style="font-size: 1rem; color: #555; max-width: 580px; margin-bottom: 2rem; line-height: 1.7;">Menopause is complex &mdash; and your care should be too. We take the time to understand your full experience and create a plan that actually helps you feel better.</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+      <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Book Your Consultation</a>
+      <a href="/what-we-treat/" class="btn btn--outline-green">What We Treat</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SERVICES ==================== -->
+<section class="services-overview section" id="services">
+  <div class="container">
+    <span class="section-eyebrow">Services &amp; Pricing</span>
+    <h2 class="section-heading">Care that&rsquo;s right for you</h2>
+    <p class="section-lead">
+      All visits are conducted virtually, so you can access specialized menopause care from anywhere in Ontario.
+    </p>
+
+    <div style="margin-top: 3rem;">
+
+      <!-- Core Menopause Care -->
+      <div class="brand-block">
+        <div class="brand-header">
+          <h3 class="brand-name">Core Perimenopause &amp; Menopause Care</h3>
+        </div>
+        <div class="service-cards">
+          <div class="service-card service-card--ohip">
+            <h4 class="service-card__name">Discovery Call</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">A brief, no-pressure call to see if our approach is the right fit for you.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">15 min &middot; Complimentary</p>
+          </div>
+          <div class="service-card service-card--ohip">
+            <h4 class="service-card__name">Initial Consultation</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">A comprehensive assessment of your symptoms and health, with a personalized care plan.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">60 min &middot; $299</p>
+          </div>
+          <div class="service-card service-card--ohip">
+            <h4 class="service-card__name">Follow-Up Visit</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Ongoing care to review progress, adjust treatment, and support how you feel.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">30 min &middot; $150</p>
+          </div>
+          <div class="service-card service-card--ohip">
+            <h4 class="service-card__name">Care Check-In</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Short visit for new symptoms, quick questions, or support between appointments.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">15 min &middot; $75</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Support -->
+      <div class="brand-block">
+        <div class="brand-header">
+          <h3 class="brand-name">Additional Support</h3>
+        </div>
+        <div class="service-cards">
+          <div class="service-card service-card--private">
+            <h4 class="service-card__name">Weight Loss Initial Consultation</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">A personalized, medical approach to weight and metabolic health during menopause.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #7A3A50;">30 min &middot; $150</p>
+          </div>
+          <div class="service-card service-card--private">
+            <h4 class="service-card__name">Weight Loss Follow-Up</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Continued support to help you stay on track with realistic, sustainable changes.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #7A3A50;">20 min &middot; $99</p>
+          </div>
+          <div class="service-card service-card--private">
+            <h4 class="service-card__name">Form Completion</h4>
+            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Medical forms and documentation completed based on time and complexity.</p>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #7A3A50;">Starting at $40</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="services-cta">
+      <a href="/services/" class="btn btn--outline-green">See Full Service Details</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="how-it-works section" id="how-it-works">
+  <div class="container">
+    <span class="section-eyebrow">The Process</span>
+    <h2 class="section-heading">Getting started is simple.</h2>
+    <p class="section-lead">We&rsquo;ll guide you through each step, so you always know what to expect.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__number" aria-hidden="true">1</div>
+        <div class="step__body">
+          <h3 class="step__title">Start with a Discovery Call</h3>
+          <p class="step__desc">Begin with a complimentary 15-minute call to see if our approach is the right fit for you. We&rsquo;ll talk through your experience and answer any questions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number" aria-hidden="true">2</div>
+        <div class="step__body">
+          <h3 class="step__title">Your Initial Consultation</h3>
+          <p class="step__desc">A comprehensive visit where we review your symptoms, health history, and goals &mdash; and create a personalized, evidence-based care plan.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number" aria-hidden="true">3</div>
+        <div class="step__body">
+          <h3 class="step__title">Ongoing Care &amp; Follow-Up</h3>
+          <p class="step__desc">Your care doesn&rsquo;t stop after one visit. Most patients are seen every 3&ndash;6 months until symptoms are well managed, then yearly for ongoing support.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-it-works__cta">
+      <p style="font-family: var(--serif); font-style: italic; font-size: 1.125rem; color: #555; margin-bottom: 1.5rem;">You&rsquo;ll always know what to expect &mdash; and you&rsquo;ll be supported every step of the way.</p>
+      <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Get Started Today</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ABOUT PREVIEW ==================== -->
+<section class="about-preview section" id="about-preview">
+  <div class="container">
+    <div class="about-preview__layout">
+      <div class="about-preview__photo">
+        <img src="/images/andrea_headshot.jpg" alt="Andrea, NP">
+      </div>
+      <div class="about-preview__content">
+        <span class="section-eyebrow">About Andrea</span>
+        <h2 class="section-heading">Care shaped by more than two decades of experience.</h2>
+        <blockquote class="about-preview__quote">
+          I&rsquo;m a nurse practitioner specializing in perimenopause and menopause care. With over 20 years in healthcare, I&rsquo;ve worked alongside leading experts in women&rsquo;s health and I bring that experience into an evidence-based approach that looks at the whole picture &mdash; so you feel heard, supported, and cared for in a way that actually helps.
+        </blockquote>
+        <div class="credentials">
+          <div class="credential">Nurse Practitioner (NP), licensed in Ontario</div>
+          <div class="credential">The Menopause Society Certified Practitioner</div>
+          <div class="credential">Bria Health Menopause Mental Health Practitioner</div>
+          <div class="credential">MScN, University of Ottawa</div>
+          <div class="credential">Clinical experience in menopause care at Mount Sinai Hospital</div>
+        </div>
+        <a href="/about/" class="btn btn--outline-green">About Andrea</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section class="testimonials section" id="testimonials">
+  <div class="container">
+    <span class="section-eyebrow">Patient Stories</span>
+    <h2 class="section-heading">Real women. Real results.</h2>
+    <div class="testimonials__placeholder">
+      Patient testimonials coming soon. If you&rsquo;ve worked with Andrea and would like to share your experience, please reach out.
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WHO IS A GOOD FIT? ==================== -->
+<section class="good-fit section" id="eligibility">
+  <div class="container">
+    <span class="section-eyebrow">Is This Clinic Right for You?</span>
+    <h2 class="section-heading">Who is a good candidate?</h2>
+    <p class="section-lead">
+      Being upfront about who this clinic serves best &mdash; so you can make the right choice for your care.
+    </p>
+
+    <div class="good-fit__grid">
+      <div class="fit-card fit-card--yes">
+        <h3 class="fit-card__heading">This clinic is a great fit if you&hellip;</h3>
+        <ul class="fit-card__items">
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&#10003;</span>
+            Are in perimenopause or menopause (typically ages 40&ndash;60)
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&#10003;</span>
+            Have symptoms that are affecting how you feel day to day
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&#10003;</span>
+            Are looking for care that looks at the full picture, not just one symptom
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&#10003;</span>
+            Want to explore evidence-based options &mdash; hormonal, non-hormonal, or both
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&#10003;</span>
+            Are open to a thoughtful, personalized plan that evolves over time
+          </li>
+        </ul>
+      </div>
+      <div class="fit-card fit-card--no">
+        <h3 class="fit-card__heading">You may need different or additional support if you have&hellip;</h3>
+        <ul class="fit-card__items">
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&rarr;</span>
+            Unexplained vaginal bleeding
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&rarr;</span>
+            A history of hormone-sensitive cancers (breast, endometrial, ovarian)
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&rarr;</span>
+            A history of blood clots, stroke, or significant cardiovascular disease
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&rarr;</span>
+            Active liver disease under investigation
+          </li>
+          <li class="fit-item">
+            <span class="fit-item__icon" aria-hidden="true">&rarr;</span>
+            Need for urgent in-person care or in-person procedures
+          </li>
+        </ul>
+        <p style="font-size: 0.875rem; color: #555; margin-top: 1rem; font-style: italic; line-height: 1.6;">Some of these don&rsquo;t mean you can&rsquo;t be treated &mdash; they may just mean a more tailored approach. We&rsquo;ll always help connect you with the right support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA BANNER ==================== -->
+<section class="cta-banner" id="book">
+  <div class="container">
+    <h2 class="cta-banner__heading">Ready to feel like yourself again?</h2>
+    <p class="cta-banner__body">Take the first step. Book a visit with Andrea &mdash; available virtually across Ontario.</p>
+    <a href="{{ .Site.Params.bookingURL | default "#" }}" class="btn btn--white">Book Your Consultation</a>
+  </div>
+</section>
+
 {{ end }}

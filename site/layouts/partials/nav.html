@@ -1,0 +1,39 @@
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo" aria-label="Ontario Menopause Clinic — Home">
+        <img src="/images/logo.jpeg" alt="" class="nav__logo-img" aria-hidden="true" width="40" height="40">
+        <span class="nav__logo-text">
+          Ontario Menopause Clinic
+          <span class="nav__logo-sub">Expert Menopause Care</span>
+        </span>
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="/what-we-treat/" class="nav__link">What We Treat</a></li>
+        <li><a href="/services/" class="nav__link">Services</a></li>
+        <li><a href="/about/" class="nav__link">About</a></li>
+        <li><a href="/faq/" class="nav__link">FAQ</a></li>
+      </ul>
+
+      <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary nav__book">Book Now</a>
+
+      <button class="nav__hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="nav-drawer__close" aria-label="Close navigation menu">&#x2715;</button>
+  <nav class="nav-drawer__links">
+    <a href="/what-we-treat/" class="nav-drawer__link">What We Treat</a>
+    <a href="/services/" class="nav-drawer__link">Services</a>
+    <a href="/about/" class="nav-drawer__link">About</a>
+    <a href="/faq/" class="nav-drawer__link">FAQ</a>
+  </nav>
+  <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Book Now</a>
+</div>

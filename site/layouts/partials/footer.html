@@ -1,0 +1,33 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__tagline-col">
+        <p class="footer__logo">Ontario Menopause Clinic</p>
+        <p class="footer__tagline">Expert, OHIP-covered menopause care for women in Ontario — delivered by Andrea, a certified menopause practitioner.</p>
+      </div>
+      <div>
+        <p class="footer__col-heading">Navigate</p>
+        <ul class="footer__links">
+          <li><a href="/#services" class="footer__link">Services</a></li>
+          <li><a href="/#how-it-works" class="footer__link">How It Works</a></li>
+          <li><a href="/about/" class="footer__link">About Andrea</a></li>
+          <li><a href="/faq/" class="footer__link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__col-heading">Book</p>
+        <ul class="footer__links">
+          <li><a href="{{ .Site.Params.bookingURL | default "#book" }}" class="footer__link">Book an Appointment</a></li>
+          <li><a href="mailto:info@ontariomenopauseclinic.ca" class="footer__link">info@ontariomenopauseclinic.ca</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&#169; {{ now.Year }} Ontario Menopause Clinic. All rights reserved.</p>
+      <div class="footer__legal">
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms/">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
