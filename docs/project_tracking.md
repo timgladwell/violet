@@ -45,7 +45,9 @@
 - Integrate Avaros intake link
   - *Blocked by: website build, intake URL question*
 - ~~Deploy website (staging) to Cloudflare Pages~~ ✓
-  - Staging: https://violet-nzf.pages.dev — branch: claude/sharp-driscoll
+  - Staging: https://staging.violet-nzf.pages.dev — branch: `staging`
+  - Production (no custom domain yet): https://violet-nzf.pages.dev — branch: `release`
+  - `release` branch is PR-only (branch protection enabled, enforce_admins: true)
 - Deploy website (production) and configure DNS
   - *Blocked by: website build, domain registration*
 
