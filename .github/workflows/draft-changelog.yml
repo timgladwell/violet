@@ -1,4 +1,4 @@
-name: Prepare Release
+name: Draft Changelog
 
 on:
   workflow_dispatch:
@@ -8,8 +8,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  prepare-release:
+  draft-changelog:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -56,7 +58,6 @@ jobs:
           echo "ref=${PREV}" >> "$GITHUB_OUTPUT"
 
       - name: Collect changes since last release
-        id: changes
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -86,25 +87,16 @@ jobs:
             CHANGE_LIST="- No changes since last release"$'\n'
           fi
 
-          # Write to a temp file to avoid quoting issues
           printf '%s' "$CHANGE_LIST" > /tmp/change_list.txt
           echo "Changes collected:"
           cat /tmp/change_list.txt
 
-      - name: Update CHANGELOG.md
-        id: changelog
+      - name: Prepend CHANGELOG entry
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           DATE=$(date -u +%Y-%m-%d)
-          CHANGES=$(cat /tmp/change_list.txt)
 
-          ENTRY="## ${VERSION}
-          _Released ${DATE}_
-
-          ### Changes
-          ${CHANGES}"
-
-          # Prepend entry after the first two lines (# Changelog + blank line)
+          # Prepend entry after the first two header lines
           HEAD_LINES=$(head -2 CHANGELOG.md)
           TAIL=$(tail -n +3 CHANGELOG.md)
 
@@ -123,34 +115,30 @@ jobs:
           echo "Updated CHANGELOG.md:"
           cat CHANGELOG.md
 
-          # Save entry for PR body
-          printf '## %s\n_Released %s_\n\n### Changes\n%s' \
-            "${VERSION}" "${DATE}" "${CHANGES}" > /tmp/pr_body_entry.txt
-
-      - name: Commit CHANGELOG to main
+      - name: Commit and push to draft branch
+        id: push
         run: |
           VERSION="${{ steps.version.outputs.version }}"
+          BRANCH="changelog/${VERSION}"
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
           git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG for ${VERSION}"
-          git push origin main
+          git commit -m "chore: draft CHANGELOG for ${VERSION}"
+          git push origin "$BRANCH"
 
-      - name: Create release PR
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Open PR to main for review
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          ENTRY=$(cat /tmp/pr_body_entry.txt)
-          CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/blob/main/CHANGELOG.md"
-
-          BODY="${ENTRY}
-
-          ---
-          [View full CHANGELOG](${CHANGELOG_URL})"
+          BRANCH="${{ steps.push.outputs.branch }}"
 
           gh pr create \
-            --base release \
-            --head main \
-            --title "Release ${VERSION}" \
-            --body "$BODY"
+            --base main \
+            --head "$BRANCH" \
+            --title "Changelog: ${VERSION}" \
+            --body "$(printf 'Auto-generated CHANGELOG draft for **%s**.\n\nPlease review and edit the entry in `CHANGELOG.md` before merging — add any context not captured by the commit list.\n\nOnce merged, run the **Cut Release** workflow to create the release PR.' "$VERSION")"
