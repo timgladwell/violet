@@ -1,0 +1,156 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine next version
+        id: version
+        run: |
+          TODAY=$(date -u +%Y.%m.%d)
+          BASE="v${TODAY}"
+
+          # Find existing tags for today and pick the next suffix
+          EXISTING=$(git tag -l "${BASE}*" | sort -V | tail -1)
+
+          if [ -z "$EXISTING" ]; then
+            VERSION="${BASE}"
+          else
+            # Extract suffix number (e.g. v2026.04.13.2 -> 2) and increment
+            SUFFIX=$(echo "$EXISTING" | grep -oP '\.\d+$' | tr -d '.')
+            if [ -z "$SUFFIX" ]; then
+              VERSION="${BASE}.2"
+            else
+              VERSION="${BASE}.$((SUFFIX + 1))"
+            fi
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Next version: ${VERSION}"
+
+      - name: Find previous release tag
+        id: prev_tag
+        run: |
+          PREV=$(git tag -l 'v*' | sort -V | tail -1)
+          if [ -z "$PREV" ]; then
+            # No prior tag — use the first commit
+            PREV=$(git rev-list --max-parents=0 HEAD)
+            echo "No prior tag found, using initial commit: ${PREV}"
+          else
+            echo "Previous tag: ${PREV}"
+          fi
+          echo "ref=${PREV}" >> "$GITHUB_OUTPUT"
+
+      - name: Collect changes since last release
+        id: changes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PREV="${{ steps.prev_tag.outputs.ref }}"
+
+          # Get commits on main since the previous tag (newest first)
+          COMMITS=$(git log "${PREV}..HEAD" --oneline --no-merges)
+
+          # Build change list: prefer PR title if commit is associated with a merged PR
+          CHANGE_LIST=""
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            SHA=$(echo "$line" | cut -d' ' -f1)
+            MSG=$(echo "$line" | cut -d' ' -f2-)
+
+            # Look up a PR merged via this commit SHA
+            PR=$(gh pr list --state merged --search "${SHA}" --json number,title --jq '.[0] | if . then "PR #\(.number): \(.title)" else "" end' 2>/dev/null || true)
+
+            if [ -n "$PR" ]; then
+              CHANGE_LIST="${CHANGE_LIST}- ${PR}"$'\n'
+            else
+              CHANGE_LIST="${CHANGE_LIST}- ${SHA}: ${MSG}"$'\n'
+            fi
+          done <<< "$COMMITS"
+
+          if [ -z "$CHANGE_LIST" ]; then
+            CHANGE_LIST="- No changes since last release"$'\n'
+          fi
+
+          # Write to a temp file to avoid quoting issues
+          printf '%s' "$CHANGE_LIST" > /tmp/change_list.txt
+          echo "Changes collected:"
+          cat /tmp/change_list.txt
+
+      - name: Update CHANGELOG.md
+        id: changelog
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          DATE=$(date -u +%Y-%m-%d)
+          CHANGES=$(cat /tmp/change_list.txt)
+
+          ENTRY="## ${VERSION}
+          _Released ${DATE}_
+
+          ### Changes
+          ${CHANGES}"
+
+          # Prepend entry after the first two lines (# Changelog + blank line)
+          HEAD_LINES=$(head -2 CHANGELOG.md)
+          TAIL=$(tail -n +3 CHANGELOG.md)
+
+          {
+            echo "$HEAD_LINES"
+            echo ""
+            echo "## ${VERSION}"
+            echo "_Released ${DATE}_"
+            echo ""
+            echo "### Changes"
+            cat /tmp/change_list.txt
+            [ -n "$TAIL" ] && echo "" && echo "$TAIL"
+          } > CHANGELOG.md.new
+          mv CHANGELOG.md.new CHANGELOG.md
+
+          echo "Updated CHANGELOG.md:"
+          cat CHANGELOG.md
+
+          # Save entry for PR body
+          printf '## %s\n_Released %s_\n\n### Changes\n%s' \
+            "${VERSION}" "${DATE}" "${CHANGES}" > /tmp/pr_body_entry.txt
+
+      - name: Commit CHANGELOG to main
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "chore: update CHANGELOG for ${VERSION}"
+          git push origin main
+
+      - name: Create release PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ENTRY=$(cat /tmp/pr_body_entry.txt)
+          CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/blob/main/CHANGELOG.md"
+
+          BODY="${ENTRY}
+
+          ---
+          [View full CHANGELOG](${CHANGELOG_URL})"
+
+          gh pr create \
+            --base release \
+            --head main \
+            --title "Release ${VERSION}" \
+            --body "$BODY"
