@@ -1,0 +1,149 @@
+name: Draft Changelog
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft-changelog:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6.0.2
+        with:
+          ref: main
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine next version
+        id: version
+        run: |
+          TODAY=$(date -u +%Y.%m.%d)
+          BASE="v${TODAY}"
+
+          # Find existing tags for today and pick the next suffix
+          EXISTING=$(git tag -l "${BASE}*" | sort -V | tail -1)
+
+          if [ -z "$EXISTING" ]; then
+            VERSION="${BASE}"
+          else
+            # Extract suffix number (e.g. v2026.04.13.2 -> 2) and increment
+            SUFFIX=$(echo "$EXISTING" | grep -oP '\.\d+$' | tr -d '.')
+            if [ -z "$SUFFIX" ]; then
+              VERSION="${BASE}.2"
+            else
+              VERSION="${BASE}.$((SUFFIX + 1))"
+            fi
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Next version: ${VERSION}"
+
+      - name: Find previous release tag
+        id: prev_tag
+        run: |
+          PREV=$(git tag -l 'v*' | sort -V | tail -1)
+          if [ -z "$PREV" ]; then
+            # No prior tag — use the first commit
+            PREV=$(git rev-list --max-parents=0 HEAD)
+            echo "No prior tag found, using initial commit: ${PREV}"
+          else
+            echo "Previous tag: ${PREV}"
+          fi
+          echo "ref=${PREV}" >> "$GITHUB_OUTPUT"
+
+      - name: Collect changes since last release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PREV="${{ steps.prev_tag.outputs.ref }}"
+
+          # Get commits on main since the previous tag (newest first)
+          COMMITS=$(git log "${PREV}..HEAD" --oneline --no-merges)
+
+          # Build change list: prefer PR title if commit is associated with a merged PR
+          CHANGE_LIST=""
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            SHA=$(echo "$line" | cut -d' ' -f1)
+            MSG=$(echo "$line" | cut -d' ' -f2-)
+
+            # Look up a PR merged via this commit SHA
+            PR=$(gh pr list --state merged --search "${SHA}" --json number,title --jq '.[0] | if . then "PR #\(.number): \(.title)" else "" end' 2>/dev/null || true)
+
+            if [ -n "$PR" ]; then
+              CHANGE_LIST="${CHANGE_LIST}- ${PR}"$'\n'
+            else
+              CHANGE_LIST="${CHANGE_LIST}- ${SHA}: ${MSG}"$'\n'
+            fi
+          done <<< "$COMMITS"
+
+          if [ -z "$CHANGE_LIST" ]; then
+            CHANGE_LIST="- No changes since last release"$'\n'
+          fi
+
+          printf '%s' "$CHANGE_LIST" > /tmp/change_list.txt
+          echo "Changes collected:"
+          cat /tmp/change_list.txt
+
+      - name: Prepend CHANGELOG entry
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          DATE=$(date -u +%Y-%m-%d)
+
+          # Prepend entry after the first two header lines
+          HEAD_LINES=$(head -2 CHANGELOG.md)
+          TAIL=$(tail -n +3 CHANGELOG.md)
+
+          {
+            echo "$HEAD_LINES"
+            echo ""
+            echo "## ${VERSION}"
+            echo "_Released ${DATE}_"
+            echo ""
+            echo "### Changes"
+            cat /tmp/change_list.txt
+            [ -n "$TAIL" ] && echo "" && echo "$TAIL"
+          } > CHANGELOG.md.new
+          mv CHANGELOG.md.new CHANGELOG.md
+
+          echo "Updated CHANGELOG.md:"
+          cat CHANGELOG.md
+
+      - name: Commit and push to draft branch
+        id: push
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          BRANCH="changelog/${VERSION}-r${GITHUB_RUN_NUMBER}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add CHANGELOG.md
+          git commit -m "chore: draft CHANGELOG for ${VERSION}"
+          git push origin "$BRANCH" --force
+
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Open PR to main for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          BRANCH="${{ steps.push.outputs.branch }}"
+
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number' 2>/dev/null || true)
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #${EXISTING_PR} already exists for branch ${BRANCH} — skipping creation"
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Changelog: ${VERSION}" \
+              --body "$(printf 'Auto-generated CHANGELOG draft for **%s**.\n\nPlease review and edit the entry in `CHANGELOG.md` before merging — add any context not captured by the commit list.\n\nOnce merged, run the **Cut Release** workflow to create the release PR.' "$VERSION")"
+          fi

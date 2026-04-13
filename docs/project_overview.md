@@ -6,10 +6,11 @@
 - Andrea already uses a hosted electronic medical records (EMR) solution, Avaros. This system is at the heart of her business - everything from client onboarding to billing.  
 - Andrea’s side hustle is successful and growing. She’s ready to stop working for other people and transition this into her full-time job.  
 - Her current business growth is organic (word of mouth, presenting at conferences). She wants to formalize her customer acquisition funnel and add an online presence that can support things like targeted advertisements.
+- The business name is Ontario Menopause Clinic.
 
 ## Canada Health Act changes
 
-- As of April 1st NPs will be allowed to direct-bill OHIP for covered services, and *must* direct bill OHIP for covered services. Non-covered services can continue to be paid by clients.
+- It was initially expected that NPs would be allowed OHIP direct billing by April 1st, 2026. That deadline has been extended to an indefinite future, and all services will continue to be paid by clients.
 
 ## Guiding Principles
 
@@ -23,7 +24,7 @@
 ## Scope
 
 ### Business setup
-- Registration of 2 (or more) domains
+- Registration of domain
 - Custom domain email
   - Low-technical-literacy required for day-to-day use
   - Must use a technology like IMAP where the single source of truth is the email host

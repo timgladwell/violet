@@ -1,0 +1,56 @@
+name: Cut Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  cut-release:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6.0.2
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Read version from CHANGELOG
+        id: version
+        run: |
+          VERSION=$(grep -m1 '^## v' CHANGELOG.md | sed 's/^## //')
+          if [ -z "$VERSION" ]; then
+            echo "No version entry found in CHANGELOG.md — run the Draft Changelog workflow first"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Creating release PR for: ${VERSION}"
+
+      - name: Extract latest CHANGELOG entry
+        id: entry
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+
+          # Extract lines from the first ## heading up to (not including) the next one
+          awk '/^## /{found++} found==1{print} found==2{exit}' CHANGELOG.md > /tmp/changelog_entry.txt
+
+          echo "Changelog entry:"
+          cat /tmp/changelog_entry.txt
+
+      - name: Create release PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ENTRY=$(cat /tmp/changelog_entry.txt)
+          CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/blob/main/CHANGELOG.md"
+
+          gh pr create \
+            --base release \
+            --head main \
+            --title "Release ${VERSION}" \
+            --body "$(printf '%s\n\n---\n[View full CHANGELOG](%s)' "$ENTRY" "$CHANGELOG_URL")"

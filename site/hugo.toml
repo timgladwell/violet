@@ -3,3 +3,12 @@ languageCode = 'en-ca'
 title = 'Ontario Menopause Clinic'
 
 disableKinds = ['taxonomy', 'term']
+enableRobotsTXT = true
+
+[params]
+  description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed — book online today.'
+  bookingURL = '#book'  # Replace with Avaros booking URL when available
+
+[sitemap]
+  changefreq = 'monthly'
+  priority = 0.5
