@@ -6,7 +6,7 @@ disableKinds = ['taxonomy', 'term']
 enableRobotsTXT = true
 
 [params]
-  description = 'Expert menopause care in Ontario. OHIP-covered services from a certified menopause practitioner. No referral needed — book online today.'
+  description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed — book online today.'
   bookingURL = '#book'  # Replace with Avaros booking URL when available
 
 [sitemap]
