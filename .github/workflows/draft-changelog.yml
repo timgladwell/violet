@@ -132,7 +132,7 @@ jobs:
         id: push
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          BRANCH="changelog/${VERSION}"
+          BRANCH="changelog/${VERSION}-r${GITHUB_RUN_NUMBER}"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
