@@ -115,19 +115,6 @@ jobs:
           echo "Updated CHANGELOG.md:"
           cat CHANGELOG.md
 
-      - name: Check for already-merged changelog PR
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          BRANCH="changelog/${VERSION}"
-
-          MERGED_PR=$(gh pr list --head "$BRANCH" --state merged --json number --jq '.[0].number' 2>/dev/null || true)
-          if [ -n "$MERGED_PR" ]; then
-            echo "::error::PR #${MERGED_PR} for branch ${BRANCH} is already merged into main. Re-running this workflow would produce a duplicate CHANGELOG entry for ${VERSION}. Manually revert the merged changelog entry from main before re-running, or wait until after the release is cut (which will advance the version)."
-            exit 1
-          fi
-
       - name: Commit and push to draft branch
         id: push
         run: |
