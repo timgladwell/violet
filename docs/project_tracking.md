@@ -3,11 +3,11 @@
 ## Domains
 
 - Decide on domain names for both brands
-  - *Blocked by: domain name question*
+  - One launch brand - ontariomenopauseclinic.caa
 - Choose a domain registrar
-  - *Blocked by: registrar question*
+  - Cloudflare, complete
 - Register domains
-  - *Blocked by: domain name and registrar decisions*
+  - complete
 - Configure DNS records
   - *Blocked by: domain registration, email setup, and hosting decision*
 
@@ -53,16 +53,14 @@
 
 ## Avaros
 
-- Contact Avaros support re: OHIP billing changes
-- Determine billing configuration path (new config vs modify existing)
-  - *Blocked by: Avaros support response*
+- ~Contact Avaros support re: OHIP billing changes~ OHIP billing is moved to future project
+- ~Determine billing configuration path (new config vs modify existing)~
 - Configure patient self-scheduling (15-min intake appointments)
 - Create/configure intake form
   - *Blocked by: intake form fields question*
 - Test self-scheduling flow end-to-end
   - *Blocked by: self-scheduling config, intake form*
-- Coordinate OHIP billing cutover
-  - *Blocked by: billing config path decision; deadline April 1st*
+- ~Coordinate OHIP billing cutover~
 
 ## Marketing
 
