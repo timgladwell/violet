@@ -1,0 +1,5 @@
+baseURL = 'https://staging.violet-6qt.pages.dev/'
+
+[params]
+  isStaging = true
+  # bookingURL inherits from the root hugo.toml; override here when a staging Avaros URL is available

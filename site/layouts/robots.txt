@@ -1,0 +1,10 @@
+{{ if .Site.Params.isStaging -}}
+# Staging environment — block all indexing
+User-agent: *
+Disallow: /
+{{ else -}}
+User-agent: *
+Allow: /
+
+Sitemap: {{ .Site.BaseURL }}sitemap.xml
+{{ end -}}

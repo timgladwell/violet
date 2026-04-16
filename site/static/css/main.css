@@ -1126,3 +1126,20 @@ ul { list-style: none; }
   clip: rect(0,0,0,0);
   border: 0;
 }
+
+/* ============================================
+   Staging Banner
+   ============================================ */
+
+.staging-banner {
+  background: #7A4F00;
+  color: #FFF8E1;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
