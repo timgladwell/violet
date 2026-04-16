@@ -19,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 * Staging publishing happens when any code is pushed to `staging` branch.
   * `staging` branch can be pushed from anywhere - no branch protections are in effect
+
 * Use ./deploy-staging.sh to push the local branch to the `staging` branch, and then automatically on to the staging site at https://staging.violet-6qt.pages.dev/
 
 ### Starting the localdev server
