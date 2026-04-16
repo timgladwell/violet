@@ -5,16 +5,16 @@
 See @docs/project_overview.md for context and scope of the overall project
 
 - The primary purpose of this site is marketing - helping potential clients understand what services Andrea provides, why a potential client would choose Andrea over a competitor, and starting the "potential client" -> "client" conversion process by funnelling potential clients into a meet-and-greet with Andrea 
-- Andrea will be operating under two business names as she is offering two distinct types of services: menopause treatments covered by OHIP, and cosmetic services that are paid by  the patient. 
-    - Name 1: "Ontario Menopause Clinic"
-    - Name 2: "Violet"
+- Andrea will be operating under the business name "Ontario Menopause Clinic" and the website `ontariomenopauseclinic.ca`.
 - This is a similar scope of practice to existing businesses, and this website should be structured relatively the same way.
 
 ## Technical Requirements
 - The site must be responsive - must work equally well on desktop and mobile screens
-- The site must conform to best practices at all times. Especially consider adaptability requirements.
+- The site must conform to best practices at all times.
+  - The site must meet WCAG 2.1 or 2.2 Level AA guidelines
+  - All definitions (like partials and CSS) must have only a single point of defintion.
 - The site will be built via the Hugo template / site builder.
-- Be ready for search engine and LLM service indexing - the site should be very easy to discover.
+- The site will be configured to be index-able by both AI robots and classic site crawlers - the site should be very easy to discover. 
 - Be ready for to support advertising - Andrea will start online campaigns immediately and this website will be the top of her customer acquistion funnel
 - Will be hosted on Cloudflare Pages
 
