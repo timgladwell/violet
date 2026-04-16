@@ -45,8 +45,8 @@
 - Integrate Avaros intake link
   - *Blocked by: website build, intake URL question*
 - ~~Deploy website (staging) to Cloudflare Pages~~ ✓
-  - Staging: https://staging.violet-nzf.pages.dev — branch: `staging`
-  - Production (no custom domain yet): https://violet-nzf.pages.dev — branch: `release`
+  - Staging: https://staging.violet-6qt.pages.dev/ — branch: `staging`
+  - Production: https://ontariomenopauseclinic.ca — branch: `release`
   - `release` branch is PR-only (branch protection enabled, enforce_admins: true)
 - Deploy website (production) and configure DNS
   - *Blocked by: website build, domain registration*

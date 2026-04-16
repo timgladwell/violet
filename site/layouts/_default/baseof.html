@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  {{ if .Site.Params.isStaging }}<meta name="robots" content="noindex, nofollow">{{ end }}
+
   <title>{{ if .IsHome }}{{ .Site.Title }} — Expert Menopause Care in Ontario{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 
@@ -22,21 +24,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/css/main.css">
+
+  {{ block "head-extra" . }}{{ end }}
 </head>
 <body>
 
-  {{ partial "nav.html" . }}
+  {{ partial "staging-banner.html" . }}
+
+  {{ block "nav" . }}{{ partial "nav.html" . }}{{ end }}
 
   {{ block "main" . }}{{ end }}
 
-  {{ partial "footer.html" . }}
+  {{ block "footer" . }}{{ partial "footer.html" . }}{{ end }}
 
   <script>
     // Sticky nav shadow
     const nav = document.querySelector('.nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 8);
-    }, { passive: true });
+    if (nav) {
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 8);
+      }, { passive: true });
+    }
 
     // Mobile nav drawer
     const hamburger = document.querySelector('.nav__hamburger');
