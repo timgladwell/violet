@@ -7,8 +7,8 @@
 # FIRST-TIME SETUP (one-off, done in the Cloudflare Pages dashboard):
 #   Settings → Build & deployments → Build configurations → Build command:
 #     bash build.sh
-#   build.sh checks $CF_PAGES_BRANCH and runs Hugo with --environment staging
-#   on the staging branch, activating site/config/staging/hugo.toml overrides:
+#   site/build.sh checks $CF_PAGES_BRANCH and runs Hugo with --environment staging
+#   on the staging branch, activating config/staging/hugo.toml overrides:
 #     - baseURL points to the staging domain
 #     - isStaging = true (staging banner, no indexing, coming-soon bypassed)
 #
