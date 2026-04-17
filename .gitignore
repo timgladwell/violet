@@ -1,5 +1,6 @@
 # Claude stuff
 .claude/worktrees/
+.claude/settings.local.json
 
 # Hugo build output
 public/
