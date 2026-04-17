@@ -1,4 +1,5 @@
-baseURL = 'https://staging.violet-6qt.pages.dev/'
+# baseURL is set dynamically from $CF_PAGES_URL in build.sh so each staging slot
+# (staging, staging2, staging3, …) resolves to its own Cloudflare Pages URL.
 
 [params]
   isStaging = true
