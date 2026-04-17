@@ -4,12 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Technical processes
 
+* Always work in a feature branch or a worktree - do not work directly in the `main` branch
+
+## Publishing 
+
 * Website is hosted by Cloudflare. Website publishing is performed by pushing code to specific git branches.
+
+### Pushing to production
 * Production publishing happens when code is merged from `main` to `release` branch.
   * All pushes to `release` branch are tagged for easy reverts. 
   * `release` branch is protected and requires a pull request - no direct pushes are allowed.
+
+### Pushing to staging
+
 * Staging publishing happens when any code is pushed to `staging` branch.
-  * `staging` branch can be pushed from anywhere - no branch protections are in effect 
+  * `staging` branch can be pushed from anywhere - no branch protections are in effect
+* Use ./deploy-staging.sh to push the local branch to the `staging` branch, and then automatically on to the staging site at https://staging.violet-6qt.pages.dev/
+
+### Starting the localdev server
+
+* Ensure the localdev server is running when working on anything by using the ./localdev.sh script
 
 ## Project Context and Guiding Principles.
 

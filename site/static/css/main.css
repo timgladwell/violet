@@ -994,6 +994,40 @@ ul { list-style: none; }
 .faq-answer { padding-bottom: var(--s-6); }
 .faq-answer p { font-size: 0.9375rem; line-height: 1.75; color: #444; margin-bottom: var(--s-3); }
 .faq-answer p:last-child { margin-bottom: 0; }
+.faq-answer ul { font-size: 0.9375rem; line-height: 1.75; color: #444; margin-bottom: var(--s-3); padding-left: 1.5rem; }
+.faq-answer ul li { margin-bottom: var(--s-1); }
+.faq-answer a { color: var(--green); text-decoration: underline; }
+.faq-answer a:hover { color: var(--green-dark, #1E3D22); }
+
+/* ============================================
+   Legal Pages
+   ============================================ */
+
+.legal-page { padding-block: var(--s-24); }
+
+.legal-content h2 {
+  font-size: 1.25rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--green-dark, #1E3D22);
+  margin-top: var(--s-12);
+  margin-bottom: var(--s-4);
+}
+
+.legal-content p { font-size: 0.9375rem; line-height: 1.8; color: #444; margin-bottom: var(--s-4); }
+.legal-content p:last-child { margin-bottom: 0; }
+
+.legal-content ul, .legal-content ol {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: var(--s-4);
+  padding-left: 1.5rem;
+}
+
+.legal-content ul li, .legal-content ol li { margin-bottom: var(--s-1); }
+
+.legal-content strong { font-weight: 600; color: #333; }
 
 /* ============================================
    What We Treat
