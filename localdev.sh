@@ -12,12 +12,14 @@ set -euo pipefail
 PORT=1313
 URL="http://localhost:${PORT}"
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+WORKTREE=$(basename "$(git rev-parse --show-toplevel)")
 
-# Set terminal title to branch name — persists in the title bar regardless of scroll
-printf '\033]0;localdev: %s\007' "$BRANCH"
+# Set terminal title — persists in the title bar regardless of scroll
+printf '\033]0;localdev: %s [%s]\007' "$BRANCH" "$WORKTREE"
 
-echo "Branch: $BRANCH"
-echo "URL:    $URL"
+echo "Branch:   $BRANCH"
+echo "Worktree: $WORKTREE"
+echo "URL:      $URL"
 echo ""
 
 # Open the browser once Hugo is ready
