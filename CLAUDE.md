@@ -11,20 +11,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 * Website is hosted by Cloudflare. Website publishing is performed by pushing code to specific git branches.
 
 ### Pushing to production
-* Production publishing happens when code is merged from `main` to `release` branch.
-  * All pushes to `release` branch are tagged for easy reverts. 
+* Production publishing happens when code is merged from `main` to `release` branch. The process is assisted by Github actions:
+  * All releases have a CHANGELOG. Generation of the changelog is assisted by a Github action.
+  * All pushes to `release` branch are tagged for easy reverts. Creating and tagging the `release` branch update is assisted by a Github action.
   * `release` branch is protected and requires a pull request - no direct pushes are allowed.
+* Production site is published at `https://www.ontariomenopauseclinic.ca`
 
 ### Pushing to staging
 
-* Staging publishing happens when any code is pushed to `staging` branch.
-  * `staging` branch can be pushed from anywhere - no branch protections are in effect
-
-* Use ./deploy-staging.sh to push the local branch to the `staging` branch, and then automatically on to the staging site at https://staging.violet-6qt.pages.dev/
-
-### Starting the localdev server
-
-* Ensure the localdev server is running when working on anything by using the ./localdev.sh script
+* Staging publishing happens when any code is pushed to a remote branch matching the `staging*` pattern.
+* Use `./deploy-staging.sh staging<slug>` to push all commits on the local branch to the named local, then remote, staging branch. Use the `slug` value provided by the user.
+* Staging site is published at `https://staging<slug>.violet-6qt.pages.dev/`
 
 ## Project Context and Guiding Principles.
 
