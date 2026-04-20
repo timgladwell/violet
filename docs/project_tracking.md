@@ -9,14 +9,14 @@
 - Register domains
   - complete
 - Configure DNS records
-  - *Blocked by: domain registration, email setup, and hosting decision*
+  - complete - SPF/DKIM/DMARC, CNAME for www, basic A records, and whatever M365 needed
 
 ## Email
 
 - Purchase Microsoft 365 Hosted Exchange Plan 1
-  - *Blocked by: domain registration*
+  - complete
 - Configure custom domain in Exchange
-  - *Blocked by: Exchange purchase*
+  - completed
 - Set up initial aliases (e.g. billing@, info@)
   - *Blocked by: Exchange domain config, alias question*
 - Configure email on Andrea's devices (iPhone, Outlook)
@@ -43,13 +43,13 @@
 - Set up analytics
   - *Blocked by: analytics tool question, website build*
 - Integrate Avaros intake link
-  - *Blocked by: website build, intake URL question*
+  - Complete
 - ~~Deploy website (staging) to Cloudflare Pages~~ ✓
   - Staging: https://staging.violet-6qt.pages.dev/ — branch: `staging`
   - Production: https://ontariomenopauseclinic.ca — branch: `release`
   - `release` branch is PR-only (branch protection enabled, enforce_admins: true)
 - Deploy website (production) and configure DNS
-  - *Blocked by: website build, domain registration*
+  - Complete - "coming soon" page in place hiding the site during development
 
 ## Avaros
 
@@ -59,7 +59,7 @@
 - Create/configure intake form
   - *Blocked by: intake form fields question*
 - Test self-scheduling flow end-to-end
-  - *Blocked by: self-scheduling config, intake form*
+  - complete
 - ~Coordinate OHIP billing cutover~
 
 ## Marketing
@@ -79,4 +79,4 @@
 
 - Define SLAs for all services (website, email, Avaros)
 - Determine if privacy policy / terms of service are required
-  - *Blocked by: privacy question*
+  - Draft versions in place

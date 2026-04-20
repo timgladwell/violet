@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 * Always work in a feature branch or a worktree - do not work directly in the `main` branch
 
+## Building
+
+* Always confirm that changes to the site build correctly by running `hugo --source <directory with hugo site>`. In this repo, the Hugo site is located under the `site` folder
+
+## Starting the localdev server
+
+* Ensure the localdev server is running when working on anything by using the ./localdev.sh script
+
 ## Publishing 
 
 * Website is hosted by Cloudflare. Website publishing is performed by pushing code to specific git branches.
