@@ -17,7 +17,7 @@
 | Website  | Is a privacy policy or terms of service required?       | Open   |                                                           | Healthcare context in Ontario                                      |
 | Email    | Which domain(s) should email be configured on?          | Closed   |  Only one domain to launch                                 | Depends on domain name decisions                                   |
 | Email    | What specific aliases are needed at launch?             | Open   |                                                           | e.g. billing@, info@, etc.                                         |
-| EMR      | What is the Avaros patient intake URL to link from the website? | Open   |          | Needed for website CTA                                             |
+| EMR      | What is the Avaros patient intake URL to link from the website? | Closed | Avaros weblink (stored in HUGO_PARAMS_BOOKINGURL env var, not in repo) | Same URL for staging and production. Embedded as iframe modal on desktop, new tab on mobile. |
 | EMR      | What fields are required on the intake form?                    | Open   |          | Andrea to define                                                   |
 | EMR      | Has Avaros support been contacted about OHIP billing changes?   | Closed   |  OHIP direct billing delayed        |                                                                    |
 | EMR      | What is the cutover timeline for OHIP billing?                  | Closed   |  OHIP direct billing delayed        | Regulatory date is April 1st                                       |
