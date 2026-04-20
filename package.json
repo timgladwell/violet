@@ -1,0 +1,12 @@
+{
+  "name": "violet-a11y",
+  "private": true,
+  "scripts": {
+    "a11y": "./a11y.sh"
+  },
+  "devDependencies": {
+    "@axe-core/cli": "^4.10.0",
+    "@axe-core/playwright": "^4.10.0",
+    "@playwright/test": "^1.52.0"
+  }
+}

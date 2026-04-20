@@ -31,6 +31,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 * Use `./deploy-staging.sh staging<slug>` to push all commits on the local branch to the named local, then remote, staging branch. Use the `slug` value provided by the user.
 * Staging site is published at `https://staging<slug>.violet-6qt.pages.dev/`
 
+### Starting the localdev server
+
+* Ensure the localdev server is running when working on anything by using the ./localdev.sh script
+* If Claude has started the localdev server, on exit Claude must make sure the localdev server has been stopped
+
+### Validating a11y requirements
+
+* Validate a11y requirements by running `npm run a11y`. Consume the output and automatically suggest fixes.
+* This requires that the localdev server is running first
+
 ## Project Context and Guiding Principles.
 
 See @docs/project_overview.md

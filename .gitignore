@@ -23,3 +23,8 @@ Thumbs.db
 .env
 .env.*
 !.env.local.example
+
+# Accessibility tooling
+node_modules/
+a11y/test-results/
+a11y/violations.json

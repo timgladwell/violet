@@ -1,0 +1,148 @@
+name: Accessibility
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.160.0'
+          extended: true
+
+      - name: Build site
+        run: hugo --source site
+        env:
+          HUGO_PARAMS_BOOKINGURL: ''
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Start server
+        run: python3 -m http.server 8080 --directory site/public &
+
+      - name: Wait for server
+        run: |
+          for i in $(seq 1 15); do
+            curl -s http://localhost:8080 > /dev/null && echo "Server ready" && break
+            sleep 1
+          done
+
+      - name: Run accessibility tests
+        run: npx playwright test --config a11y/playwright.config.ts
+        env:
+          BASE_URL: http://localhost:8080
+        continue-on-error: true
+
+      - name: Post PR comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let results;
+            try {
+              results = JSON.parse(fs.readFileSync('a11y/violations.json', 'utf8'));
+            } catch {
+              const marker = '<!-- a11y-check -->';
+              const body = `${marker}\n## Accessibility ⚠️\n\nTest runner failed to produce results. Check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).`;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.setFailed('Accessibility test runner did not produce results');
+              return;
+            }
+
+            const total = results.reduce((n, r) => n + r.violations.length, 0);
+            const pageCount = results.length;
+            const marker = '<!-- a11y-check -->';
+
+            let body;
+            if (total === 0) {
+              body = `${marker}\n## Accessibility ✅\n\nNo WCAG 2.1 AA violations found across ${pageCount} pages.`;
+            } else {
+              const affectedPages = results.filter(r => r.violations.length > 0);
+              body = `${marker}\n## Accessibility ❌\n\nFound **${total} violation(s)** across ${affectedPages.length} of ${pageCount} pages.\n\n`;
+
+              for (const { path, violations } of affectedPages) {
+                body += `<details>\n<summary><strong>${path}</strong> — ${violations.length} violation(s)</summary>\n\n`;
+                for (const v of violations) {
+                  body += `**\`${v.id}\`** · ${v.impact ?? 'unknown'} · [Docs](${v.helpUrl})\n\n`;
+                  body += `> ${v.description}\n\n`;
+                  const shown = v.nodes.slice(0, 3);
+                  body += `${v.nodes.length} element(s) affected:\n`;
+                  for (const node of shown) {
+                    const html = node.html.length > 120 ? node.html.slice(0, 117) + '...' : node.html;
+                    body += `- \`${html}\`\n`;
+                    if (node.failureSummary) {
+                      body += node.failureSummary.split('\n').map(l => `  ${l}`).join('\n') + '\n';
+                    }
+                  }
+                  if (v.nodes.length > 3) body += `- _...and ${v.nodes.length - 3} more_\n`;
+                  body += '\n---\n\n';
+                }
+                body += '</details>\n\n';
+              }
+
+              body += `\n> To suppress a rule, add it to \`.axe.json\` → \`"rules": { "rule-id": { "enabled": false } }\``;
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body?.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+            if (total > 0) {
+              core.setFailed(`Found ${total} WCAG 2.1 AA violation(s). See PR comment for details.`);
+            }
