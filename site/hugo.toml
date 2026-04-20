@@ -7,7 +7,7 @@ enableRobotsTXT = true
 
 [params]
   description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed — book online today.'
-  bookingURL = '#book'  # Replace with Avaros booking URL when available
+  bookingURL = ''  # Set via HUGO_PARAMS_BOOKINGURL env var — see .env.local.example
 
 [sitemap]
   changefreq = 'monthly'

@@ -22,6 +22,10 @@ echo "Worktree: $WORKTREE"
 echo "URL:      $URL"
 echo ""
 
+# Load local env overrides (not committed — see .env.local.example)
+# shellcheck disable=SC1091
+[ -f .env.local ] && set -a && source .env.local && set +a
+
 # Open the browser once Hugo is ready
 (sleep 1 && open "$URL") &
 
