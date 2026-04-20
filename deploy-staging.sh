@@ -14,23 +14,25 @@
 #
 # USAGE:
 #   ./deploy-staging.sh              — push current branch to staging
-#   ./deploy-staging.sh staging2     — push current branch to staging2
-#   ./deploy-staging.sh staging3     — push current branch to staging3
+#   ./deploy-staging.sh 2            — push current branch to staging2
+#   ./deploy-staging.sh 3            — push current branch to staging3
 #   ./deploy-staging.sh --dry-run    — show what would be pushed without doing it
-#   ./deploy-staging.sh staging2 --dry-run
+#   ./deploy-staging.sh 2 --dry-run
 
 set -euo pipefail
 
-TARGET_BRANCH="staging"
+SLUG=""
 DRY_RUN=false
 
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=true ;;
-    staging|staging[0-9]*) TARGET_BRANCH="$arg" ;;
+    [!-]*) SLUG="$arg" ;;
     *) echo "Error: unknown argument '$arg'" >&2; exit 1 ;;
   esac
 done
+
+TARGET_BRANCH="staging${SLUG}"
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_SHA=$(git rev-parse --short HEAD)
@@ -55,11 +57,14 @@ echo "Target : $TARGET_BRANCH → $STAGING_URL"
 echo ""
 
 if $DRY_RUN; then
-  echo "[dry-run] Would run: git push origin HEAD:$TARGET_BRANCH --force"
+  echo "[dry-run] Would run:"
+  echo "  git branch -f $TARGET_BRANCH HEAD"
+  echo "  git push origin $TARGET_BRANCH --force"
   exit 0
 fi
 
-git push origin "HEAD:$TARGET_BRANCH" --force
+git branch -f "$TARGET_BRANCH" HEAD
+git push origin "$TARGET_BRANCH" --force
 
 echo ""
 echo "Done. Cloudflare Pages is now building the staging site."
