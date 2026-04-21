@@ -8,6 +8,12 @@ See @docs/project_overview.md for context and scope of the overall project
 - Andrea will be operating under the business name "Ontario Menopause Clinic" and the website `ontariomenopauseclinic.ca`.
 - This is a similar scope of practice to existing businesses, and this website should be structured relatively the same way.
 
+## Aesthetic Requirements
+
+- Use Andrea's headshot only in relation to "About Andrea" e.g. in the "About Andrea" section and the "About Andrea" page. Do not use Andrea's headshot as part of the hero section.
+  * Andrea is the "face" of this business, and her headshot needs to be prominent; however, it's Andrea's approach to "whole person" care, which is traditionally not something that people experience as part of menopause care, that needs to be the prominent hero section.
+- See @docs/website_aesthetic_design_notes.md for notes on each aesthetic design iteration
+
 ## Technical Requirements
 - The site must be responsive - must work equally well on desktop and mobile screens
 - The site must conform to best practices at all times.

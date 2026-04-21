@@ -28,7 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Pushing to staging
 
 * Staging publishing happens when any code is pushed to a remote branch matching the `staging*` pattern.
-* Use `./deploy-staging.sh staging<slug>` to push all commits on the local branch to the named local, then remote, staging branch. Use the `slug` value provided by the user.
+* Use `./deploy-staging.sh <slug>` to push all commits on the local branch to the named local, then remote, staging branch (e.g. `./deploy-staging.sh 4` deploys to `staging4`). Use the `slug` value provided by the user.
 * Staging site is published at `https://staging<slug>.violet-6qt.pages.dev/`
 
 ### Starting the localdev server
