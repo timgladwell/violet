@@ -2,22 +2,32 @@
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="top">
   <div class="container">
-    <div class="hero__grid">
-      <div class="hero__content">
-        <span class="hero__eyebrow">Ontario Menopause Clinic</span>
-        <h1 class="hero__heading">
-          Specialized menopause care, designed for <em>the whole you.</em>
-        </h1>
-        <p class="hero__body">
-          Personalized care that looks beyond symptoms, bringing together medical expertise and real-life understanding so you feel heard, supported, and more like yourself again.
-        </p>
-        <div class="hero__actions">
-          <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--white">Book Your Visit</a>
-          <a href="#how-it-works" class="btn btn--outline-white">How It Works</a>
-        </div>
+    <div class="hero__content">
+      <span class="hero__eyebrow">Ontario Menopause Clinic</span>
+      <h1 class="hero__heading">
+        Expert menopause care.<br>
+        <em>For the whole you.</em>
+      </h1>
+      <p class="hero__body">
+        Personalized virtual care that looks beyond symptoms &mdash; bringing together medical expertise and real-life understanding so you feel heard, supported, and more like yourself again.
+      </p>
+      <div class="hero__actions">
+        <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Book Your Visit</a>
+        <a href="#how-it-works" class="btn btn--outline">How It Works</a>
       </div>
-      <div class="hero__photo">
-        <img src="/images/andrea_headshot.jpg" alt="Andrea, NP — Ontario Menopause Clinic" width="380" height="507">
+      <div class="hero__trust">
+        <span class="hero__trust-item">
+          <span class="hero__trust-check" aria-hidden="true">✓</span>
+          No referral needed
+        </span>
+        <span class="hero__trust-item">
+          <span class="hero__trust-check" aria-hidden="true">✓</span>
+          Virtual &mdash; anywhere in Ontario
+        </span>
+        <span class="hero__trust-item">
+          <span class="hero__trust-check" aria-hidden="true">✓</span>
+          Menopause Society Certified
+        </span>
       </div>
     </div>
   </div>
@@ -27,19 +37,19 @@
 <section class="symptoms section" id="symptoms">
   <div class="container">
     <span class="section-eyebrow">Is This You?</span>
-    <h2 class="section-heading">Tired of not feeling like yourself&nbsp;&mdash; and not feeling heard?</h2>
+    <h2 class="section-heading">Tired of not feeling like yourself &mdash; and not feeling heard?</h2>
     <p class="section-lead symptoms__intro">
-      Menopause can quietly change everything &mdash; your sleep, your mood, your energy, your confidence. And too often, you're told it's &ldquo;just part of aging,&rdquo; dismissed or rushed through appointments, or left to figure it out on your own.
+      Menopause can quietly change everything &mdash; your sleep, your mood, your energy, your confidence. And too often, you&rsquo;re told it&rsquo;s &ldquo;just part of aging,&rdquo; dismissed or rushed through appointments, or left to figure it out on your own.
     </p>
 
-    <p style="font-size: 1rem; color: #555; margin-bottom: 1.5rem; font-weight: 500;">You might be dealing with:</p>
+    <p style="font-size: 0.9375rem; color: var(--ink-mid); margin-bottom: 1.5rem; font-weight: 500;">You might be dealing with:</p>
 
     <div class="symptoms__grid" aria-label="Common menopause symptoms">
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Hot flashes or waking up drenched at night</div>
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Trouble sleeping, even when exhausted</div>
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Feeling more anxious, irritable, or unlike yourself</div>
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Brain fog that makes it hard to focus or keep up</div>
-      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Weight changes that don't make sense</div>
+      <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Weight changes that don&rsquo;t make sense</div>
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Constant fatigue, no matter how much you rest</div>
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Changes in your libido or how you feel in your body</div>
       <div class="symptom-tag"><span class="symptom-tag__dot" aria-hidden="true"></span>Vaginal dryness or discomfort</div>
@@ -48,10 +58,10 @@
     </div>
 
     <p class="symptoms__closing">If this sounds familiar, you&rsquo;re not imagining it &mdash; and you&rsquo;re not alone.</p>
-    <p style="font-size: 1rem; color: #555; max-width: 580px; margin-bottom: 2rem; line-height: 1.7;">Menopause is complex &mdash; and your care should be too. We take the time to understand your full experience and create a plan that actually helps you feel better.</p>
+    <p style="font-size: 1rem; color: var(--ink-mid); max-width: 580px; margin-bottom: 2rem; line-height: 1.7;">Menopause is complex &mdash; and your care should be too. We take the time to understand your full experience and create a plan that actually helps you feel better.</p>
     <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
       <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Book Your Consultation</a>
-      <a href="/what-we-treat/" class="btn btn--outline-green">What We Treat</a>
+      <a href="/what-we-treat/" class="btn btn--outline">What We Treat</a>
     </div>
   </div>
 </section>
@@ -75,23 +85,23 @@
         <div class="service-cards">
           <div class="service-card service-card--primary">
             <h4 class="service-card__name">Discovery Call</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">A brief, no-pressure call to see if our approach is the right fit for you.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">15 min &middot; Complimentary</p>
+            <p class="service-card__desc">A brief, no-pressure call to see if our approach is the right fit for you.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--rose);">15 min &middot; Complimentary</p>
           </div>
           <div class="service-card service-card--primary">
             <h4 class="service-card__name">Initial Consultation</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">A comprehensive assessment of your symptoms and health, with a personalized care plan.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">60 min &middot; $299</p>
+            <p class="service-card__desc">A comprehensive assessment of your symptoms and health, with a personalized care plan.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--rose);">60 min &middot; $299</p>
           </div>
           <div class="service-card service-card--primary">
             <h4 class="service-card__name">Follow-Up Visit</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Ongoing care to review progress, adjust treatment, and support how you feel.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">30 min &middot; $150</p>
+            <p class="service-card__desc">Ongoing care to review progress, adjust treatment, and support how you feel.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--rose);">30 min &middot; $150</p>
           </div>
           <div class="service-card service-card--primary">
             <h4 class="service-card__name">Care Check-In</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Short visit for new symptoms, quick questions, or support between appointments.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #2D5A35;">15 min &middot; $75</p>
+            <p class="service-card__desc">Short visit for new symptoms, quick questions, or support between appointments.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--rose);">15 min &middot; $75</p>
           </div>
         </div>
       </div>
@@ -104,18 +114,18 @@
         <div class="service-cards">
           <div class="service-card service-card--private">
             <h4 class="service-card__name">Weight Loss Initial Consultation</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">A personalized, medical approach to weight and metabolic health during menopause.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #7A3A50;">30 min &middot; $150</p>
+            <p class="service-card__desc">A personalized, medical approach to weight and metabolic health during menopause.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--gold);">30 min &middot; $150</p>
           </div>
           <div class="service-card service-card--private">
             <h4 class="service-card__name">Weight Loss Follow-Up</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Continued support to help you stay on track with realistic, sustainable changes.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #7A3A50;">20 min &middot; $99</p>
+            <p class="service-card__desc">Continued support to help you stay on track with realistic, sustainable changes.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--gold);">20 min &middot; $99</p>
           </div>
           <div class="service-card service-card--private">
             <h4 class="service-card__name">Form Completion</h4>
-            <p class="service-card__desc" style="margin-bottom: 0.75rem;">Medical forms and documentation completed based on time and complexity.</p>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #7A3A50;">Starting at $40</p>
+            <p class="service-card__desc">Medical forms and documentation completed based on time and complexity.</p>
+            <p style="font-size: 0.875rem; font-weight: 700; color: var(--gold);">Starting at $40</p>
           </div>
         </div>
       </div>
@@ -123,7 +133,7 @@
     </div>
 
     <div class="services-cta">
-      <a href="/services/" class="btn btn--outline-green">See Full Service Details</a>
+      <a href="/services/" class="btn btn--outline">See Full Service Details</a>
     </div>
   </div>
 </section>
@@ -160,7 +170,7 @@
     </div>
 
     <div class="how-it-works__cta">
-      <p style="font-family: var(--serif); font-style: italic; font-size: 1.125rem; color: #555; margin-bottom: 1.5rem;">You&rsquo;ll always know what to expect &mdash; and you&rsquo;ll be supported every step of the way.</p>
+      <p>You&rsquo;ll always know what to expect &mdash; and you&rsquo;ll be supported every step of the way.</p>
       <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Get Started Today</a>
     </div>
   </div>
@@ -171,7 +181,7 @@
   <div class="container">
     <div class="about-preview__layout">
       <div class="about-preview__photo">
-        <img src="/images/andrea_headshot.jpg" alt="Andrea, NP">
+        <img src="/images/andrea_headshot.jpg" alt="Andrea, NP — Ontario Menopause Clinic" width="400" height="520">
       </div>
       <div class="about-preview__content">
         <span class="section-eyebrow">About Andrea</span>
@@ -186,7 +196,7 @@
           <div class="credential">MScN, University of Ottawa</div>
           <div class="credential">Clinical experience in menopause care at Mount Sinai Hospital</div>
         </div>
-        <a href="/about/" class="btn btn--outline-green">About Andrea</a>
+        <a href="/about/" class="btn btn--outline">About Andrea</a>
       </div>
     </div>
   </div>
@@ -262,7 +272,7 @@
             Need for urgent in-person care or in-person procedures
           </li>
         </ul>
-        <p style="font-size: 0.875rem; color: #555; margin-top: 1rem; font-style: italic; line-height: 1.6;">Some of these don&rsquo;t mean you can&rsquo;t be treated &mdash; they may just mean a more tailored approach. We&rsquo;ll always help connect you with the right support.</p>
+        <p style="font-size: 0.875rem; color: var(--ink-mid); margin-top: 1rem; font-style: italic; line-height: 1.6;">Some of these don&rsquo;t mean you can&rsquo;t be treated &mdash; they may just mean a more tailored approach. We&rsquo;ll always help connect you with the right support.</p>
       </div>
     </div>
   </div>
