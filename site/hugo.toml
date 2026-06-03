@@ -1,6 +1,9 @@
 baseURL = 'https://ontariomenopauseclinic.ca/'
-languageCode = 'en-ca'
 title = 'Ontario Menopause Clinic'
+
+[languages]
+[languages.en]
+locale = 'en-CA'
 
 disableKinds = ['taxonomy', 'term']
 enableRobotsTXT = true
