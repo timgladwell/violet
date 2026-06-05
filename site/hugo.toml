@@ -10,8 +10,10 @@ enableRobotsTXT = true
 
 [params]
   description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed — book online today.'
-  bookingURL = ''  # Set via HUGO_PARAMS_BOOKINGURL env var — see .env.local.example
-
+  bookingURL = ''          # Set via HUGO_PARAMS_BOOKINGURL env var — see .env.local.example
+  infoContactEmail = ''    # Set via HUGO_PARAMS_INFOCONTACTEMAIL env var — see .env.local.example
+  privacyContactEmail = '' # Set via HUGO_PARAMS_PRIVACYCONTACTEMAIL env var — see .env.local.example
+  
 [sitemap]
   changefreq = 'monthly'
   priority = 0.5
