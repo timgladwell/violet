@@ -10,6 +10,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 * Always confirm that changes to the site build correctly by running `hugo --source <directory with hugo site>`. In this repo, the Hugo site is located under the `site` folder
 
+## Environment variables
+
+* All Hugo site parameters that must not be committed to the repo are managed as environment variables.
+* `.env.local.example` (repo root) is the **canonical list** of all required environment variables, with safe placeholder values.
+* `.env.local` (repo root, gitignored) holds the real values for local development. `localdev.sh` sources it automatically.
+* CI (GitHub Actions) loads `.env.local.example` directly — placeholder values are sufficient for builds and tests.
+* Cloudflare Pages holds the real values as environment variables configured in the dashboard (Settings → Environment variables).
+* **Whenever a new Hugo parameter is added to `hugo.toml` that is sourced from an env var, `.env.local.example` must be updated in the same PR.** This keeps CI and the onboarding instructions in sync.
+
 ## Starting the localdev server
 
 * Ensure the localdev server is running when working on anything by using the ./localdev.sh script
