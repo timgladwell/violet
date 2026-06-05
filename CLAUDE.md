@@ -17,7 +17,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 * `.env.local` (repo root, gitignored) holds the real values for local development. `localdev.sh` sources it automatically.
 * CI (GitHub Actions) loads `.env.local.example` directly — placeholder values are sufficient for builds and tests.
 * Cloudflare Pages holds the real values as environment variables configured in the dashboard (Settings → Environment variables).
-* **Whenever a new Hugo parameter is added to `hugo.toml` that is sourced from an env var, `.env.local.example` must be updated in the same PR.** This keeps CI and the onboarding instructions in sync.
+  * **Cloudflare Pages has separate env var scopes for Production and Preview (staging).** A variable added under one scope is not available to the other. Whenever a new env var is added to Cloudflare, it must be added under **both** scopes.
+* **Whenever a new Hugo parameter is added to `hugo.toml` that is sourced from an env var, `.env.local.example` must be updated in the same PR, and the variable must be added to Cloudflare Pages under both Production and Preview scopes.** This keeps CI and all deployment environments in sync.
 
 ## Starting the localdev server
 
