@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
 
+      - name: Load env defaults from .env.local.example
+        run: grep -v '^#' .env.local.example | grep -v '^$' >> $GITHUB_ENV
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
@@ -24,8 +27,6 @@ jobs:
 
       - name: Build site
         run: hugo --source site
-        env:
-          HUGO_PARAMS_BOOKINGURL: ''
 
       - name: Setup Node
         uses: actions/setup-node@v4
