@@ -18,7 +18,7 @@
         <p class="footer__col-heading">Book</p>
         <ul class="footer__links">
           <li><a href="{{ .Site.Params.bookingURL | default "#book" }}" class="footer__link">Book an Appointment</a></li>
-          <li><a href="mailto:info@ontariomenopauseclinic.ca" class="footer__link">info@ontariomenopauseclinic.ca</a></li>
+          <li><a href="mailto:{{ .Site.Params.infoContactEmail}}?subject=Hello" target="_blank" class="footer__link">{{ .Site.Params.infoContactEmail}}</a></li>
         </ul>
       </div>
     </div>
