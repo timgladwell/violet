@@ -28,7 +28,7 @@ echo ""
 DISABLE_ARGS=()
 [ -n "$DISABLED" ] && DISABLE_ARGS=(--disable "$DISABLED")
 
-npx axe \
+npx @axe-core/cli \
   "${BASE}/" \
   "${BASE}/about/" \
   "${BASE}/services/" \
