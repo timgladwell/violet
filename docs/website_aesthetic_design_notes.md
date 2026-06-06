@@ -71,3 +71,32 @@
 * Gray orange #ad9a94
 * Gray orange #b18e7e
 
+### Design results
+Design direction: "Pacific Shore" — the feeling of early morning on a calm beach, where medical confidence and healing softness coexist.
+
+Key design decisions:
+
+- Typography: Dancing Script (700) for all display/emotional text — hero headline, CTA heading, symptoms closing line, the "how it works" sign-off, about quote. Open Sans (300–600) for all body/UI. The contrast between flowing
+script and clean sans-serif is the visual metaphor for Andrea's whole-person approach.
+- Colour palette: Deep ocean teal #29647A as the authority/action colour; azure #4A99AB as accent; light azure #D0EAF0 for backgrounds; warm sand #C4BEAC/#F0EDE5 for softness; charcoal #1C2F38 for text. Every colour is drawn
+directly from the Canva palette in the design notes.
+- Wave divider: An organic SVG wave at the bottom of the hero section transitions from the ocean teal to the warm sand background — the literal visual metaphor of ocean meeting shore.
+- Frosted-glass nav: Semi-transparent with backdrop-filter: blur that becomes fully opaque on scroll.
+- Hero trust bar: Three short trust signals below the CTAs ("No referral needed", "Virtual care across Ontario", "Menopause Society Certified") — replaces the headshot with credential confidence.
+- About preview: Cert badges in a teal panel replace Andrea's headshot, per the new requirement that her photo only appears on the About page.
+- Andrea's headshot: Removed from hero and home page about-preview; remains on the About page only.
+
+
+---
+
+## Prompt-based attempts
+
+Please develop a branding and marketing website for Andrea's business. Ignore any previously developed UX and start from scratch - we are trying to generate an
+  alternative implementation to show Andrea
+
+  Focus on _only_ the "Palm Trees Beach Theme" in @docs/website_aesthetic_design_notes.md.
+
+  Andrea's business is based on providing a whole-person approach to menopause. For her clients, this is the intersection of medicine, change, and
+  self-actualization - the website should be soft and feminine, with a healing energy. The website's undertone needs to reflect Andrea's expertise and
+  capabilities - she is a confident medical professional.
+
