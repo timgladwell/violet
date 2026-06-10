@@ -355,7 +355,10 @@ p:last-child { margin-bottom: 0; }
   overflow: hidden;
   background: linear-gradient(155deg, var(--cream) 0%, var(--petal) 60%, var(--cream) 100%);
   padding-block: 7rem 6rem;
-  min-height: min(90vh, 780px);
+  /* Fill the viewport below the 72px sticky nav, so the hero is the only
+     thing visible on landing. dvh accounts for mobile browser chrome. */
+  min-height: calc(100vh - 72px);
+  min-height: calc(100dvh - 72px);
   display: flex;
   align-items: center;
 }
@@ -395,6 +398,8 @@ p:last-child { margin-bottom: 0; }
   position: relative;
   z-index: 1;
   max-width: 700px;
+  /* Lets .hero__heading size itself off this element's actual width via cqw. */
+  container-type: inline-size;
 }
 
 .hero__eyebrow {
@@ -410,16 +415,27 @@ p:last-child { margin-bottom: 0; }
 
 .hero__heading {
   font-family: var(--serif);
-  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  /* Fallback for browsers without container query units. */
+  font-size: clamp(1.75rem, 5.5vw, 4.5rem);
+  /* Scale with the available width of .hero__content so "Expert menopause
+     care." (the longer line) keeps fitting on one line down to ~1.75rem.
+     Below that, .hero__heading--wrap (see @container query) lets it wrap. */
+  font-size: clamp(1.75rem, 8.5cqw, 3.75rem);
   line-height: 1.1;
   color: var(--ink);
   margin-bottom: 1.5rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .hero__heading em {
   font-style: italic;
   color: var(--rose);
+}
+
+/* Below the font-size floor, allow the heading to wrap rather than overflow. */
+@container (max-width: 330px) {
+  .hero__heading { white-space: normal; }
 }
 
 .hero__body {
@@ -1431,8 +1447,7 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 640px) {
   .service-cards { grid-template-columns: 1fr; }
   .section { padding-block: 3.5rem; }
-  .hero { min-height: auto; padding-block: 5rem 4rem; }
-  .hero__heading { font-size: 2.375rem; }
+  .hero { padding-block: 5rem 4rem; }
   .hero__body { font-size: 1rem; }
   .cta-banner { padding-block: 3.5rem; }
   .footer__grid { grid-template-columns: 1fr; gap: 2rem; }
