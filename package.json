@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "a11y": "./a11y.sh",
-    "lint:md": "markdownlint-cli2 \"site/content/**/*.md\""
+    "lint:md": "markdownlint-cli2 \"site/content/**/*.md\"",
+    "validate": "./validate.sh"
   },
   "devDependencies": {
     "@axe-core/cli": "^4.10.0",

@@ -4,7 +4,7 @@
 # USAGE:
 #   ./a11y.sh
 #
-# Requires the dev server to be running (./localdev.sh).
+# Requires the dev server to be running (./dev-server.sh).
 #
 # To suppress a specific rule, add it to the "rules" object in .axe.json:
 #   "rules": { "color-contrast": { "enabled": false } }
@@ -15,7 +15,7 @@ BASE="http://localhost:1313"
 
 if ! curl -s --max-time 2 "$BASE" > /dev/null; then
   echo "Error: No server found at $BASE" >&2
-  echo "Start the dev server with ./localdev.sh first" >&2
+  echo "Start the dev server with ./dev-server.sh first" >&2
   exit 1
 fi
 
