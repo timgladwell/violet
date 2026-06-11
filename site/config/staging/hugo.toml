@@ -1,6 +1,7 @@
 # baseURL is set dynamically from $CF_PAGES_URL in build.sh so each staging slot
 # (staging, staging2, staging3, …) resolves to its own Cloudflare Pages URL.
 
+disableKinds = ['taxonomy', 'term']
+
 [params]
   isStaging = true
-  # bookingURL inherits from the root hugo.toml; override here when a staging Avaros URL is available

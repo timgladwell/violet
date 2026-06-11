@@ -1,0 +1,16 @@
+# Production default: build nothing but the home page (rendered as the
+# "coming soon" placeholder, see params.comingSoon in hugo.toml) and the
+# 404 page. There is nothing else to navigate or link to.
+#
+# To launch the full site: remove 'page' from this list and set
+# params.comingSoon = false in hugo.toml.
+disableKinds = ['taxonomy', 'term', 'page']
+
+# Enable when ready to launch
+enableRobotsTXT = false
+
+[params]
+    # Show the "coming soon" placeholder instead of the real site, and (with
+    # config/production/hugo.toml's disableKinds) build nothing but the home
+    # and 404 pages — there is nothing else to navigate or link to.
+    comingSoon = true

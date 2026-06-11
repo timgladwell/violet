@@ -26,7 +26,8 @@ jobs:
           extended: true
 
       - name: Build site
-        run: hugo --source site
+        # Use the development environment so it's testing the changes in the PR
+        run: hugo --source site --environment development
 
       - name: Setup Node
         uses: actions/setup-node@v6
