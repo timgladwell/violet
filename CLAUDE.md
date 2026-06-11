@@ -6,25 +6,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 * Always work in a feature branch or a worktree - do not work directly in the `main` branch
 
-## Building
+## Development scripts
 
-* Always confirm that changes to the site build correctly by running `hugo --source <directory with hugo site>`. In this repo, the Hugo site is located under the `site` folder
+All local development is managed through these scripts. Do not construct raw `hugo` commands.
+
+| Script | Purpose |
+|--------|---------|
+| `./dev-server.sh` | Build and start the Hugo dev server in a tmux session (`violet-localdev`). Attaches if already running. Requires tmux (`brew install tmux`). |
+| `./validate.sh` | Full validation suite: build + markdown lint + a11y. Starts the dev server automatically if needed, stops it when done. |
+| `./deploy-staging.sh <slug>` | Push current branch to a staging environment. |
+
+* **Before pushing a PR**, run `./validate.sh` and fix any failures.
+* **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `tmux kill-session -t violet-localdev`.
+* **A11y only**: `npm run a11y` (requires dev server running first).
+* **Markdown lint only**: `npm run lint:md`.
 
 ## Environment variables
 
 * All Hugo site parameters that must not be committed to the repo are managed as environment variables.
 * `.env.local.example` (repo root) is the **canonical list** of all required environment variables, with safe placeholder values.
-* `.env.local` (repo root, gitignored) holds the real values for local development. `localdev.sh` sources it automatically.
+* `.env.local` (repo root, gitignored) holds the real values for local development.
 * CI (GitHub Actions) loads `.env.local.example` directly — placeholder values are sufficient for builds and tests.
 * Cloudflare Pages holds the real values as environment variables configured in the dashboard (Settings → Environment variables).
   * **Cloudflare Pages has separate env var scopes for Production and Preview (staging).** A variable added under one scope is not available to the other. Whenever a new env var is added to Cloudflare, it must be added under **both** scopes.
 * **Whenever a new Hugo parameter is added to `hugo.toml` that is sourced from an env var, `.env.local.example` must be updated in the same PR, and the variable must be added to Cloudflare Pages under both Production and Preview scopes.** This keeps CI and all deployment environments in sync.
 
-## Starting the localdev server
-
-* Ensure the localdev server is running when working on anything by using the ./localdev.sh script
-
-## Publishing 
+## Publishing
 
 * Website is hosted by Cloudflare. Website publishing is performed by pushing code to specific git branches.
 
@@ -40,16 +47,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 * Staging publishing happens when any code is pushed to a remote branch matching the `staging*` pattern.
 * Use `./deploy-staging.sh <slug>` to push all commits on the local branch to the named local, then remote, staging branch (e.g. `./deploy-staging.sh 4` deploys to `staging4`). Use the `slug` value provided by the user.
 * Staging site is published at `https://staging<slug>.violet-6qt.pages.dev/`
-
-### Starting the localdev server
-
-* Ensure the localdev server is running when working on anything by using the ./localdev.sh script
-* If Claude has started the localdev server, on exit Claude must make sure the localdev server has been stopped
-
-### Validating a11y requirements
-
-* Validate a11y requirements by running `npm run a11y`. Consume the output and automatically suggest fixes.
-* This requires that the localdev server is running first
 
 ## Project Context and Guiding Principles.
 
@@ -79,4 +76,3 @@ docs/
   "Website Content Draft.md"                      # Andrea's notes into the `website_content_draft.md` worksheet
 site/                                             # Hugo-based website
 ```
-
