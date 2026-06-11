@@ -28,10 +28,14 @@ step() {
 
 echo "Validating site..."
 
+# shellcheck disable=SC1091
+[ -f .env.local ] && set -a && source .env.local && set +a
+
 step "Build"         hugo build site --source site --environment development --logLevel debug
 step "Markdown lint" npm run lint:md
 
 if ! ./dev-server.sh --ci; then
+    echo ""
     echo "Running localdev server is required for CI - run ./dev-server.sh and retry"
     echo ""
     exit 1
