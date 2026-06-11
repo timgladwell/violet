@@ -2,11 +2,16 @@
   "name": "violet-a11y",
   "private": true,
   "scripts": {
-    "a11y": "./a11y.sh"
+    "a11y": "./a11y.sh",
+    "lint:md": "markdownlint-cli2 \"site/content/**/*.md\""
   },
   "devDependencies": {
     "@axe-core/cli": "^4.10.0",
     "@axe-core/playwright": "^4.10.0",
-    "@playwright/test": "^1.52.0"
+    "@playwright/test": "^1.52.0",
+    "markdownlint-cli2": "^0.17.0"
+  },
+  "allowScripts": {
+    "chromedriver@149.0.2": true
   }
 }

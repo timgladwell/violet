@@ -7,7 +7,9 @@ layout: "legal"
 **Effective Date:** April 6, 2026  
 **Last Updated:** April 6, 2026
 
+<!-- markdownlint-disable MD036 -->
 **Please Read Carefully**
+<!-- markdownlint-enable MD036 -->
 
 The information provided on **The Ontario Menopause Clinic** website is for general informational and educational purposes only. It is not intended as, and should not be considered, medical advice, diagnosis, or treatment.
 
