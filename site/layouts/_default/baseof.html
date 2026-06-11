@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  {{ if .Site.Params.isStaging }}<meta name="robots" content="noindex, nofollow">{{ end }}
+  {{ if or .Site.Params.isStaging .Site.Params.comingSoon }}<meta name="robots" content="noindex, nofollow">{{ end }}
 
   <title>{{ if .IsHome }}{{ .Site.Title }} — Expert Menopause Care in Ontario{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
@@ -31,11 +31,11 @@
 
   {{ partial "staging-banner.html" . }}
 
-  {{ block "nav" . }}{{ partial "nav.html" . }}{{ end }}
+  {{ block "nav" . }}{{ if not .Site.Params.comingSoon }}{{ partial "nav.html" . }}{{ end }}{{ end }}
 
   {{ block "main" . }}{{ end }}
 
-  {{ block "footer" . }}{{ partial "footer.html" . }}{{ end }}
+  {{ block "footer" . }}{{ if not .Site.Params.comingSoon }}{{ partial "footer.html" . }}{{ end }}{{ end }}
 
   {{ partial "booking-modal.html" . }}
 
