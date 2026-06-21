@@ -22,7 +22,6 @@ locale = 'en-CA'
   privacyContactEmail = ''  # Set via HUGO_PARAMS_PRIVACYCONTACTEMAIL env var — see .env.local.example
 
   maintenanceMode = false   # Display the maintenance placeholder instead of the site
-  isStaging = false         # Display the "Staging environment" banner
 
 [sitemap]
   changefreq = 'monthly'

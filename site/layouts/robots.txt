@@ -1,4 +1,4 @@
-{{ if .Site.Params.isStaging -}}
+{{ if eq hugo.Environment "staging" -}}
 # Staging environment — block all indexing
 User-agent: *
 Disallow: /

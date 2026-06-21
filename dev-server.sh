@@ -44,7 +44,7 @@ elif $CI; then
   exit 1
 fi
 
-HUGO_CMD="hugo server --source site --environment development --logLevel debug --port $PORT --disableFastRender"
+HUGO_CMD="hugo server --source site --environment staging --logLevel debug --port $PORT --disableFastRender"
 
 tmux new-session -d -s "$SESSION" -x 220 -y 50
 tmux send-keys -t "$SESSION" "$HUGO_CMD" Enter

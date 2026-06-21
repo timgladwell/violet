@@ -5,4 +5,3 @@ disableKinds = ['taxonomy', 'term', 'RSS']
 
 [params]
   maintenanceMode = false
-  isStaging = false
