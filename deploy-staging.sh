@@ -9,7 +9,7 @@
 #     bash build.sh
 #   site/build.sh checks $CF_PAGES_BRANCH and runs Hugo with --environment staging
 #   on any branch matching staging*, activating config/staging/hugo.toml overrides:
-#     - isStaging = true (staging banner, no indexing, coming-soon bypassed)
+#     - isStaging = true (staging banner, no indexing, maintenance mode bypassed)
 #   baseURL is set dynamically from $CF_PAGES_URL so each slot gets its own URL.
 #
 # USAGE:

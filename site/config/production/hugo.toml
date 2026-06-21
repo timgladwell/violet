@@ -1,16 +1,13 @@
-# Production default: build nothing but the home page (rendered as the
-# "coming soon" placeholder, see params.comingSoon in hugo.toml) and the
-# 404 page. There is nothing else to navigate or link to.
+# Production default: maintenance placeholder is on (see baseof.html, which
+# swaps in the placeholder for every route whenever params.maintenanceMode is
+# true) so nothing is reachable until launch.
 #
-# To launch the full site: remove 'page' from this list and set
-# params.comingSoon = false in hugo.toml.
-disableKinds = ['taxonomy', 'term', 'page']
+# To launch: set params.maintenanceMode = false below. Flip it back to true
+# any time the site needs to come down (incident, planned downtime, etc).
+disableKinds = ['taxonomy', 'term']
 
 # Enable when ready to launch
 enableRobotsTXT = false
 
 [params]
-    # Show the "coming soon" placeholder instead of the real site, and (with
-    # config/production/hugo.toml's disableKinds) build nothing but the home
-    # and 404 pages — there is nothing else to navigate or link to.
-    comingSoon = true
+    maintenanceMode = true

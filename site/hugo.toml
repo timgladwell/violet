@@ -16,7 +16,7 @@ enableRobotsTXT = false
   infoContactEmail = ''     # Set via HUGO_PARAMS_INFOCONTACTEMAIL env var — see .env.local.example
   privacyContactEmail = ''  # Set via HUGO_PARAMS_PRIVACYCONTACTEMAIL env var — see .env.local.example
 
-  comingSoon = false        # Display the "Coming soon" page
+  maintenanceMode = false   # Display the maintenance placeholder instead of the site
   isStaging = false         # Display the "Staging environment" banner
 
 [sitemap]
