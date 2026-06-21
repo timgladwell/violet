@@ -1,7 +1,7 @@
 # Local development (hugo server): build the site as it exists on disk,
 # with the full set of content pages and no maintenance placeholder.
 # See config/production/hugo.toml for the production defaults this overrides.
-disableKinds = ['taxonomy', 'term']
+disableKinds = ['taxonomy', 'term', 'RSS']
 
 [params]
   maintenanceMode = false
