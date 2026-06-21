@@ -1,7 +1,8 @@
 # baseURL is set dynamically from $CF_PAGES_URL in build.sh so each staging slot
 # (staging, staging2, staging3, …) resolves to its own Cloudflare Pages URL.
+#
+# The staging banner, noindex meta tag, and robots.txt disallow are all
+# driven directly off hugo.Environment == "staging" (see baseof.html,
+# robots.txt, staging-banner.html) — nothing to set here for that.
 
-disableKinds = ['taxonomy', 'term']
-
-[params]
-  isStaging = true
+disableKinds = ['taxonomy', 'term', 'RSS']
