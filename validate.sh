@@ -32,6 +32,7 @@ echo "Validating site..."
 [ -f .env.local ] && set -a && source .env.local && set +a
 
 step "Build"         hugo build site --source site --environment development --logLevel debug
+step "Environments"  ./check-environments.sh
 step "Markdown lint" npm run lint:md
 
 if ! ./dev-server.sh --ci; then

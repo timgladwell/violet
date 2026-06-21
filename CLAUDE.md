@@ -13,7 +13,8 @@ All local development is managed through these scripts. Do not construct raw `hu
 | Script | Purpose |
 |--------|---------|
 | `./dev-server.sh` | Build and start the Hugo dev server in a tmux session (`violet-localdev`). Attaches if already running. Requires tmux (`brew install tmux`). |
-| `./validate.sh` | Full validation suite: build + markdown lint + a11y. Starts the dev server automatically if needed, stops it when done. |
+| `./validate.sh` | Full validation suite: build + environment checks + markdown lint + a11y. Starts the dev server automatically if needed, stops it when done. |
+| `./check-environments.sh` | Builds development/staging/production (staging and production via `site/build.sh`, simulating Cloudflare's `CF_PAGES_BRANCH`) and asserts each produces the expected output. Catches a typo'd `--environment` value before it ships. Runs in CI on every PR (`.github/workflows/check-environments.yml`). |
 | `./deploy-staging.sh <slug>` | Push current branch to a staging environment. |
 
 * **Before pushing a PR**, run `./validate.sh` and fix any failures.
