@@ -74,5 +74,6 @@ docs/
   competitive_analysis_and_recommendations.md     # Claude-authored analysis of similar websites
   website_content_draft.md                        # Claude-authored worksheet for gathering Andrea's notes on website content and structure
   "Website Content Draft.md"                      # Andrea's notes into the `website_content_draft.md` worksheet
+  runbook.md                                       # Operational procedures (e.g. toggling maintenance mode)
 site/                                             # Hugo-based website
 ```
