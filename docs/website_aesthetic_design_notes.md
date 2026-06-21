@@ -86,6 +86,13 @@ directly from the Canva palette in the design notes.
 - About preview: Cert badges in a teal panel replace Andrea's headshot, per the new requirement that her photo only appears on the About page.
 - Andrea's headshot: Removed from hero and home page about-preview; remains on the About page only.
 
+## Andrea 15-Jun-2026
+
+### Colours
+* Warm parchment #FAF6F1 as the base — like warm sand
+* Terracotta rose #7D5A4F for the header, footer, and accents — a deep, muted sunset brown
+* Dusty coral #C9967F for highlights, borders, and list markers — that soft blush-pink of a horizon
+* Creamy blush #F2E8DF / #FDF0E8 for card surfaces — layered warmth
 
 ---
 
