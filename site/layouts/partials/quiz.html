@@ -1,0 +1,244 @@
+{{- /* Build quiz data JSON with server-side markdown rendering */ -}}
+{{- $qs := slice -}}
+{{- range hugo.Data.quiz.questions -}}
+  {{- $text := .text -}}
+  {{- if hasPrefix $text "# " -}}
+    {{- $text = replaceRE "^# " "## " $text -}}
+  {{- else if not (hasPrefix $text "#") -}}
+    {{- $text = printf "## %s\n" $text -}}
+  {{- end -}}
+  {{- $ans := slice -}}
+  {{- range .answer -}}
+    {{- if .none -}}
+      {{- $ans = append (dict "text" "" "score" .score "none" true) $ans -}}
+    {{- else -}}
+      {{- $ans = append (dict "text" .text "score" .score "none" false) $ans -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $qs = append (dict "text" (markdownify $text) "type" .type "answers" $ans) $qs -}}
+{{- end -}}
+<script>var __quizData={{ dict "questions" $qs "results" hugo.Data.quiz.results | jsonify | safeJS }};</script>
+
+<div class="quiz" id="quiz">
+  <div class="quiz__start">
+    <p class="quiz__eyebrow">Quick self-check</p>
+    <h2 class="quiz__start-heading">Is HRT right for me?</h2>
+    <p class="quiz__start-body">Answer five quick questions to see if hormone replacement therapy may be a good fit for your situation.</p>
+    <button class="quiz__begin btn btn--primary">Start</button>
+  </div>
+
+  <div class="quiz__progress" hidden aria-live="polite">
+    <span class="quiz__step"></span>
+    <div class="quiz__progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+      <div class="quiz__progress-fill"></div>
+    </div>
+  </div>
+
+  <div class="quiz__question" hidden>
+    <div class="quiz__text"></div>
+    <div class="quiz__answers" role="group" aria-label="Answer options"></div>
+    <div class="quiz__nav">
+      <button class="quiz__back btn btn--outline" hidden>&#8592; Back</button>
+      <button class="quiz__next btn btn--primary" disabled>Next</button>
+    </div>
+  </div>
+
+  <div class="quiz__result" hidden>
+    <p class="quiz__result-text"></p>
+    <p class="quiz__disclaimer">This quiz is for informational purposes only and does not replace medical advice. Final treatment decisions are made after a full clinical assessment.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var data = window.__quizData;
+  if (!data) return;
+  var questions   = data.questions;
+  var results     = data.results;
+  var bookingURL  = '{{ .Site.Params.bookingURL | default "#book" }}';
+
+  var quizEl      = document.getElementById('quiz');
+  var startEl     = quizEl.querySelector('.quiz__start');
+  var progressEl  = quizEl.querySelector('.quiz__progress');
+  var stepEl      = quizEl.querySelector('.quiz__step');
+  var fillEl      = quizEl.querySelector('.quiz__progress-fill');
+  var progressBar = quizEl.querySelector('.quiz__progress-bar');
+  var questionEl  = quizEl.querySelector('.quiz__question');
+  var textEl      = quizEl.querySelector('.quiz__text');
+  var answersEl   = quizEl.querySelector('.quiz__answers');
+  var backBtn     = quizEl.querySelector('.quiz__back');
+  var nextBtn     = quizEl.querySelector('.quiz__next');
+  var resultEl    = quizEl.querySelector('.quiz__result');
+  var resultTextEl = quizEl.querySelector('.quiz__result-text');
+
+  var currentQ     = 0;
+  var savedAnswers = new Array(questions.length).fill(null); // array of selected answer indices per question
+
+  function updateProgress(index) {
+    stepEl.textContent = 'Question ' + (index + 1) + ' of ' + questions.length;
+    var pct = Math.round((index / questions.length) * 100);
+    fillEl.style.width = pct + '%';
+    progressBar.setAttribute('aria-valuenow', pct);
+    progressBar.setAttribute('aria-valuetext', 'Question ' + (index + 1) + ' of ' + questions.length);
+  }
+
+  function updateNextBtn(q) {
+    if (q.type === 'multiple') {
+      // multiple-choice: always enabled (selecting nothing is valid)
+      nextBtn.disabled = false;
+    } else {
+      // single-choice: enabled only when an option is selected
+      nextBtn.disabled = !answersEl.querySelector('input:checked');
+    }
+  }
+
+  function showQuestion(index) {
+    updateProgress(index);
+    var q = questions[index];
+    textEl.innerHTML = q.text;
+
+    answersEl.innerHTML = '';
+
+    var isSingle = q.type === 'single';
+    var visibleAnswers = q.answers.filter(function (a) { return !a.none; });
+
+    visibleAnswers.forEach(function (ans, i) {
+      var label = document.createElement('label');
+      label.className = 'quiz__answer';
+
+      var input = document.createElement('input');
+      input.type = isSingle ? 'radio' : 'checkbox';
+      input.name = 'q' + index;
+      input.value = String(i); // save by index, not by score (multiple answers can share a score)
+      input.dataset.score = ans.score;
+      input.className = 'quiz__answer-input';
+
+      var span = document.createElement('span');
+      span.className = 'quiz__answer-text';
+      span.textContent = ans.text;
+
+      label.appendChild(input);
+      label.appendChild(span);
+      answersEl.appendChild(label);
+    });
+
+    // Restore previously saved answers
+    var saved = savedAnswers[index];
+    if (saved) {
+      saved.forEach(function (idx) {
+        var inputs = answersEl.querySelectorAll('input');
+        if (inputs[idx]) inputs[idx].checked = true;
+      });
+    }
+
+    // Back button: hidden on first question
+    backBtn.hidden = index === 0;
+
+    updateNextBtn(q);
+  }
+
+  function saveCurrentAnswers() {
+    var inputs = answersEl.querySelectorAll('input:checked');
+    savedAnswers[currentQ] = Array.from(inputs).map(function (i) { return parseInt(i.value, 10); });
+  }
+
+  function calculateScores() {
+    var scores = { preferred: 0, nonpreferred: 0 };
+    questions.forEach(function (q, qi) {
+      var saved = savedAnswers[qi] || [];
+      var visibleAnswers = q.answers.filter(function (a) { return !a.none; });
+      if (saved.length === 0) {
+        // No option selected — apply the none: true score if defined
+        var noneAns = q.answers.find(function (a) { return a.none; });
+        if (noneAns) { scores[noneAns.score] = (scores[noneAns.score] || 0) + 1; }
+      } else {
+        saved.forEach(function (idx) {
+          var ans = visibleAnswers[idx];
+          if (ans) { scores[ans.score] = (scores[ans.score] || 0) + 1; }
+        });
+      }
+    });
+    return scores;
+  }
+
+  function goForward() {
+    saveCurrentAnswers();
+    currentQ++;
+    if (currentQ < questions.length) {
+      showQuestion(currentQ);
+    } else {
+      showResult();
+    }
+  }
+
+  function goBack() {
+    saveCurrentAnswers();
+    currentQ--;
+    showQuestion(currentQ);
+  }
+
+  function showResult() {
+    fillEl.style.width = '100%';
+    progressBar.setAttribute('aria-valuenow', 100);
+    progressEl.hidden = true;
+    questionEl.hidden = true;
+
+    var scores = calculateScores();
+    var bucket = scores.nonpreferred > 0 ? 'nonpreferred' : 'preferred';
+    var result = results.find(function (r) { return r.bucket === bucket; });
+
+    // Icon
+    var icon = document.createElement('div');
+    icon.className = 'quiz__result-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = bucket === 'preferred' ? '✓' : '→';
+    resultEl.insertBefore(icon, resultEl.firstChild);
+
+    resultTextEl.textContent = result.text;
+
+    // Booking CTA — created dynamically so it post-dates the page-load click interceptor;
+    // handle the modal/tab decision here rather than relying on the global interceptor.
+    var cta = document.createElement('a');
+    cta.className = 'quiz__result-cta btn btn--primary';
+    cta.href = bookingURL;
+    cta.textContent = result.call_to_action;
+    cta.addEventListener('click', function (e) {
+      if (window.innerWidth > 768 && typeof window.openBookingModal === 'function') {
+        e.preventDefault();
+        window.openBookingModal();
+      }
+      // Mobile / standalone /quiz page: follow the href naturally
+    });
+    resultTextEl.insertAdjacentElement('afterend', cta);
+
+    resultEl.hidden = false;
+  }
+
+  // Expose reset so the modal close handler can call it
+  window.resetQuiz = function () {
+    currentQ = 0;
+    savedAnswers = new Array(questions.length).fill(null);
+    // Remove dynamically injected result elements
+    var icon = resultEl.querySelector('.quiz__result-icon');
+    var cta  = resultEl.querySelector('.quiz__result-cta');
+    if (icon) icon.remove();
+    if (cta)  cta.remove();
+    resultTextEl.textContent = '';
+    startEl.hidden  = false;
+    progressEl.hidden = true;
+    questionEl.hidden = true;
+    resultEl.hidden = true;
+  };
+
+  quizEl.querySelector('.quiz__begin').addEventListener('click', function () {
+    startEl.hidden = true;
+    progressEl.hidden = false;
+    questionEl.hidden = false;
+    showQuestion(0);
+  });
+
+  answersEl.addEventListener('change', function () { updateNextBtn(questions[currentQ]); });
+  nextBtn.addEventListener('click', goForward);
+  backBtn.addEventListener('click', goBack);
+})();
+</script>
