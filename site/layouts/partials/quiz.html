@@ -55,7 +55,7 @@
   if (!data) return;
   var questions   = data.questions;
   var results     = data.results;
-  var bookingURL  = '{{ .Site.Params.bookingURL | default "#book" }}';
+  var bookingURL  = {{ .Site.Params.bookingURL | default "#book" | jsonify | safeJS }};
 
   var quizEl      = document.getElementById('quiz');
   var startEl     = quizEl.querySelector('.quiz__start');

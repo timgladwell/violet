@@ -156,12 +156,14 @@
     const quizModal = document.getElementById('quiz-modal');
 
     function openQuizModal() {
+      if (!quizModal) return;
       quizModal.hidden = false;
       document.body.style.overflow = 'hidden';
       quizModal.querySelector('.modal__close').focus();
     }
 
     function closeQuizModal() {
+      if (!quizModal) return;
       quizModal.hidden = true;
       document.body.style.overflow = '';
       if (typeof window.resetQuiz === 'function') window.resetQuiz();
