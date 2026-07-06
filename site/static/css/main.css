@@ -1501,10 +1501,10 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* ============================================
-   Booking Modal
+   Modal (shared base)
    ============================================ */
 
-.booking-modal {
+.modal {
   position: fixed;
   inset: 0;
   z-index: 900;
@@ -1513,20 +1513,21 @@ p:last-child { margin-bottom: 0; }
   justify-content: center;
 }
 
-.booking-modal[hidden] { display: none; }
+/* ponytail: needed — authored display:flex outranks UA [hidden] in Safari */
+.modal[hidden] { display: none; }
 
-.booking-modal__backdrop {
+.modal__backdrop {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
 }
 
-.booking-modal__wrap {
+.modal__wrap {
   position: relative;
   z-index: 1;
 }
 
-.booking-modal__close {
+.modal__close {
   position: absolute;
   top: -1.125rem;
   right: -1.125rem;
@@ -1542,30 +1543,256 @@ p:last-child { margin-bottom: 0; }
   justify-content: center;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   transition: background var(--transition), box-shadow var(--transition);
-  color: var(--black);
+  color: var(--ink);
 }
 
-.booking-modal__close:hover {
+.modal__close:hover {
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
-.booking-modal__panel {
+.modal__panel {
   background: #fff;
   border-radius: var(--radius-lg);
-  width: min(660px, 96vw);
-  height: min(780px, 92vh);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
 }
 
-.booking-modal__frame {
+/* Booking modal variant */
+
+.modal--booking .modal__panel {
+  width: min(660px, 96vw);
+  height: min(780px, 92vh);
+}
+
+.modal--booking .modal__frame {
   flex: 1;
   border: none;
   width: 100%;
   height: 100%;
+}
+
+/* Quiz modal variant */
+
+.modal--quiz .modal__panel {
+  width: min(560px, 96vw);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+/* ============================================
+   Quiz UI
+   ============================================ */
+
+.quiz {
+  padding: 2.5rem 2rem;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz__eyebrow {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin: 0 0 0.75rem;
+}
+
+.quiz__start-heading {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  color: var(--ink);
+  margin: 0 0 0.75rem;
+  line-height: 1.25;
+}
+
+.quiz__start-body {
+  color: var(--ink-mid);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0 0 1.75rem;
+}
+
+.quiz__progress {
+  margin-bottom: 1.25rem;
+}
+
+.quiz__step {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+}
+
+.quiz__progress-bar {
+  height: 4px;
+  background: var(--rose-faint);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.quiz__progress-fill {
+  height: 100%;
+  background: var(--rose);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.quiz__text {
+  margin-bottom: 1.25rem;
+}
+
+.quiz__text h2 {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  color: var(--ink);
+  line-height: 1.3;
+  margin: 0 0 0.75rem;
+}
+
+.quiz__text p {
+  font-size: 0.9375rem;
+  color: var(--ink-mid);
+  line-height: 1.6;
+  margin: 0 0 0.5rem;
+}
+
+.quiz__text ul,
+.quiz__text ol {
+  font-size: 0.9375rem;
+  color: var(--ink-mid);
+  line-height: 1.6;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.quiz__text ul { list-style: disc; }
+.quiz__text ol { list-style: decimal; }
+.quiz__text li { margin-bottom: 0.25rem; }
+
+.quiz__answers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz__answer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--rose-faint);
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.quiz__answer:hover {
+  border-color: var(--rose-mid);
+  background: var(--petal);
+}
+
+.quiz__answer:has(input:checked) {
+  border-color: var(--rose);
+  background: var(--petal);
+}
+
+.quiz__answer-input {
+  flex-shrink: 0;
+  accent-color: var(--rose);
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: pointer;
+}
+
+.quiz__nav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.quiz__next:disabled,
+.quiz__back:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.quiz__result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+.quiz__result-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--petal);
+  color: var(--rose);
+  font-size: 1.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.quiz__result-text {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  color: var(--ink);
+  line-height: 1.35;
+  margin: 0 0 1.5rem;
+}
+
+.quiz__result-cta { margin-bottom: 2rem; }
+
+.quiz__disclaimer {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  border-top: 1px solid var(--rose-faint);
+  padding-top: 1rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Quiz CTA in eligibility section */
+
+.good-fit__quiz {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Standalone /quiz page */
+
+.quiz-page-body {
+  background: var(--cream);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-page {
+  width: min(560px, 94vw);
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  margin: 2rem auto;
 }
 
 /* ============================================

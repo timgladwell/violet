@@ -13,7 +13,7 @@
       </p>
       <div class="hero__actions">
         <a href="{{ .Site.Params.bookingURL | default "#book" }}" class="btn btn--primary">Book Your Visit</a>
-        <a href="#how-it-works" class="btn btn--outline">How It Works</a>
+        <a href="/quiz" data-quiz-trigger class="btn btn--outline">Is HRT right for me?</a>
       </div>
       <div class="hero__trust">
         <span class="hero__trust-item">
@@ -263,6 +263,9 @@
         </ul>
         <p style="font-size: 0.875rem; color: var(--ink-mid); margin-top: 1rem; font-style: italic; line-height: 1.6;">Some of these don&rsquo;t mean you can&rsquo;t be treated &mdash; they may just mean a more tailored approach. We&rsquo;ll always help connect you with the right support.</p>
       </div>
+    </div>
+    <div class="good-fit__quiz">
+      <a href="/quiz" data-quiz-trigger class="btn btn--outline">Take the quiz &rarr; Is HRT right for me?</a>
     </div>
   </div>
 </section>
