@@ -1459,9 +1459,17 @@ p:last-child { margin-bottom: 0; }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
+  .nav__inner  { gap: 0.75rem; }
   .nav__links  { display: none; }
-  .nav__book   { display: none; }
+  .nav__book   { margin-left: auto; padding: 0.55rem 0.9rem; font-size: 0.8125rem; }
   .nav__hamburger { display: flex; }
+}
+
+/* Below this width the full wordmark + tagline no longer fits alongside
+   the Book button and hamburger without pushing the hamburger off-screen. */
+@media (max-width: 520px) {
+  .nav__logo .brand--full .brand__logo { width: 40px; height: 40px; }
+  .nav__logo .brand__text { display: none; }
 }
 
 @media (max-width: 860px) {
