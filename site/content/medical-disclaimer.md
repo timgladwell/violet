@@ -50,7 +50,7 @@ This website may contain links to third-party websites or resources for your con
 
 **The Ontario Menopause Clinic** is not an emergency service.
 
-If you are experiencing a medical emergency—such as chest pain, shortness of breath, or signs of a stroke — call **911** or go to the nearest emergency department immediately.
+If you are experiencing a medical emergency - such as chest pain, shortness of breath, or signs of a stroke - call **911** or go to the nearest emergency department immediately.
 
 ## Contact Your Healthcare Provider
 
@@ -64,7 +64,7 @@ If you have specific health concerns or are experiencing symptoms, you should co
 - Menopause
 - Hormone-related symptoms and transitions
 
-Our services are designed to **complement — _not_ replace —** the care provided by your family physician or other healthcare providers.
+Our services are designed to **complement - _not_ replace -** the care provided by your family physician or other healthcare providers.
 
 We are **not a general gynecology or primary care clinic.**
 
