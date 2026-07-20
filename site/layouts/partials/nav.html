@@ -2,11 +2,7 @@
   <div class="container">
     <div class="nav__inner">
       <a href="/" class="nav__logo" aria-label="Ontario Menopause Clinic — Home">
-        <img src="/images/logo.svg" alt="" class="nav__logo-img" aria-hidden="true" width="56" height="56">
-        <span class="nav__logo-text">
-          Ontario Menopause Clinic
-          <span class="nav__logo-sub">Expert Menopause Care</span>
-        </span>
+        {{ partial "brand.html" (dict "variant" "full" "theme" "dark") }}
       </a>
 
       <ul class="nav__links" role="list">
