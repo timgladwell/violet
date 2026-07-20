@@ -148,6 +148,14 @@ p:last-child { margin-bottom: 0; }
 }
 .btn--outline:hover { background: var(--rose); color: var(--white); }
 
+/* Warm invite-style CTA, sits between primary (booking) and outline (info) */
+.btn--accent {
+  background: var(--rose-mid);
+  color: var(--white);
+  border-color: var(--rose-mid);
+}
+.btn--accent:hover { background: var(--rose); border-color: var(--rose); color: var(--white); }
+
 /* Legacy alias so existing templates work */
 .btn--outline-green {
   background: transparent;

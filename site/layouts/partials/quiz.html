@@ -152,7 +152,7 @@
       var saved = savedAnswers[qi] || [];
       var visibleAnswers = q.answers.filter(function (a) { return !a.none; });
       if (saved.length === 0) {
-        // No option selected — apply the none: true score if defined
+        // No option selected - apply the none: true score if defined
         var noneAns = q.answers.find(function (a) { return a.none; });
         if (noneAns) { scores[noneAns.score] = (scores[noneAns.score] || 0) + 1; }
       } else {
@@ -202,7 +202,7 @@
 
     resultTextEl.textContent = result.text;
 
-    // Booking CTA — created dynamically so it post-dates the page-load click interceptor;
+    // Booking CTA - created dynamically so it post-dates the page-load click interceptor;
     // handle the modal/tab decision here rather than relying on the global interceptor.
     var cta = document.createElement('a');
     cta.className = 'quiz__result-cta btn btn--primary';

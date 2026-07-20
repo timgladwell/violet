@@ -6,7 +6,7 @@
 
   {{ if or (eq hugo.Environment "staging") .Site.Params.maintenanceMode }}<meta name="robots" content="noindex, nofollow">{{ end }}
 
-  <title>{{ if .IsHome }}{{ .Site.Title }} — Expert Menopause Care in Ontario{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  <title>{{ if .IsHome }}{{ .Site.Title }} - Expert Menopause Care in Ontario{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 
   <link rel="canonical" href="{{ .Permalink }}">
