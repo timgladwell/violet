@@ -214,36 +214,66 @@ p:last-child { margin-bottom: 0; }
 
 .nav__logo {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
   flex-shrink: 0;
 }
 
-.nav__logo-img {
-  width: 56px;
-  height: 56px;
+/* ── Brand (logo image + wordmark) ─────────────────────────────
+   variant: full (two lines, header) | compact (one line, footer)
+   theme: dark (header, on light bg) | light (footer, on dark bg) */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand__logo {
   object-fit: contain;
   border-radius: 8px;
+}
+
+.brand--full .brand__logo {
+  width: 56px;
+  height: 56px;
   transition: width 0.2s, height 0.2s;
 }
 
-.nav.scrolled .nav__logo-img {
+.nav.scrolled .brand--full .brand__logo {
   width: 44px;
   height: 44px;
 }
 
-.nav__logo-text {
+.brand--compact .brand__logo {
+  width: 40px;
+  height: 40px;
+}
+
+.brand__text {
   display: flex;
   flex-direction: column;
-  font-family: var(--sans);
-  font-size: 0.925rem;
   font-weight: 700;
-  color: var(--ink);
   line-height: 1.25;
 }
 
-.nav__logo-sub {
+.brand--full .brand__text {
+  font-family: var(--sans);
+  font-size: 0.925rem;
+}
+
+.brand--compact .brand__text {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+}
+
+.brand--dark .brand__text {
+  color: var(--ink);
+}
+
+.brand--light .brand__text {
+  color: var(--white);
+}
+
+.brand__tag {
   font-size: 0.7rem;
   font-weight: 400;
   color: var(--ink-soft);
@@ -1351,11 +1381,7 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: 3rem;
 }
 
-.footer__logo {
-  font-family: var(--serif);
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--white);
+.footer__tagline-col .brand {
   margin-bottom: 0.75rem;
 }
 
@@ -1364,6 +1390,7 @@ p:last-child { margin-bottom: 0; }
   color: rgba(255,255,255,0.55);
   line-height: 1.7;
   max-width: 300px;
+  margin-left: calc(40px + 0.75rem);
 }
 
 .footer__col-heading {
