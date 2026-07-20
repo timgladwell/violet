@@ -27,16 +27,17 @@
     <button class="quiz__begin btn btn--primary">Start</button>
   </div>
 
-  <div class="quiz__progress" hidden aria-live="polite">
+  <div class="quiz__progress" hidden>
     <span class="quiz__step"></span>
-    <div class="quiz__progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+    <div class="quiz__progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
       <div class="quiz__progress-fill"></div>
     </div>
   </div>
+  <div class="quiz__step-announce visually-hidden" aria-live="polite"></div>
 
   <div class="quiz__question" hidden>
-    <div class="quiz__text"></div>
-    <div class="quiz__answers" role="group" aria-label="Answer options"></div>
+    <div class="quiz__text" id="quiz-question-text"></div>
+    <div class="quiz__answers" role="group" aria-labelledby="quiz-question-text"></div>
     <div class="quiz__nav">
       <button class="quiz__back btn btn--outline" hidden>&#8592; Back</button>
       <button class="quiz__next btn btn--primary" disabled>Next</button>
@@ -63,6 +64,7 @@
   var stepEl      = quizEl.querySelector('.quiz__step');
   var fillEl      = quizEl.querySelector('.quiz__progress-fill');
   var progressBar = quizEl.querySelector('.quiz__progress-bar');
+  var stepAnnounceEl = quizEl.querySelector('.quiz__step-announce');
   var questionEl  = quizEl.querySelector('.quiz__question');
   var textEl      = quizEl.querySelector('.quiz__text');
   var answersEl   = quizEl.querySelector('.quiz__answers');
@@ -75,11 +77,13 @@
   var savedAnswers = new Array(questions.length).fill(null); // array of selected answer indices per question
 
   function updateProgress(index) {
-    stepEl.textContent = 'Question ' + (index + 1) + ' of ' + questions.length;
+    var stepText = 'Question ' + (index + 1) + ' of ' + questions.length;
+    stepEl.textContent = stepText;
+    stepAnnounceEl.textContent = stepText;
     var pct = Math.round((index / questions.length) * 100);
     fillEl.style.width = pct + '%';
     progressBar.setAttribute('aria-valuenow', pct);
-    progressBar.setAttribute('aria-valuetext', 'Question ' + (index + 1) + ' of ' + questions.length);
+    progressBar.setAttribute('aria-valuetext', stepText);
   }
 
   function updateNextBtn(q) {
@@ -187,7 +191,9 @@
     var bucket = scores.nonpreferred > 0 ? 'nonpreferred' : 'preferred';
     var result = results.find(function (r) { return r.bucket === bucket; });
 
-    // Icon
+    // Icon (remove any leftover from a previous showResult() call)
+    var existingIcon = resultEl.querySelector('.quiz__result-icon');
+    if (existingIcon) existingIcon.remove();
     var icon = document.createElement('div');
     icon.className = 'quiz__result-icon';
     icon.setAttribute('aria-hidden', 'true');
