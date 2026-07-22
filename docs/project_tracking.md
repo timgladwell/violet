@@ -39,7 +39,7 @@
 - Build website
   - *Blocked by: architecture decision, content, visual identity*
 - ~~Configure SEO (meta tags, structured data, sitemap, robots.txt)~~ ✓
-  - Per-page titles/descriptions, canonical URLs, Open Graph/Twitter tags, MedicalBusiness + FAQPage JSON-LD, `robots.txt`/`llms.txt` correctly reflect staging/maintenance-mode/production. Remaining polish items tracked as GitHub issues, not here: #75 (OG image resize), #76 (favicon fallbacks), #77 (503 at edge for maintenance mode).
+  - Per-page titles/descriptions, canonical URLs, Open Graph/Twitter tags, MedicalBusiness + FAQPage JSON-LD, `robots.txt`/`llms.txt` correctly reflect staging/maintenance-mode/production. Remaining polish items tracked as GitHub issues, not here: #75 (OG image resize), #76 (favicon fallbacks), #77 (503 at edge for maintenance mode), #80 (keyword-targeted content pages per `docs/seo_optimization_notes.md`).
 - Set up analytics
   - *Blocked by: analytics tool question, website build*
 - Integrate Avaros intake link
