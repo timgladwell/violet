@@ -16,4 +16,7 @@ runs:
     - name: Read Hugo version
       id: hugo-version
       shell: bash
-      run: echo "version=$(grep '^hugo ' .tool-versions | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      # .tool-versions pins "extended_X.Y.Z" (Cloudflare's asdf preset name),
+      # but peaceiris/actions-hugo's hugo-version input wants a bare "X.Y.Z" -
+      # strip the prefix before passing it through.
+      run: echo "version=$(grep '^hugo ' .tool-versions | awk '{print $2}' | sed 's/^extended_//')" >> "$GITHUB_OUTPUT"

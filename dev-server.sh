@@ -31,7 +31,9 @@ LOCK=".dev-server.lock"
 [ -f .env.local ] && set -a && source .env.local && set +a
 
 if [ -f .tool-versions ] && command -v hugo >/dev/null 2>&1; then
-  PINNED=$(grep '^hugo ' .tool-versions | awk '{print $2}')
+  # .tool-versions pins "extended_X.Y.Z" (Cloudflare's asdf preset name), but
+  # `hugo version` reports a bare "X.Y.Z" - strip the prefix before comparing.
+  PINNED=$(grep '^hugo ' .tool-versions | awk '{print $2}' | sed 's/^extended_//')
   INSTALLED=$(hugo version | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1 | tr -d v)
   if [ -n "$PINNED" ] && [ "$PINNED" != "$INSTALLED" ]; then
     echo "Warning: installed Hugo is $INSTALLED, .tool-versions pins $PINNED" >&2
