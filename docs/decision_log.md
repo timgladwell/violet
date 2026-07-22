@@ -24,4 +24,4 @@
 | Marketing | Which advertising platforms?                                   | Open   |          | e.g. Google Ads, Meta/Instagram, etc.                              |
 | Marketing | What is the initial marketing budget?                          | Open   |           |                                                                    |
 | Marketing | What is the target geography/audience?                         | Open   |           |                                                                    |
-| Website  | What is Andrea's College of Nurses of Ontario public register URL? | Open |     | Placeholder link on About page; CNO's system was offline when checked. CNO restricts use of its marks/branding on private practice websites as implying endorsement - confirm link text/placement is compliant before removing placeholder. |
+| Website  | What is Andrea's College of Nurses of Ontario public register URL? | Closed | `https://registry.cno.org/Search/Details/a2455ae3-e103-434b-8591-30995db07bdb` | Live on About page. CNO restricts use of its marks/branding on private practice websites as implying endorsement - confirm link text/placement remains compliant. |
