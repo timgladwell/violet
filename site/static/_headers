@@ -1,0 +1,6 @@
+# Cloudflare Pages response headers. See #42 (security headers) and #58
+# (Cache-Control tuning) - if either lands, add their directives to this same
+# file rather than creating a second _headers file.
+
+/*
+  Link: </faq/>; rel="help", </about/>; rel="about", </privacy/>; rel="privacy-policy", </tos/>; rel="terms-of-service"

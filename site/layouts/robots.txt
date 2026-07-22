@@ -9,6 +9,7 @@ Disallow: /
 {{ else -}}
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-train=no
 
 Sitemap: {{ .Site.BaseURL }}sitemap.xml
 {{ end -}}
