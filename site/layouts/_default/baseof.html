@@ -18,9 +18,37 @@
   <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
   <meta property="og:locale" content="en_CA">
+  <meta property="og:site_name" content="{{ .Site.Title }}">
   <meta property="og:image" content="{{ "images/og-image.png" | absURL }}">
+  <meta property="og:image:alt" content="{{ .Site.Title }}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:image" content="{{ "images/og-image.png" | absURL }}">
+
+  {{ if not (or (eq hugo.Environment "staging") .Site.Params.maintenanceMode) }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    "name": {{ .Site.Title }},
+    "url": {{ .Site.BaseURL }},
+    "description": {{ .Site.Params.description }},
+    "email": {{ .Site.Params.infoContactEmail }},
+    "areaServed": {
+      "@type": "State",
+      "name": "Ontario"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "postOfficeBoxNumber": "91017 North York RPO",
+      "addressLocality": "North York",
+      "addressRegion": "ON",
+      "postalCode": "M2K 2Y6",
+      "addressCountry": "CA"
+    },
+    "sameAs": ["https://www.instagram.com/andreamarshnp/"]
+  }
+  </script>
+  {{ end }}
 
   <!-- Fonts -->
   {{ partial "fonts.html" . }}

@@ -1,0 +1,34 @@
+{{ if eq hugo.Environment "staging" -}}
+# {{ .Site.Title }} (staging/preview environment)
+
+This is a staging preview, not the live site. Do not index or cite this content.
+{{ else if .Site.Params.maintenanceMode -}}
+# {{ .Site.Title }} (temporarily unavailable)
+
+This site is temporarily unavailable for maintenance. Please check back soon.
+{{ else -}}
+{{ $services := .Site.GetPage "/services/" -}}
+{{ $whatWeTreat := .Site.GetPage "/what-we-treat/" -}}
+{{ $about := .Site.GetPage "/about/" -}}
+{{ $faq := .Site.GetPage "/faq/" -}}
+# {{ .Site.Title }}
+
+> Expert menopause care, for the whole you. Personalized virtual care that looks beyond symptoms - bringing together medical expertise and real-life understanding so you feel heard, supported, and more like yourself again.
+
+Andrea, Nurse Practitioner, provides clinical support and treatment for perimenopause and menopause in a 1:1 format that considers the whole woman, not a collection of symptoms. Care is delivered virtually to women across Ontario.
+
+## Care
+
+- [What We Treat]({{ $whatWeTreat.Permalink }}): The range of perimenopause and menopause symptoms we treat, and the evidence-based options available.
+- [Core Perimenopause & Menopause Care]({{ $services.Permalink }}#core-care): Discovery calls, initial consultations, follow-up visits, and care check-ins.
+- [Additional Support]({{ $services.Permalink }}#additional-support): Weight loss support and medical form completion.
+
+## About
+
+- [About Andrea]({{ $about.Permalink }}): Andrea's background, credentials, and approach to care.
+- [FAQ]({{ $faq.Permalink }}): Answers common questions for both prospective clients (eligibility, pricing, how virtual visits work) and existing clients (follow-up care, rescheduling, side effects, and ongoing treatment).
+
+## Get Started
+
+- [Book a Visit]({{ with .Site.Params.bookingURL }}{{ . }}{{ else }}{{ .Site.BaseURL }}{{ end }}): Schedule a free Discovery Call or book an initial consultation.
+{{ end -}}

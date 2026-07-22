@@ -60,8 +60,8 @@ See @docs/website_design.md
 
 ## Planning and Project Management
 
-* Record all questions that need to be answered in @docs/decision_log.md
-* Record all project tasks in @docs/project_tracking.md
+* Open questions and project tasks are tracked as GitHub issues (`gh issue list`), not in a markdown file
+* @docs/decision_log.md is a historical record of past decisions and is no longer actively updated
 
 ## Repository Structure
 
@@ -69,8 +69,7 @@ See @docs/website_design.md
 assets/                                           # Original asset files for the website - Andrea's headshot, logo file, etc
 docs/
   project_overview.md                             # Business context, scope, and technical principles.
-  project_tracking.md                             # Project tasks with associated status and dependencies
-  decision_log.md                                 # Tracks project questions as they become decisions
+  decision_log.md                                 # Historical record of past decisions (frozen, no longer updated - see GitHub issues)
   website_design.md                               # Website requirements, content notes, reference sites
   investigation_notes.md                          # Research notes on technical decisions, process experiments, etc.
   competitive_analysis_and_recommendations.md     # Claude-authored analysis of similar websites

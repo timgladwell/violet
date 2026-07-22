@@ -2,9 +2,14 @@
 # Staging environment - block all indexing
 User-agent: *
 Disallow: /
+{{ else if .Site.Params.maintenanceMode -}}
+# Maintenance mode - block all indexing
+User-agent: *
+Disallow: /
 {{ else -}}
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-train=no
 
 Sitemap: {{ .Site.BaseURL }}sitemap.xml
 {{ end -}}

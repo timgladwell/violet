@@ -9,10 +9,15 @@ overridden per-build via the `HUGO_PARAMS_MAINTENANCEMODE` env var, which lets y
 flip it without going through a PR to the protected `release` branch.
 
 When on, every route on the production site shows a fixed "We're almost ready"
-placeholder instead of real content, the page is marked `noindex` (meta tag +
-`robots.txt`), and `nav`/`footer` are hidden. Page titles/descriptions are left
-unchanged so any social link previews cached during the outage stay accurate
-once the real site is back.
+placeholder instead of real content, the page is marked `noindex` (meta tag,
+`robots.txt`, and `llms.txt` all block/omit indexing), and `nav`/`footer` are
+hidden. Page titles/descriptions are left unchanged so any social link
+previews cached during the outage stay accurate once the real site is back.
+
+Note: `noindex`/`Disallow` are "stop indexing this" signals, not "temporarily
+down, come back later" signals — fine for short outages, but see
+[#77](https://github.com/timgladwell/violet/issues/77) for the proper fix
+(HTTP 503 at the Cloudflare edge) if an outage runs longer than a day or two.
 
 **To flip it:**
 

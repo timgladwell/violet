@@ -2,6 +2,8 @@
 title: "Privacy Policy"
 description: "Learn how Ontario Menopause Clinic collects, uses, and protects your personal information."
 layout: "legal"
+sitemap:
+  priority: 0.3
 ---
 **Effective Date:** April 6, 2026  
 **Last Updated:** April 6, 2026
