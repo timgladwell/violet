@@ -174,7 +174,7 @@
       document.querySelectorAll('a[href="' + bookingURL + '"]').forEach(link => {
         link.addEventListener('click', e => {
           e.preventDefault();
-          if (window.innerWidth <= 768) { window.open(bookingURL, '_blank'); }
+          if (window.innerWidth <= 768) { window.location.href = '/book/'; }
           else { openBookingModal(); }
         });
       });

@@ -1645,6 +1645,17 @@ p:last-child { margin-bottom: 0; }
   height: 100%;
 }
 
+/* Book page (mobile navigation target for booking CTAs) */
+
+.book-page__frame {
+  display: block;
+  border: none;
+  width: 100%;
+  height: min(900px, 80vh);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+}
+
 /* Quiz modal variant */
 
 .modal--quiz .modal__panel {
