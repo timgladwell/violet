@@ -1,1 +1,4 @@
-hugo 0.163.0
+# Cloudflare Pages' asdf preset is named "extended_X.Y.Z", not "X.Y.Z" -
+# using the bare version number fails Cloudflare builds with
+# "No preset version installed for command hugo". Keep the "extended_" prefix.
+hugo extended_0.163.0
