@@ -1086,6 +1086,19 @@ p:last-child { margin-bottom: 0; }
   margin-top: 0.4rem;
 }
 
+.about-social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.about-social a {
+  font-size: 0.875rem;
+  color: var(--rose);
+  font-weight: 600;
+}
+
 .about-content h2 {
   font-size: 1.625rem;
   color: var(--rose);
@@ -1425,6 +1438,14 @@ p:last-child { margin-bottom: 0; }
 }
 
 .footer__link:hover { color: var(--white); }
+
+.footer__link--instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer__link--instagram img { flex-shrink: 0; }
 
 .footer__bottom {
   display: flex;
