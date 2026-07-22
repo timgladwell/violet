@@ -35,14 +35,15 @@ step "Build"         hugo build site --source site --environment development --l
 step "Environments"  ./check-environments.sh
 step "Markdown lint" npm run lint:md
 
-if ! ./dev-server.sh --ci; then
-    echo ""
-    echo "Running localdev server is required for CI - run ./dev-server.sh and retry"
-    echo ""
-    exit 1
-fi
+./dev-server.sh --ci
+STARTED_SERVER=false
+[ -f .dev-server.lock ] && STARTED_SERVER=true
 
 step "Accessibility" npm run a11y
+
+if $STARTED_SERVER; then
+  ./dev-server.sh --stop
+fi
 
 echo ""
 echo "────────────────────────────────"

@@ -18,9 +18,10 @@ All local development is managed through these scripts. Do not construct raw `hu
 | `./deploy-staging.sh <slug>` | Push current branch to a staging environment. |
 
 * **Before pushing a PR**, run `./validate.sh` and fix any failures.
-* **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `tmux kill-session -t violet-localdev`.
+* **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
 * **A11y only**: `npm run a11y` (requires dev server running first).
 * **Markdown lint only**: `npm run lint:md`.
+* Hugo version is pinned in `.tool-versions` and used by CI; `dev-server.sh`/`validate.sh` warn (don't fail) if your local `hugo` doesn't match it.
 
 ## Environment variables
 

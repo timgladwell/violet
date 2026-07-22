@@ -19,10 +19,14 @@ jobs:
       - name: Load env defaults from .env.local.example
         run: grep -v '^#' .env.local.example | grep -v '^$' >> $GITHUB_ENV
 
+      - name: Read Hugo version
+        id: hugo-version
+        run: echo "version=$(grep '^hugo ' .tool-versions | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.160.0'
+          hugo-version: ${{ steps.hugo-version.outputs.version }}
           extended: true
 
       - name: Build site
