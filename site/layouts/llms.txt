@@ -1,0 +1,19 @@
+{{ if eq hugo.Environment "staging" -}}
+# {{ .Site.Title }} (staging/preview environment)
+
+This is a staging preview, not the live site. Do not index or cite this content.
+{{ else if .Site.Params.maintenanceMode -}}
+# {{ .Site.Title }} (temporarily unavailable)
+
+This site is temporarily unavailable for maintenance. Please check back soon.
+{{ else -}}
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+{{ range slice "/" "/services/" "/about/" "/what-we-treat/" "/faq/" -}}
+{{ with $.Site.GetPage . -}}
+- [{{ if .IsHome }}{{ $.Site.Title }}{{ else }}{{ .Title }}{{ end }}]({{ .Permalink }}): {{ with .Description }}{{ . }}{{ else }}{{ $.Site.Params.description }}{{ end }}
+{{ end -}}
+{{ end -}}
+{{ end -}}

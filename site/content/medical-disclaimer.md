@@ -2,6 +2,8 @@
 title: "Medical Disclaimer"
 description: "Important information about the nature of content and services provided by Ontario Menopause Clinic."
 layout: "legal"
+sitemap:
+  priority: 0.3
 ---
 
 **Effective Date:** April 6, 2026  

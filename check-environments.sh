@@ -63,7 +63,7 @@ build_via_buildsh ""
 check "no staging banner"                     "! grep -q staging-banner site/public/index.html"
 check "noindex present (maintenance default)" "grep -q noindex site/public/index.html"
 check "maintenance placeholder shown"         "grep -q 'class=\"maintenance\"' site/public/index.html"
-check "robots.txt allows"                     "grep -q 'Allow: /' site/public/robots.txt"
+check "robots.txt disallows (maintenance default)" "grep -q 'Disallow: /' site/public/robots.txt"
 check "no RSS feed"                           "[ ! -f site/public/index.xml ]"
 
 rm -rf site/public

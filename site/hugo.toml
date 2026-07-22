@@ -13,7 +13,14 @@ locale = 'en-CA'
 # dropping the default "rss" kills the feed, which would otherwise leak full
 # page content even while maintenanceMode hides it from the rendered HTML.
 [outputs]
-  home = ['html', 'robots']
+  home = ['html', 'robots', 'llms']
+
+[outputFormats]
+  [outputFormats.llms]
+    mediaType = 'text/plain'
+    baseName = 'llms'
+    isPlainText = true
+    notAlternative = true
 
 [params]
   description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed - book online today.'

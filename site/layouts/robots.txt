@@ -2,6 +2,10 @@
 # Staging environment - block all indexing
 User-agent: *
 Disallow: /
+{{ else if .Site.Params.maintenanceMode -}}
+# Maintenance mode - block all indexing
+User-agent: *
+Disallow: /
 {{ else -}}
 User-agent: *
 Allow: /

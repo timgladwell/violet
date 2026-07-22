@@ -1,7 +1,9 @@
 ---
 title: "Terms of Service"
-description: "Learn how Ontario Menopause Clinic collects, uses, and protects your personal information."
+description: "Terms of Service for ontariomenopauseclinic.ca, covering permitted use, intellectual property, hosting, and liability for the Ontario Menopause Clinic website."
 layout: "legal"
+sitemap:
+  priority: 0.3
 ---
 **Effective Date:** April 6, 2026  
 **Last Updated:** April 6, 2026
