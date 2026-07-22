@@ -20,6 +20,10 @@ interface PageResult {
   violations: Result[];
 }
 
+const DISABLED_RULES = Object.entries(axeConfig.rules ?? {})
+  .filter(([, v]) => v.enabled === false)
+  .map(([id]) => id);
+
 test('wcag-2.1-aa', async ({ page }) => {
   const results: PageResult[] = [];
 
@@ -27,6 +31,7 @@ test('wcag-2.1-aa', async ({ page }) => {
     await page.goto(pagePath);
     const { violations } = await new AxeBuilder({ page })
       .withTags(axeConfig.runOnly.values)
+      .disableRules(DISABLED_RULES)
       .analyze();
     results.push({ path: pagePath, violations });
   }

@@ -9,6 +9,9 @@ resources/_gen/
 # Hugo module cache
 .hugo_build.lock
 
+# Dev server ownership lock (see dev-server.sh)
+.dev-server.lock
+
 # OS
 .DS_Store
 Thumbs.db

@@ -76,7 +76,7 @@ Both production and preview environments are configured identically.
 
 | Variable | Value |
 |----------|-------|
-| `HUGO_VERSION` | `0.162.0` |
+| `HUGO_VERSION` | `0.162.0` (must be kept in sync with `.tool-versions` at repo root — Cloudflare Pages reads this dashboard value directly, it can't read the repo file) |
 | `HUGO_PARAMS_BOOKINGURL` | _(secret — see `.env.local.example`)_ |
 | `HUGO_PARAMS_INFOCONTACTEMAIL` | _(secret — see `.env.local.example`)_ |
 | `HUGO_PARAMS_PRIVACYCONTACTEMAIL` | _(secret — see `.env.local.example`)_ |

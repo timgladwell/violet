@@ -16,13 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
 
-      - name: Load env defaults from .env.local.example
-        run: grep -v '^#' .env.local.example | grep -v '^$' >> $GITHUB_ENV
+      - name: Load env
+        id: load-env
+        uses: ./.github/actions/load-env
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.160.0'
+          hugo-version: ${{ steps.load-env.outputs.hugo-version }}
           extended: true
 
       - name: Build site
@@ -50,6 +51,11 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Start server
+        # Deliberately serving the static `hugo build` output with a plain
+        # file server here, instead of `hugo server`/dev-server.sh — this
+        # tests the DOM as it actually ships (no livereload script, no
+        # dev-only markup), not the live dev server. Do not change this to
+        # match local dev tooling.
         run: python3 -m http.server 8080 --directory site/public &
 
       - name: Wait for server

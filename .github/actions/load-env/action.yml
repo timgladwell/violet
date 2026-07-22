@@ -1,0 +1,19 @@
+name: Load env
+description: Load env defaults from .env.local.example and resolve the pinned Hugo version from .tool-versions
+
+outputs:
+  hugo-version:
+    description: Hugo version pinned in .tool-versions
+    value: ${{ steps.hugo-version.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Load env defaults from .env.local.example
+      shell: bash
+      run: grep -v '^#' .env.local.example | grep -v '^$' >> "$GITHUB_ENV"
+
+    - name: Read Hugo version
+      id: hugo-version
+      shell: bash
+      run: echo "version=$(grep '^hugo ' .tool-versions | awk '{print $2}')" >> "$GITHUB_OUTPUT"
