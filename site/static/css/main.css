@@ -1439,20 +1439,20 @@ p:last-child { margin-bottom: 0; }
 
 .footer__link:hover { color: var(--white); }
 
-.footer__link--icon {
+.link-icon {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   white-space: nowrap;
 }
 
-.footer__link--icon img {
+.link-icon img {
   flex-shrink: 0;
   opacity: 0.65;
   transition: opacity 0.15s;
 }
 
-.footer__link--icon:hover img { opacity: 1; }
+.link-icon:hover img { opacity: 1; }
 
 .footer__bottom {
   display: flex;
