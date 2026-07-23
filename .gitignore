@@ -31,3 +31,4 @@ Thumbs.db
 node_modules/
 a11y/test-results/
 a11y/violations.json
+scripts/og-image/_render.html

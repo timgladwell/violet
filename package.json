@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "a11y": "playwright test --config a11y/playwright.config.ts",
+    "generate:og-image": "node scripts/og-image/generate.mjs",
     "lint:md": "markdownlint-cli2 \"site/content/**/*.md\"",
     "validate": "./validate.sh"
   },
