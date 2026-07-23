@@ -13,6 +13,9 @@ const PAGES = [
   '/faq/',
   '/privacy/',
   '/medical-disclaimer/',
+  '/tos/',
+  '/quiz/',
+  '/book/',
 ];
 
 interface PageResult {
