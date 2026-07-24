@@ -267,11 +267,23 @@ p:last-child { margin-bottom: 0; }
 .brand--full .brand__text {
   font-family: var(--sans);
   font-size: 0.925rem;
+  /* The logo's signature-style tail extends below its ring, so the ring's
+     visual center sits above the image's geometric center - nudge the text
+     up to align with the ring, matching the og-image card (see
+     scripts/og-image/template.html). */
+  margin-top: -3px;
+}
+
+.nav.scrolled .brand--full .brand__text {
+  margin-top: -2px;
 }
 
 .brand--compact .brand__text {
   font-family: var(--serif);
   font-size: 1.125rem;
+  /* Same ring-vs-bounding-box nudge as .brand--full (44px logo, same size
+     as the scrolled nav logo, so the same -2px offset applies). */
+  margin-top: -2px;
 }
 
 .brand--dark .brand__text {
