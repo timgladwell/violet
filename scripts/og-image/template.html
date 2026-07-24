@@ -26,18 +26,19 @@ FONTS_PLACEHOLDER
     width: 180px;
     height: 180px;
   }
-  /* .brand__text and .hero__heading carry the right font/color/weight from
-     main.css, but their real font-sizes are scoped to the nav bar and the
-     cqw-based hero clamp - neither applies in this standalone card, so size
-     them for this layout specifically. */
+  /* .brand__text and .brand__tag carry the right font/color/weight from
+     main.css (same classes the header wordmark uses), but their real
+     font-sizes are scoped to the 56px nav logo - too small for this
+     card's much larger logo, so size them up for this layout specifically. */
   .name.brand__text {
     font-size: 54px;
     white-space: nowrap;
   }
-  .tag.hero__heading {
-    font-size: 46px;
+  .tag.brand__tag {
+    /* Same 3.65x scale-up as .name.brand__text (54px / 14.8px), applied to
+       .brand__tag's real 0.7rem so the name:tag size ratio matches the header. */
+    font-size: 41px;
     white-space: nowrap;
-    margin-bottom: 0;
   }
   /* The logo's signature-style tail extends below its ring, so the ring's
      visual center sits above the image's geometric center - nudge the text
@@ -52,7 +53,7 @@ FONTS_PLACEHOLDER
     <img class="logo" src="../../site/static/images/logo_dark.svg">
     <div class="text-block">
       <div class="name brand__text">Ontario Menopause Clinic</div>
-      <div class="tag hero__heading"><em>For the whole you.</em></div>
+      <div class="tag brand__tag">Expert Menopause Care</div>
     </div>
   </div>
 </body>
