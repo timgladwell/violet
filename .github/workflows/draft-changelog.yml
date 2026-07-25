@@ -65,6 +65,12 @@ jobs:
           # commit is seen once and its feature-branch commits are skipped.
           # NUL-delimited records since commit bodies (squash-merge PR
           # descriptions) can span multiple lines.
+          # Changelog/release housekeeping PRs from past runs (e.g. "Changelog: vX",
+          # "chore: draft CHANGELOG for vX", "Release vX") aren't shipped content —
+          # skip them so they don't clutter the entry we're drafting now. (This run's
+          # own PR gets added back as a single line once it exists — see below.)
+          SKIP_PATTERN='^(Changelog: v[0-9]|chore:.*draft CHANGELOG for v[0-9]|Release v[0-9])'
+
           CHANGE_LIST=""
           while IFS=$'\t' read -r -d '' SHA SUBJECT BODY; do
             [ -z "$SHA" ] && continue
@@ -73,8 +79,10 @@ jobs:
             TITLE="${BODY%%$'\n'*}"
 
             if [ -n "$PR_NUM" ]; then
+              echo "$TITLE" | grep -qE "$SKIP_PATTERN" && continue
               CHANGE_LIST="${CHANGE_LIST}- PR #${PR_NUM}: ${TITLE}"$'\n'
             else
+              echo "$SUBJECT" | grep -qE "$SKIP_PATTERN" && continue
               CHANGE_LIST="${CHANGE_LIST}- ${SHA:0:7}: ${SUBJECT}"$'\n'
             fi
           done < <(git log "${PREV}..HEAD" --first-parent -z --format='%H%x09%s%x09%b')
@@ -127,6 +135,7 @@ jobs:
           echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
       - name: Open PR to main for review
+        id: pr
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -143,3 +152,24 @@ jobs:
               --title "Changelog: ${VERSION}" \
               --body "$(printf 'Auto-generated CHANGELOG draft for **%s**.\n\nPlease review and edit the entry in `CHANGELOG.md` before merging — add any context not captured by the commit list.\n\nOnce merged, run the **Cut Release** workflow to create the release PR.' "$VERSION")"
           fi
+
+          PR_NUM=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number')
+          echo "number=${PR_NUM}" >> "$GITHUB_OUTPUT"
+
+      - name: Add this PR to its own CHANGELOG entry
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          BRANCH="${{ steps.push.outputs.branch }}"
+          PR_NUM="${{ steps.pr.outputs.number }}"
+
+          # Insert as the first change under this entry's "### Changes" heading
+          awk -v line="- PR #${PR_NUM}: Changelog: ${VERSION}" '
+            /^### Changes$/ && !done { print; print line; done=1; next } { print }
+          ' CHANGELOG.md > CHANGELOG.md.new
+          mv CHANGELOG.md.new CHANGELOG.md
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit --amend --no-edit
+          git push origin "$BRANCH" --force
