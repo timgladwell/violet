@@ -1,5 +1,32 @@
 # Runbook
 
+## Cutting a new release
+
+Publishing to production happens by pushing a version tag, produced by three
+GitHub Actions run in sequence. All are in `.github/workflows/`.
+
+1. **Draft Changelog** (`draft-changelog.yml`) — run manually from the Actions
+   tab. Computes the next version (`vYYYY.MM.DD[.N]`), diffs `main` against the
+   last `v*` tag, builds a change list (preferring merged PR titles), prepends
+   an entry to `CHANGELOG.md`, and opens a PR from a `changelog/<version>-r<run>`
+   branch into `main`. Review/edit the entry for anything the commit list
+   didn't capture, then merge the PR.
+
+2. **Cut Release** (`cut-release.yml`) — run manually, after step 1's PR is
+   merged to `main`. Reads the top `## v...` entry from `CHANGELOG.md` on
+   `main` and opens a PR from `main` into `release` titled "Release vX.X.X",
+   with the changelog entry as the PR body. `release` is protected, so this
+   needs review/approval before merging.
+
+3. **Tag Release** (`tag-release.yml`) — fires automatically on push to
+   `release` once step 2's PR is merged. Reads the version from `CHANGELOG.md`
+   on `release` and creates/pushes the `vX.X.X` tag. Cloudflare Pages deploys
+   production from the `release` branch, so this is the point the new version
+   goes live.
+
+Sequence: **Draft Changelog → merge to main → Cut Release → merge to release
+→ tag pushed automatically → production deploys.**
+
 ## Toggle maintenance mode (no deploy required)
 
 Use this to take the production site down (incident, planned downtime) or bring it
