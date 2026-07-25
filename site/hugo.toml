@@ -1,13 +1,34 @@
 baseURL = 'https://ontariomenopauseclinic.ca/'
-languageCode = 'en-ca'
 title = 'Ontario Menopause Clinic'
 
-disableKinds = ['taxonomy', 'term']
-enableRobotsTXT = true
+[languages]
+[languages.en]
+locale = 'en-CA'
+
+# disableKinds is set per-environment (config/<environment>/hugo.toml) since
+# Hugo doesn't merge top-level array values from environment overrides.
+
+# Listing home's outputs explicitly: robots.txt needs "robots" listed here
+# directly (enableRobotsTXT alone doesn't add it on this Hugo version), and
+# dropping the default "rss" kills the feed, which would otherwise leak full
+# page content even while maintenanceMode hides it from the rendered HTML.
+[outputs]
+  home = ['html', 'robots', 'llms']
+
+[outputFormats]
+  [outputFormats.llms]
+    mediaType = 'text/plain'
+    baseName = 'llms'
+    isPlainText = true
+    notAlternative = true
 
 [params]
-  description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed — book online today.'
-  bookingURL = '#book'  # Replace with Avaros booking URL when available
+  description = 'Expert menopause care in Ontario. Certified menopause practitioner. No referral needed - book online today.'
+  bookingURL = ''           # Set via HUGO_PARAMS_BOOKINGURL env var — see .env.local.example
+  infoContactEmail = ''     # Set via HUGO_PARAMS_INFOCONTACTEMAIL env var — see .env.local.example
+  privacyContactEmail = ''  # Set via HUGO_PARAMS_PRIVACYCONTACTEMAIL env var — see .env.local.example
+
+  maintenanceMode = false   # Display the maintenance placeholder instead of the site
 
 [sitemap]
   changefreq = 'monthly'

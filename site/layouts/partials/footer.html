@@ -2,8 +2,8 @@
   <div class="container">
     <div class="footer__grid">
       <div class="footer__tagline-col">
-        <p class="footer__logo">Ontario Menopause Clinic</p>
-        <p class="footer__tagline">Expert menopause care for women in Ontario — delivered by Andrea, a certified menopause practitioner.</p>
+        {{ partial "brand.html" (dict "variant" "compact" "theme" "light") }}
+        <p class="footer__tagline">Expert menopause care for women in Ontario - delivered by Andrea, a certified menopause practitioner.</p>
       </div>
       <div>
         <p class="footer__col-heading">Navigate</p>
@@ -17,8 +17,9 @@
       <div>
         <p class="footer__col-heading">Book</p>
         <ul class="footer__links">
-          <li><a href="{{ .Site.Params.bookingURL | default "#book" }}" class="footer__link">Book an Appointment</a></li>
-          <li><a href="mailto:info@ontariomenopauseclinic.ca" class="footer__link">info@ontariomenopauseclinic.ca</a></li>
+          <li><a href="{{ .Site.Params.bookingURL | default "#book" }}" class="footer__link link-icon"><img src="/images/calendar-glyph.svg" alt="" width="18" height="18">Book an Appointment</a></li>
+          <li><a href="mailto:{{ .Site.Params.infoContactEmail}}?subject=Hello" target="_blank" class="footer__link link-icon"><img src="/images/envelope-glyph.svg" alt="" width="18" height="18">{{ .Site.Params.infoContactEmail}}</a></li>
+          <li><a href="https://www.instagram.com/andreamarshnp/" target="_blank" rel="noopener" class="footer__link link-icon"><img src="/images/Instagram-Glyph-White.svg" alt="" width="18" height="18">Follow us on Instagram</a></li>
         </ul>
       </div>
     </div>
@@ -26,7 +27,8 @@
       <p>&#169; {{ now.Year }} Ontario Menopause Clinic. All rights reserved.</p>
       <div class="footer__legal">
         <a href="/privacy/">Privacy Policy</a>
-        <a href="/terms/">Terms of Service</a>
+        <a href="/medical-disclaimer/">Medical Disclaimer</a>
+        <a href="/tos/">Terms of Service</a>
       </div>
     </div>
   </div>

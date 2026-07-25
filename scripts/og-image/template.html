@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+FONTS_PLACEHOLDER
+<link rel="stylesheet" href="../../site/static/css/main.css">
+<style>
+  html, body {
+    width: 1200px;
+    height: 630px;
+    background: var(--parchment);
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    display: flex;
+    align-items: center;
+    /* Same logo:gap ratio as .brand (12px : 56px logo) in main.css, scaled
+       up to this card's much larger logo. */
+    gap: 38px;
+  }
+  .logo {
+    width: 180px;
+    height: 180px;
+  }
+  /* .brand__text and .brand__tag carry the right font/color/weight from
+     main.css (same classes the header wordmark uses), but their real
+     font-sizes are scoped to the 56px nav logo - too small for this
+     card's much larger logo, so size them up for this layout specifically. */
+  .name.brand__text {
+    font-size: 54px;
+    white-space: nowrap;
+  }
+  .tag.brand__tag {
+    /* Same 3.65x scale-up as .name.brand__text (54px / 14.8px), applied to
+       .brand__tag's real 0.7rem so the name:tag size ratio matches the header. */
+    font-size: 41px;
+    white-space: nowrap;
+  }
+  /* The logo's signature-style tail extends below its ring, so the ring's
+     visual center sits above the image's geometric center - nudge the text
+     up to align with the ring, not the full bounding box. */
+  .text-block {
+    margin-top: -10px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="../../site/static/images/logo_dark.svg">
+    <div class="text-block">
+      <div class="name brand__text">Ontario Menopause Clinic</div>
+      <div class="tag brand__tag">Expert Menopause Care</div>
+    </div>
+  </div>
+</body>
+</html>
