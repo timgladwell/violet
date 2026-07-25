@@ -1,0 +1,20 @@
+{{ define "main" }}
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="page-hero__eyebrow">Legal</span>
+      <h1 class="page-hero__heading">{{ .Title }}</h1>
+    </div>
+  </section>
+
+  <section class="legal-page section">
+    <div class="container container--narrow">
+      <div class="legal-content">
+        {{ .Content }}
+      </div>
+    </div>
+  </section>
+
+</main>
+{{ end }}

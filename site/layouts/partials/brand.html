@@ -1,0 +1,8 @@
+{{/* params: variant ("full" | "compact"), theme ("dark" | "light") */}}
+<span class="brand brand--{{ .variant }} brand--{{ .theme }}">
+  <img src="/images/logo_{{ .theme }}.svg" alt="" class="brand__logo" aria-hidden="true">
+  <span class="brand__text">
+    Ontario Menopause Clinic
+    {{ if eq .variant "full" }}<span class="brand__tag">Expert Menopause Care</span>{{ end }}
+  </span>
+</span>

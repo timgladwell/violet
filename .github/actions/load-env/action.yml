@@ -1,0 +1,22 @@
+name: Load env
+description: Load env defaults from .env.local.example and resolve the pinned Hugo version from .tool-versions
+
+outputs:
+  hugo-version:
+    description: Hugo version pinned in .tool-versions
+    value: ${{ steps.hugo-version.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Load env defaults from .env.local.example
+      shell: bash
+      run: grep -v '^#' .env.local.example | grep -v '^$' >> "$GITHUB_ENV"
+
+    - name: Read Hugo version
+      id: hugo-version
+      shell: bash
+      # .tool-versions pins "extended_X.Y.Z" (Cloudflare's asdf preset name),
+      # but peaceiris/actions-hugo's hugo-version input wants a bare "X.Y.Z" -
+      # strip the prefix before passing it through.
+      run: echo "version=$(grep '^hugo ' .tool-versions | awk '{print $2}' | sed 's/^extended_//')" >> "$GITHUB_OUTPUT"

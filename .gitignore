@@ -1,5 +1,6 @@
 # Claude stuff
 .claude/worktrees/
+.claude/settings.local.json
 
 # Hugo build output
 public/
@@ -7,6 +8,9 @@ resources/_gen/
 
 # Hugo module cache
 .hugo_build.lock
+
+# Dev server ownership lock (see dev-server.sh)
+.dev-server.lock
 
 # OS
 .DS_Store
@@ -21,3 +25,10 @@ Thumbs.db
 # Environment / secrets
 .env
 .env.*
+!.env.local.example
+
+# Accessibility tooling
+node_modules/
+a11y/test-results/
+a11y/violations.json
+scripts/og-image/_render.html

@@ -1,0 +1,59 @@
+questions:
+    - text: What is your age?
+      type: single
+      answer:
+        - text: Under 40
+          score: nonpreferred
+        - text: 40-60
+          score: preferred
+        - text: Over 60
+          score: nonpreferred
+    - text: |
+        # Have you experienced any unexplained vaginal bleeding?
+        This includes:
+        * periods lasting longer than 8 days
+        * cycles less than 21 days apart
+        * bleeding between periods
+        * bleeding after intercourse
+      type: single
+      answer:
+        - text: Yes
+          score: nonpreferred
+        - text: No
+          score: preferred
+    - text: |
+        # Have you been diagnosed with an estrogen-sensitive cancer, or been told you are at a high risk for breast cancer?
+        Such as breast, endometrial, or ovarian cancer
+      type: single
+      answer:
+        - text: Yes
+          score: nonpreferred
+        - text: No
+          score: preferred
+    - text: Do you have a personal history of any of the following?
+      type: multiple
+      answer:
+        - text: Coronary heart disease (CHD) or coronary artery disease (CAD)
+          score: nonpreferred
+        - text: Stroke or transient ischemic attack (TIA)
+          score: nonpreferred
+        - text: Unprovoked blood clot (VTE) or peripheral artery disease (PAD)
+          score: nonpreferred
+        - text: Clotting disorder (e.g. Factor V Leiden)
+          score: nonpreferred
+        - none: true
+          score: preferred
+    - text: Do you currently have or have been recently diagnosed with acute liver disease?
+      type: single
+      answer:
+        - text: Yes
+          score: nonpreferred
+        - text: No
+          score: preferred
+results:
+    - bucket: preferred
+      text: You'd likely be a good candidate for MHT
+      call_to_action: Book your visit to get started
+    - bucket: nonpreferred
+      text: There are effective treatment options available, and we can help you find the right approach for your situation.
+      call_to_action: Book a free consultation to explore your options
