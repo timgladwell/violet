@@ -58,30 +58,26 @@ jobs:
           echo "ref=${PREV}" >> "$GITHUB_OUTPUT"
 
       - name: Collect changes since last release
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           PREV="${{ steps.prev_tag.outputs.ref }}"
 
-          # Get commits on main since the previous tag (newest first)
-          COMMITS=$(git log "${PREV}..HEAD" --oneline --no-merges)
-
-          # Build change list: prefer PR title if commit is associated with a merged PR
+          # Walk main's own history only (--first-parent), so each PR merge
+          # commit is seen once and its feature-branch commits are skipped.
+          # NUL-delimited records since commit bodies (squash-merge PR
+          # descriptions) can span multiple lines.
           CHANGE_LIST=""
-          while IFS= read -r line; do
-            [ -z "$line" ] && continue
-            SHA=$(echo "$line" | cut -d' ' -f1)
-            MSG=$(echo "$line" | cut -d' ' -f2-)
+          while IFS=$'\t' read -r -d '' SHA SUBJECT BODY; do
+            [ -z "$SHA" ] && continue
 
-            # Look up a PR merged via this commit SHA
-            PR=$(gh pr list --state merged --search "${SHA}" --json number,title --jq '.[0] | if . then "PR #\(.number): \(.title)" else "" end' 2>/dev/null || true)
+            PR_NUM=$(echo "$SUBJECT" | grep -oP '(?<=Merge pull request #)\d+' || true)
+            TITLE="${BODY%%$'\n'*}"
 
-            if [ -n "$PR" ]; then
-              CHANGE_LIST="${CHANGE_LIST}- ${PR}"$'\n'
+            if [ -n "$PR_NUM" ]; then
+              CHANGE_LIST="${CHANGE_LIST}- PR #${PR_NUM}: ${TITLE}"$'\n'
             else
-              CHANGE_LIST="${CHANGE_LIST}- ${SHA}: ${MSG}"$'\n'
+              CHANGE_LIST="${CHANGE_LIST}- ${SHA:0:7}: ${SUBJECT}"$'\n'
             fi
-          done <<< "$COMMITS"
+          done < <(git log "${PREV}..HEAD" --first-parent -z --format='%H%x09%s%x09%b')
 
           if [ -z "$CHANGE_LIST" ]; then
             CHANGE_LIST="- No changes since last release"$'\n'
