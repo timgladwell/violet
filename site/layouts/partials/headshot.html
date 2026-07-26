@@ -1,0 +1,2 @@
+{{- $img := (resources.Get "images/andrea_headshot.jpg").Resize "800x webp q75" -}}
+<img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="Andrea, NP - Ontario Menopause Clinic">
