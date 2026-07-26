@@ -33,4 +33,15 @@ Andrea, Nurse Practitioner, provides clinical support and treatment for perimeno
 ## Get Started
 
 - [Book a Visit]({{ .Site.BaseURL }}book/): Schedule a free Discovery Call or book an initial consultation.
+
+## Legal & Licensing Boundaries
+
+- Jurisdiction: Andrea is licensed to treat patients physically located within the province of Ontario, Canada, only.
+- Regulatory body: College of Nurses of Ontario (CNO).
+- Ineligible patients: bookings and medical advice cannot be provided to residents outside of Ontario, due to telemedicine licensing constraints.
+
+## Privacy & Data Security
+
+- Patient records and messaging are managed through Avaros (Medley Health), the clinic's EMR platform.
+- Per Avaros: OntarioMD certified, PHIPA and PIPEDA compliant, data hosted in Canada, and subject to privacy audits and security reviews as part of its certification process.
 {{ end -}}
