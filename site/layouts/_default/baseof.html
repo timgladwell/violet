@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  {{ if or (eq hugo.Environment "staging") .Site.Params.maintenanceMode }}<meta name="robots" content="noindex, nofollow">{{ end }}
+  {{ if or (eq hugo.Environment "staging") .Site.Params.maintenanceMode .Params.noindex }}<meta name="robots" content="noindex, nofollow">{{ end }}
 
   <title>{{ if .IsHome }}{{ .Site.Title }} - Expert Menopause Care in Ontario{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
@@ -30,6 +30,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="{{ "images/og-image.png" | absURL }}">
 
+  {{/* Service names/prices/descriptions below are duplicated from layouts/_default/services.html by deliberate SEO/GEO choice (see decision_log.md) - keep both in sync when services change. */}}
   {{ if not (or (eq hugo.Environment "staging") .Site.Params.maintenanceMode) }}
   <script type="application/ld+json">
   {
@@ -37,11 +38,20 @@
     "@type": "MedicalBusiness",
     "name": {{ .Site.Title }},
     "url": {{ .Site.BaseURL }},
+    "logo": {{ "images/apple-touch-icon.png" | absURL }},
+    "image": {{ "images/og-image.png" | absURL }},
     "description": {{ .Site.Params.description }},
     "email": {{ .Site.Params.infoContactEmail }},
+    "medicalSpecialty": ["Gynecology", "Endocrinology"],
     "areaServed": {
       "@type": "State",
-      "name": "Ontario"
+      "name": "Ontario",
+      "sameAs": "https://en.wikipedia.org/wiki/Ontario"
+    },
+    "location": {
+      "@type": "VirtualLocation",
+      "name": "Secure Telehealth Video Platform",
+      "url": {{ .Site.BaseURL }}
     },
     "address": {
       "@type": "PostalAddress",
@@ -51,7 +61,150 @@
       "postalCode": "M2K 2Y6",
       "addressCountry": "CA"
     },
-    "sameAs": ["https://www.instagram.com/andreamarshnp/"]
+    "sameAs": ["https://www.instagram.com/andreamarshnp/"],
+    "employee": {
+      "@type": "Person",
+      "name": "Andrea Marsh",
+      "jobTitle": "Nurse Practitioner",
+      "honorificSuffix": "NP, NCMP",
+      "description": "The Menopause Society Certified Practitioner with over 20 years of clinical experience.",
+      "alumniOf": [
+        {
+          "@type": "EducationalOrganization",
+          "name": "University of Western Ontario"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "name": "University of Ottawa"
+        }
+      ],
+      "knowsAbout": [
+        "Menopause",
+        "Perimenopause",
+        "Hormone Replacement Therapy",
+        "Bioidentical Hormones"
+      ]
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "CAD",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Discovery Call",
+            "duration": "PT15M",
+            "description": "A brief, no-pressure call for women who want to understand if this approach is the right fit for them.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "price": "299.00",
+          "priceCurrency": "CAD",
+          "itemOffered": {
+            "@type": "MedicalProcedure",
+            "name": "Initial Consultation",
+            "duration": "PT60M",
+            "description": "A comprehensive assessment for women experiencing perimenopausal or menopausal symptoms who are looking for a clear, personalized plan.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "price": "150.00",
+          "priceCurrency": "CAD",
+          "itemOffered": {
+            "@type": "MedicalProcedure",
+            "name": "Follow-Up Visit",
+            "duration": "PT30M",
+            "description": "Ongoing care for patients who have already started treatment and need support, adjustments, or monitoring.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "price": "75.00",
+          "priceCurrency": "CAD",
+          "itemOffered": {
+            "@type": "MedicalProcedure",
+            "name": "Care Check-In",
+            "duration": "PT15M",
+            "description": "A shorter visit for existing patients who need quick support between scheduled appointments.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "price": "150.00",
+          "priceCurrency": "CAD",
+          "itemOffered": {
+            "@type": "MedicalProcedure",
+            "name": "Weight Loss Initial Consultation",
+            "duration": "PT30M",
+            "description": "A personalized consultation for women experiencing weight or metabolic changes, particularly during perimenopause and menopause.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "price": "99.00",
+          "priceCurrency": "CAD",
+          "itemOffered": {
+            "@type": "MedicalProcedure",
+            "name": "Weight Loss Follow-Up",
+            "duration": "PT20M",
+            "description": "Ongoing support to help you stay on track with your plan and make adjustments as needed.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "priceSpecification": {
+            "@type": "PriceSpecification",
+            "minPrice": "40.00",
+            "priceCurrency": "CAD"
+          },
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Form Completion",
+            "description": "Completion of medical forms or documentation based on time and complexity.",
+            "location": {
+              "@type": "VirtualLocation",
+              "name": "Secure Telehealth Video Platform",
+              "url": {{ .Site.BaseURL }}
+            }
+          }
+        }
+      ]
+    }
   }
   </script>
   {{ end }}
@@ -59,7 +212,8 @@
   <!-- Fonts -->
   {{ partial "fonts.html" . }}
 
-  <link rel="stylesheet" href="/css/main.css">
+  {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
   {{ if .Site.Params.maintenanceMode }}
   <style>
@@ -119,7 +273,7 @@
   {{ end }}
 
   {{ partial "booking-modal.html" . }}
-  {{ partial "quiz-modal.html" . }}
+  {{ if ne .Layout "quiz" }}{{ partial "quiz-modal.html" . }}{{ end }}
 
   <script>
     // Sticky nav shadow
@@ -213,7 +367,7 @@
     document.querySelectorAll('[data-quiz-trigger]').forEach(el => {
       el.addEventListener('click', e => {
         e.preventDefault();
-        if (window.innerWidth <= 768) { window.open('/quiz', '_blank'); }
+        if (window.innerWidth <= 768) { window.location.href = '/quiz'; }
         else { openQuizModal(); }
       });
     });
