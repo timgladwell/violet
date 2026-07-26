@@ -1,5 +1,15 @@
 # Changelog
 
+## v2026.07.26
+_Released 2026-07-26_
+
+### Changes
+- PR #121: Changelog: v2026.07.26
+- PR #120: Expand structured data and crawler access for SEO/GEO
+- PR #116: Minify and fingerprint main.css via Hugo Pipes
+- PR #117: Resize and re-encode Andrea's headshot via Hugo image processing
+- PR #115: Wrap mobile quiz/booking in site chrome; fix quiz CTA overflow
+
 ## v2026.07.25
 _Released 2026-07-25_
 
