@@ -7,98 +7,9 @@ Disallow: /
 User-agent: *
 Disallow: /
 {{ else -}}
-# Explicit per-bot allows: some crawlers (and some CDN/edge bot-management
-# layers) now default to NOT crawling unless their own user-agent is named,
-# rather than trusting a bare `User-agent: *`. Named here so nothing is
-# blocked by default. Content-Signal: search=yes, ai-train=yes applies to all.
-
-# Traditional search
-User-agent: Googlebot
-Allow: /
-Allow: /llms.txt
-
-User-agent: Bingbot
-Allow: /
-Allow: /llms.txt
-
-User-agent: DuckDuckBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: Applebot
-Allow: /
-Allow: /llms.txt
-
-# AI answer engines (live retrieval/citation) and training crawlers
-User-agent: GPTBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: OAI-SearchBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: ChatGPT-User
-Allow: /
-Allow: /llms.txt
-
-User-agent: ClaudeBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: Claude-User
-Allow: /
-Allow: /llms.txt
-
-User-agent: Claude-SearchBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: PerplexityBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: Perplexity-User
-Allow: /
-Allow: /llms.txt
-
-User-agent: Google-Extended
-Allow: /
-Allow: /llms.txt
-
-User-agent: Applebot-Extended
-Allow: /
-Allow: /llms.txt
-
-User-agent: meta-externalagent
-Allow: /
-Allow: /llms.txt
-
-User-agent: Amazonbot
-Allow: /
-Allow: /llms.txt
-
-User-agent: CCBot
-Allow: /
-Allow: /llms.txt
-
-User-agent: Bytespider
-Allow: /
-Allow: /llms.txt
-
-User-agent: cohere-ai
-Allow: /
-Allow: /llms.txt
-
-User-agent: Diffbot
-Allow: /
-Allow: /llms.txt
-
-# Catch-all for any crawler not explicitly named above
 User-agent: *
 Allow: /
-Allow: /llms.txt
-Content-Signal: search=yes, ai-train=yes
+Content-Signal: search=yes, ai-train=no
 
 Sitemap: {{ .Site.BaseURL }}sitemap.xml
 {{ end -}}

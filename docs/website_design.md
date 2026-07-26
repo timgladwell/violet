@@ -19,7 +19,6 @@ See @docs/project_overview.md for context and scope of the overall project
 - The site must conform to best practices at all times.
   - The site must meet WCAG 2.1 or 2.2 Level AA guidelines
   - All definitions (like partials and CSS) must have only a single point of defintion.
-  - **Exception: SEO/GEO always wins.** Search and LLM discoverability (structured data, metadata, crawler access, etc.) is a top-level goal, not a nice-to-have. Where maximizing SEO/GEO conflicts with single-point-of-definition, DRY, or general maintainability/work-effort concerns, do the SEO/GEO-maximizing thing anyway and accept the duplication/maintenance cost - e.g. JSON-LD in `baseof.html` intentionally duplicates the service list from `services.html` rather than being generic, because per-service structured data outranks avoiding duplication. Leave a comment at the duplication site pointing to what it must stay in sync with.
 - The site will be built via the Hugo template / site builder.
 - The site will be configured to be index-able by both AI robots and classic site crawlers - the site should be very easy to discover. 
 - Be ready for to support advertising - Andrea will start online campaigns immediately and this website will be the top of her customer acquistion funnel
