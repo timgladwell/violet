@@ -1853,7 +1853,13 @@ p:last-child { margin-bottom: 0; }
   margin: 0 0 1.5rem;
 }
 
-.quiz__result-cta { margin-bottom: 2rem; }
+.quiz__result-cta {
+  margin-bottom: 2rem;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  justify-content: center;
+}
 
 .quiz__disclaimer {
   font-size: 0.8125rem;
@@ -1874,12 +1880,12 @@ p:last-child { margin-bottom: 0; }
 
 /* Standalone /quiz page */
 
-.quiz-page-body {
+.quiz-page-wrap {
   background: var(--cream);
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 3rem 1rem;
 }
 
 .quiz-page {

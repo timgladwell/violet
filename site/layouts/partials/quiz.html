@@ -212,8 +212,11 @@
       if (window.innerWidth > 768 && typeof window.openBookingModal === 'function') {
         e.preventDefault();
         window.openBookingModal();
+      } else if (window.innerWidth <= 768) {
+        // Mobile: use the wrapped /book/ page instead of the raw Avaros URL
+        e.preventDefault();
+        window.location.href = '/book/';
       }
-      // Mobile / standalone /quiz page: follow the href naturally
     });
     resultTextEl.insertAdjacentElement('afterend', cta);
 
