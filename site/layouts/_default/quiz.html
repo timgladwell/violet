@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.Language.Locale | default "en" }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Is HRT Right for Me? | {{ .Site.Title }}</title>
-  <meta name="robots" content="noindex, nofollow">
-  {{ partial "fonts.html" . }}
-  <link rel="stylesheet" href="/css/main.css">
-</head>
-<body class="quiz-page-body">
+{{ define "main" }}
+<main class="quiz-page-wrap">
   <div class="quiz-page">
     {{ partial "quiz.html" . }}
   </div>
-</body>
-</html>
+</main>
+{{ end }}
