@@ -39,6 +39,23 @@ A future Terraform implementation should be able to reconstruct this configurati
 
 ---
 
+## Redirect Rules
+
+| Field | Value |
+|-------|-------|
+| Rule name | `www to apex redirect` |
+| When incoming requests match | Hostname equals `www.ontariomenopauseclinic.ca` |
+| Then | Dynamic redirect to `concat("https://ontariomenopauseclinic.ca", http.request.uri.path)`, preserve query string |
+| Status code | 301 (permanent) |
+| Created via | Cloudflare's built-in "Redirect www to root" template (Rules → Redirect Rules → Create rule → Templates) — still requires entering the matching hostname and target expression, but the template makes clear where each piece of info goes |
+
+### Notes
+- Required because the `www` and apex DNS records both resolve independently (see DNS Records above) — without this rule, both hostnames serve identical content as separate 200 responses.
+- Google Search Console flagged this as a duplicate/canonical issue in July 2026 (`www` page shown as "Alternate page with proper canonical tag", and several apex pages as "Crawled - currently not indexed") — see closed issue for details.
+- The site's own canonical `<link>` tags (baseURL `https://ontariomenopauseclinic.ca/` in `site/hugo.toml`) are a signal, not a redirect — they don't stop crawlers or browsers from independently loading the `www` host. This Cloudflare rule is what actually consolidates the two hosts at the edge.
+
+---
+
 ## Zone Settings
 
 | Setting | Value | Notes |
