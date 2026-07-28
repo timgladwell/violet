@@ -1,2 +1,7 @@
-{{- $img := (resources.Get "images/andrea_headshot.jpg").Resize "800x webp q75" -}}
-<img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="Andrea, NP - Ontario Menopause Clinic">
+{{- $orig := resources.Get "images/andrea_headshot.jpg" -}}
+{{- $large := $orig.Resize "800x webp q75" -}}
+{{- $small := $orig.Resize "400x webp q75" -}}
+<img src="{{ $large.RelPermalink }}"
+     srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 800w"
+     sizes="(max-width: 860px) 90vw, 400px"
+     width="{{ $large.Width }}" height="{{ $large.Height }}" alt="Andrea, NP - Ontario Menopause Clinic">
