@@ -51,6 +51,7 @@ A future Terraform implementation should be able to reconstruct this configurati
 | `http2` | `on` | Not editable |
 | `browser_cache_ttl` | `14400` (4 hours) | |
 | `rocket_loader` | `off` | Cloudflare's async JS loader — off is appropriate for a Hugo static site |
+| `fonts` (Speed → Optimization → Fonts) | **on** | Rewrites Google Fonts requests (`fonts.googleapis.com`/`fonts.gstatic.com`) to serve from the same origin via Cloudflare's edge, removing the extra third-party DNS/TLS hops. Enabled 2026-07-28 in response to a PageSpeed Insights finding — see `site/layouts/partials/fonts.html` for the paired non-blocking `<link>` change. |
 
 ### Action items
 - **Consider raising `min_tls_version` to `1.2`** — TLS 1.0 and 1.1 are deprecated and not used by any current browser. Low urgency but a straightforward hardening step.
