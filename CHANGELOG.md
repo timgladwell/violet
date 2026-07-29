@@ -1,5 +1,15 @@
 # Changelog
 
+## v2026.07.29
+_Released 2026-07-29_
+
+### Changes
+- PR #130: Changelog: v2026.07.29
+- PR #129: Make cut-release rebase-safe and publish GitHub Releases
+- PR #128: Revert non-blocking font load: eliminates CLS regression
+- PR #127: Improve image delivery: non-blocking fonts + responsive headshot
+- PR #125: Document www-to-apex Cloudflare redirect rule
+
 ## v2026.07.26
 _Released 2026-07-26_
 
