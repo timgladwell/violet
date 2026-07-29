@@ -13,19 +13,58 @@ GitHub Actions run in sequence. All are in `.github/workflows/`.
    didn't capture, then merge the PR.
 
 2. **Cut Release** (`cut-release.yml`) — run manually, after step 1's PR is
-   merged to `main`. Reads the top `## v...` entry from `CHANGELOG.md` on
-   `main` and opens a PR from `main` into `release` titled "Release vX.X.X",
-   with the changelog entry as the PR body. `release` is protected, so this
-   needs review/approval before merging.
+   merged to `main`, and after you've verified the change on staging via
+   `./deploy-staging.sh`. Reads `CHANGELOG.md` from the target commit (`main`
+   HEAD by default; pass the `ref` input to promote an earlier `main` commit
+   if a longer-running feature is mid-flight on `main`), pushes it to a
+   `release-candidate/<version>` branch, and opens a PR from that branch into
+   `release`. Before doing any of that it checks `release` is an ancestor of
+   the target commit — if it isn't, it fails with an error instead of opening
+   a PR that would hit conflicts (see "Why release must stay rebase-clean"
+   below). Merge the PR — the `release` branch rule only permits the
+   **Rebase and merge** strategy, so this always fast-forwards `release`
+   rather than creating a merge commit.
 
 3. **Tag Release** (`tag-release.yml`) — fires automatically on push to
-   `release` once step 2's PR is merged. Reads the version from `CHANGELOG.md`
-   on `release` and creates/pushes the `vX.X.X` tag. Cloudflare Pages deploys
-   production from the `release` branch, so this is the point the new version
-   goes live.
+   `release`. Reads the version from `CHANGELOG.md` on `release`, creates and
+   pushes the `vX.X.X` tag, and publishes a GitHub Release with the changelog
+   entry as its notes. Merging step 2's PR is the point the new version goes
+   live (Cloudflare Pages deploys production from `release`) — this step
+   just records it.
 
-Sequence: **Draft Changelog → merge to main → Cut Release → merge to release
-→ tag pushed automatically → production deploys.**
+Sequence: **Draft Changelog → merge to main → verify on staging → Cut Release
+→ merge the release PR (rebase-merge only) → tag + GitHub Release created
+automatically → production deploys.**
+
+### Why release must stay rebase-clean
+
+Earlier versions of this workflow merged the release PR with a regular merge
+commit. Every such merge creates a commit that lives only on `release` — so
+on the *next* cut, `release` and `main` have structurally diverged even
+though their content matches, and the merge-base for that next promotion
+stays pinned at wherever the previous cut started. Combined with a long gap
+between cuts, that produced a real pile of conflicts once (see PR #111/#112).
+
+The fix: `release`'s branch rule now only allows **Rebase and merge**, and
+nothing is ever committed to `release` outside that one PR. As long as
+`release`'s tip is always an ancestor of whatever's being promoted, a
+rebase-merge has nothing to replay — it's a fast-forward, not a real rebase,
+so there's nothing to conflict. `cut-release.yml`'s ancestor check exists to
+catch the one way this can still go wrong: if `release` ever drifts (e.g.
+someone merges a stray PR into it directly), the workflow refuses to open a
+PR that can't rebase cleanly, rather than letting you discover the conflicts
+by hand. If that check fails, reset `release` to a known-good point on `main`
+(`git push origin <main-sha>:release --force`) before re-running Cut Release.
+Cutting releases often keeps that check trivially true and keeps each PR's
+diff small enough to sanity-check on staging.
+
+### If prod looks broken right after a release
+
+Check Cloudflare cache propagation before rolling back — `browser_cache_ttl`
+is 4 hours (see `docs/cloudflare-config.md`), so a stale asset can look like
+a real regression for a while after a deploy that's actually fine. Purge the
+cache (Caching → Configuration → Purge Everything) and reload before
+assuming the release itself is broken.
 
 ## Toggle maintenance mode (no deploy required)
 

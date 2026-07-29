@@ -2,9 +2,14 @@ name: Cut Release
 
 on:
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'main commit to promote (defaults to main HEAD)'
+        required: false
+        default: ''
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -13,33 +18,51 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - name: Checkout main
+      - name: Checkout target commit
         uses: actions/checkout@v6.0.3
         with:
-          ref: main
+          ref: ${{ inputs.ref || 'main' }}
           fetch-depth: 0
+
+      - name: Verify this commit is on main and release can rebase onto it cleanly
+        run: |
+          git fetch origin main release
+          if ! git merge-base --is-ancestor HEAD origin/main; then
+            echo "::error::${{ inputs.ref || 'main HEAD' }} is not an ancestor of main — refusing to promote a commit that isn't part of main's history."
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor origin/release HEAD; then
+            echo "::error::release is not an ancestor of this commit — release has drifted, so a rebase-merge would hit conflicts. Reset release to a point on main first (see docs/runbook.md), then re-run this workflow."
+            exit 1
+          fi
 
       - name: Read version from CHANGELOG
         id: version
         run: |
           VERSION=$(grep -m1 '^## v' CHANGELOG.md | sed 's/^## //')
           if [ -z "$VERSION" ]; then
-            echo "No version entry found in CHANGELOG.md — run the Draft Changelog workflow first"
+            echo "No version entry found in CHANGELOG.md at this commit — run the Draft Changelog workflow first"
             exit 1
           fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "Creating release PR for: ${VERSION}"
 
       - name: Extract latest CHANGELOG entry
-        id: entry
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-
           # Extract lines from the first ## heading up to (not including) the next one
           awk '/^## /{found++} found==1{print} found==2{exit}' CHANGELOG.md > /tmp/changelog_entry.txt
-
           echo "Changelog entry:"
           cat /tmp/changelog_entry.txt
+
+      - name: Push release-candidate branch
+        id: candidate
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          BRANCH="release-candidate/${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git push origin "HEAD:refs/heads/${BRANCH}" --force
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
 
       - name: Create release PR
         env:
@@ -51,6 +74,6 @@ jobs:
 
           gh pr create \
             --base release \
-            --head main \
+            --head "${{ steps.candidate.outputs.branch }}" \
             --title "Release ${VERSION}" \
             --body "$(printf '%s\n\n---\n[View full CHANGELOG](%s)' "$ENTRY" "$CHANGELOG_URL")"
