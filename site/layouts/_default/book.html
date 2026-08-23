@@ -5,7 +5,7 @@
     <div class="container">
       <span class="page-hero__eyebrow">Book</span>
       <h1 class="page-hero__heading">{{ .Title }}</h1>
-      {{ with .Description }}
+      {{ with (.Params.lead | default .Description) }}
       <p class="page-hero__lead">{{ . }}</p>
       {{ end }}
     </div>
@@ -14,6 +14,17 @@
   <section class="section">
     <div class="container">
       <iframe class="book-page__frame" title="Book an Appointment" src="{{ .Site.Params.bookingURL | default "#" }}"></iframe>
+    </div>
+  </section>
+
+  {{/* Kept below the booking widget so the CTA stays above the fold. Exists so
+       the page carries real content of its own - it was previously a bare
+       iframe, which Bing Webmaster Tools flagged as thin content. */}}
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">How booking works</h2>
+      <p class="section-lead">Everyone starts with the complimentary 15-minute Discovery Call. It&rsquo;s a short, no-pressure conversation to talk through what you&rsquo;ve been experiencing, answer your questions, and make sure this approach is the right fit for you. No referral required!</p>
+      <p class="section-lead">Every visit is virtual, so you can be seen from anywhere in Ontario. Pricing for each visit type is listed on the <a href="/services/">services page</a>, and you can read more about the symptoms we help with on <a href="/what-we-treat/">what we treat</a>.</p>
     </div>
   </section>
 
