@@ -43,7 +43,7 @@ All local development is managed through these scripts. Do not construct raw `hu
   * All pushes to `release` branch are tagged, and a GitHub Release with the changelog entry is published, for easy reverts. Both are assisted by a Github action.
   * `release` branch is protected and requires a pull request, restricted to the **Rebase and merge** strategy only — no direct pushes, and no merge commits, so `release` always stays a plain ancestor of `main`. See @docs/runbook.md for why this matters.
 * See @docs/runbook.md for the full cut-release sequence.
-* Production site is published at `https://www.ontariomenopauseclinic.ca`
+* Production site is published at `https://ontariomenopauseclinic.ca` (the apex; `www` 301s to it — see @docs/cloudflare-config.md)
 
 ### Pushing to staging
 
