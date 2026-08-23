@@ -38,10 +38,11 @@ All local development is managed through these scripts. Do not construct raw `hu
 * Website is hosted by Cloudflare. Website publishing is performed by pushing code to specific git branches.
 
 ### Pushing to production
-* Production publishing happens when code is merged from a `release-candidate/<version>` branch (created by the `Cut Release` GitHub Action) into `release`. The process is assisted by Github actions:
+* Production publishing happens when the `Cut Release` GitHub Action **fast-forwards** `release` to a commit already on `main`. The process is assisted by Github actions:
   * All releases have a CHANGELOG. Generation of the changelog is assisted by a Github action.
   * All pushes to `release` branch are tagged, and a GitHub Release with the changelog entry is published, for easy reverts. Both are assisted by a Github action.
-  * `release` branch is protected and requires a pull request, restricted to the **Rebase and merge** strategy only — no direct pushes, and no merge commits, so `release` always stays a plain ancestor of `main`. See @docs/runbook.md for why this matters.
+  * `release` is never merged into — not by PR, not by hand. It is a pointer that only moves forward to a reviewed, signed commit from `main`, which is what keeps it a plain ancestor of `main`. See @docs/runbook.md for why this matters.
+  * `main` requires a PR (merge commits only) and signed commits. Re-sign a branch with `git rebase -f -S main` before merging, or the merge button is blocked.
 * See @docs/runbook.md for the full cut-release sequence.
 * Production site is published at `https://www.ontariomenopauseclinic.ca`
 
