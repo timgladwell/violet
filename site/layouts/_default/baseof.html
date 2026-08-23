@@ -31,7 +31,11 @@
   <meta name="twitter:image" content="{{ "images/og-image.png" | absURL }}">
 
   {{/* Service names/prices/descriptions below are duplicated from layouts/_default/services.html by deliberate SEO/GEO choice (see decision_log.md) - keep both in sync when services change. */}}
-  {{ if not (or (eq hugo.Environment "staging") .Site.Params.maintenanceMode) }}
+  {{/* Staging deliberately emits this too: structured data is how integrators,
+       search engines, and LLMs see the site, so it has to be verifiable before
+       it reaches production. Staging is kept out of indexes by noindex,
+       robots.txt Disallow, and llms.txt - not by withholding markup. */}}
+  {{ if not .Site.Params.maintenanceMode }}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

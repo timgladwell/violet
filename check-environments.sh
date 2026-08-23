@@ -50,6 +50,7 @@ check "no staging banner"   "! grep -q staging-banner site/public/index.html"
 check "no noindex"          "! grep -q noindex site/public/index.html"
 check "robots.txt allows"   "grep -q 'Allow: /' site/public/robots.txt"
 check "llms.txt lists pages" "grep -q '^- \[' site/public/llms.txt"
+check "JSON-LD present"     "grep -q 'application/ld+json' site/public/index.html"
 check "no RSS feed"         "[ ! -f site/public/index.xml ]"
 
 echo "── staging (via build.sh, CF_PAGES_BRANCH=staging)"
@@ -58,6 +59,7 @@ check "staging banner present" "grep -q staging-banner site/public/index.html"
 check "noindex present"        "grep -q noindex site/public/index.html"
 check "robots.txt disallows"   "grep -q 'Disallow: /' site/public/robots.txt"
 check "llms.txt notes preview" "grep -q 'preview environment' site/public/llms.txt"
+check "JSON-LD present (must mirror prod)" "grep -q 'application/ld+json' site/public/index.html"
 check "no RSS feed"            "[ ! -f site/public/index.xml ]"
 
 echo "── production (via build.sh, no CF_PAGES_BRANCH)"
@@ -66,6 +68,7 @@ check "no staging banner"                     "! grep -q staging-banner site/pub
 check "noindex present (maintenance default)" "grep -q noindex site/public/index.html"
 check "maintenance placeholder shown"         "grep -q 'class=\"maintenance\"' site/public/index.html"
 check "robots.txt disallows (maintenance default)" "grep -q 'Disallow: /' site/public/robots.txt"
+check "no JSON-LD (maintenance default)"      "! grep -q 'application/ld+json' site/public/index.html"
 check "llms.txt notes unavailable (maintenance default)" "grep -q 'temporarily unavailable' site/public/llms.txt"
 check "no RSS feed"                           "[ ! -f site/public/index.xml ]"
 

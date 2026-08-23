@@ -24,6 +24,9 @@ See @docs/project_overview.md for context and scope of the overall project
 - The site will be configured to be index-able by both AI robots and classic site crawlers - the site should be very easy to discover. 
 - Be ready for to support advertising - Andrea will start online campaigns immediately and this website will be the top of her customer acquistion funnel
 - Will be hosted on Cloudflare Pages
+- **Staging must mirror production.** Staging exists to verify what production will do, so anything withheld from staging is something that cannot be verified before it ships. This matters most for the things you cannot see by looking at the page - structured data, metadata, crawler directives - because staging is the only place to check how integrators, search engines, and LLMs will read the site.
+  - The only permitted differences are the staging banner and the index-blocking that keeps staging out of search: `noindex, nofollow`, `robots.txt` `Disallow: /`, and the `llms.txt` preview notice. Keep staging out of indexes with those signals, never by omitting markup.
+  - The one genuine exception is anything with external side effects - analytics that would pollute production metrics, or form posts that would reach real endpoints. Point those elsewhere rather than deleting them, so the code path still gets exercised.
 
 ## Structure Requirements
 - As a marketing site, the primary purpose of the site is to introduce potential clients to Andrea and the sevices offered by her business. This will include
