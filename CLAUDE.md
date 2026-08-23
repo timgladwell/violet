@@ -44,7 +44,7 @@ All local development is managed through these scripts. Do not construct raw `hu
   * `release` is never merged into — not by PR, not by hand. It is a pointer that only moves forward to a reviewed, signed commit from `main`, which is what keeps it a plain ancestor of `main`. See @docs/runbook.md for why this matters.
   * `main` requires a PR (merge commits only) and signed commits. Re-sign a branch with `git rebase -f -S main` before merging, or the merge button is blocked.
 * See @docs/runbook.md for the full cut-release sequence.
-* Production site is published at `https://www.ontariomenopauseclinic.ca`
+* Production site is published at `https://ontariomenopauseclinic.ca` (the apex; `www` 301s to it — see @docs/cloudflare-config.md)
 
 ### Pushing to staging
 
