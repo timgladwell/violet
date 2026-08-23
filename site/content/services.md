@@ -1,5 +1,5 @@
 ---
 title: "Services"
-description: "Menopause care and wellbeing services from one practitioner who knows you."
+description: "Virtual menopause and perimenopause care across Ontario: free 15-minute Discovery Call, initial consultation, follow-up visits, and weight loss support."
 layout: "services"
 ---

@@ -1,4 +1,4 @@
 ---
 title: "Home"
-description: "Expert menopause care in Ontario. Certified menopause practitioner - no referral needed. Book online today."
+description: "Expert menopause and perimenopause care across Ontario from a certified menopause practitioner. No referral needed - book a free Discovery Call online."
 ---
