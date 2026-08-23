@@ -1,5 +1,26 @@
 name: Cut Release
 
+# Fast-forwards `release` to a commit already on `main`, which is how
+# production gets changes that have been verified on staging.
+#
+# Fast-forward, not a PR merge: it moves the branch pointer to the exact commit
+# already on `main`, preserving its SHA and its signature. That is what stops
+# the two branches diverging. Promoting by PR could not do this — GitHub's merge
+# button has no fast-forward strategy, so all three of its options mint new
+# commits. Rebase-and-merge in particular replayed main's work onto `release`
+# under fresh SHAs *and stripped the signatures*, so git lost track of the fact
+# that the two branches held identical content and the merge base fell further
+# behind on every cut.
+#
+# Requires `release`'s ruleset to be `deletion` + `non_fast_forward` +
+# `required_signatures`, with no `pull_request` rule — that rule blocks this
+# push and cannot be bypassed, because app bypass actors require an
+# organization and this is a user-owned repo. That turns out better than a
+# bypass: with no bypass actor, `non_fast_forward` applies to everyone
+# including the repository owner, so `release` can only ever move forward.
+#
+# See docs/runbook.md.
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,10 +28,21 @@ on:
         description: 'main commit to promote (defaults to main HEAD)'
         required: false
         default: ''
+      verified_on_staging:
+        description: >
+          This exact commit has been deployed to staging and checked
+          (./deploy-staging.sh <slug>)
+        type: choice
+        options: ["no", "yes"]
+        default: "no"
+        required: true
+
+concurrency:
+  group: cut-release
+  cancel-in-progress: false
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   cut-release:
@@ -22,58 +54,69 @@ jobs:
         uses: actions/checkout@v6.0.3
         with:
           ref: ${{ inputs.ref || 'main' }}
+          # Full history: the fast-forward check needs both branches' ancestry.
           fetch-depth: 0
+          fetch-tags: true
 
-      - name: Verify this commit is on main and release can rebase onto it cleanly
+      - name: Require the staging gate
+        if: inputs.verified_on_staging != 'yes'
         run: |
+          echo "::error::Cut refused — this commit has not been confirmed on staging."
+          echo "Deploy it with ./deploy-staging.sh <slug> and check it before"
+          echo "promoting to production."
+          exit 1
+
+      - name: Verify this commit is on main and the move is a fast-forward
+        run: |
+          set -euo pipefail
           git fetch origin main release
+
           if ! git merge-base --is-ancestor HEAD origin/main; then
             echo "::error::${{ inputs.ref || 'main HEAD' }} is not an ancestor of main — refusing to promote a commit that isn't part of main's history."
             exit 1
           fi
+
           if ! git merge-base --is-ancestor origin/release HEAD; then
-            echo "::error::release is not an ancestor of this commit — release has drifted, so a rebase-merge would hit conflicts. Reset release to a point on main first (see docs/runbook.md), then re-run this workflow."
+            echo "::error::release is not an ancestor of this commit — not a fast-forward."
+            echo "release has commits this commit does not. Check whether they are"
+            echo "genuinely unique (git cherry origin/main origin/release) before"
+            echo "doing anything: a '-' prefix means the patch is already in main"
+            echo "under a different SHA, and release can be reset without loss."
+            echo "See docs/runbook.md."
             exit 1
           fi
+
+          echo "Fast-forwarding release by:"
+          git log --oneline origin/release..HEAD | sed 's/^/  /'
 
       - name: Read version from CHANGELOG
         id: version
         run: |
+          set -euo pipefail
           VERSION=$(grep -m1 '^## v' CHANGELOG.md | sed 's/^## //')
           if [ -z "$VERSION" ]; then
-            echo "No version entry found in CHANGELOG.md at this commit — run the Draft Changelog workflow first"
+            echo "::error::No version entry found in CHANGELOG.md at this commit — run the Draft Changelog workflow first."
+            exit 1
+          fi
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "::error::Tag ${VERSION} already exists — this version was already released. Run Draft Changelog to produce a new entry."
             exit 1
           fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-          echo "Creating release PR for: ${VERSION}"
+          echo "Promoting: ${VERSION}"
 
-      - name: Extract latest CHANGELOG entry
+      # No --force. A plain push is refused by git unless it fast-forwards, so
+      # this job cannot rewrite release's history even if the ruleset were off.
+      - name: Promote
+        run: git push origin HEAD:refs/heads/release
+
+      - name: Summary
         run: |
-          # Extract lines from the first ## heading up to (not including) the next one
-          awk '/^## /{found++} found==1{print} found==2{exit}' CHANGELOG.md > /tmp/changelog_entry.txt
-          echo "Changelog entry:"
-          cat /tmp/changelog_entry.txt
-
-      - name: Push release-candidate branch
-        id: candidate
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          BRANCH="release-candidate/${VERSION}"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin "HEAD:refs/heads/${BRANCH}" --force
-          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
-
-      - name: Create release PR
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          ENTRY=$(cat /tmp/changelog_entry.txt)
-          CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/blob/main/CHANGELOG.md"
-
-          gh pr create \
-            --base release \
-            --head "${{ steps.candidate.outputs.branch }}" \
-            --title "Release ${VERSION}" \
-            --body "$(printf '%s\n\n---\n[View full CHANGELOG](%s)' "$ENTRY" "$CHANGELOG_URL")"
+          {
+            echo "### Promoted to \`release\`"
+            echo
+            echo "\`release\` is now at \`$(git rev-parse --short HEAD)\` (**${{ steps.version.outputs.version }}**)."
+            echo
+            echo "Tag Release will tag it and publish the GitHub Release."
+            echo "Cloudflare Pages deploys production from \`release\`."
+          } >> "$GITHUB_STEP_SUMMARY"
