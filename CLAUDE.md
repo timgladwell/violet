@@ -41,7 +41,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 ### Pushing to production
 * Production publishing happens when the `Cut Release` GitHub Action **fast-forwards** `release` to a commit already on `main`. The process is assisted by Github actions:
   * All releases have a CHANGELOG. Generation of the changelog is assisted by a Github action.
-  * All pushes to `release` branch are tagged, and a GitHub Release with the changelog entry is published, for easy reverts. Both are assisted by a Github action.
+  * `Cut Release` also tags the promoted commit and publishes a GitHub Release with the changelog entry, for easy reverts — one workflow owns promote, tag and release.
   * `release` is never merged into — not by PR, not by hand. It is a pointer that only moves forward to a reviewed, signed commit from `main`, which is what keeps it a plain ancestor of `main`. See @docs/runbook.md for why this matters.
   * `main` requires a PR (merge commits only) and signed commits. Re-sign a branch with `git rebase -f -S main` before merging, or the merge button is blocked.
 * See @docs/runbook.md for the full cut-release sequence.
