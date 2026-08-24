@@ -1,5 +1,16 @@
 # Changelog
 
+## v2026.08.24
+_Released 2026-08-24_
+
+### Changes
+- PR #144: Changelog: v2026.08.24
+- PR #136: Serve staging in-zone, and make the Cloudflare config recoverable
+- PR #134: Expand thin meta descriptions, clarify booking copy, emit JSON-LD on staging
+- PR #132: Fix apex URL in docs, drop /quiz/ from sitemap
+- PR #110: Fix draft-changelog: one line per PR, include changelog PRs
+- PR #133: Fast-forward release instead of merging a release PR
+
 ## v2026.07.29
 _Released 2026-07-29_
 
