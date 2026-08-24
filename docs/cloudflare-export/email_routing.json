@@ -1,0 +1,17 @@
+{
+  "result": {
+    "id": "df4711b6c10cf3043898e21d6c23f007",
+    "tag": "df4711b6c10cf3043898e21d6c23f007",
+    "name": "ontariomenopauseclinic.ca",
+    "enabled": false,
+    "created": "2026-04-16T16:59:07.969171Z",
+    "modified": "2026-04-16T16:59:07.969171Z",
+    "skip_wizard": false,
+    "support_subaddress": false,
+    "synced": true,
+    "admin_locked": false,
+    "status": "unconfigured"
+  },
+  "success": true,
+  "errors": []
+}

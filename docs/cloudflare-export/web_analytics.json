@@ -1,0 +1,31 @@
+{
+  "result": [
+    {
+      "id_please_delete": 0,
+      "site_tag": "ccb8bd5523d64ab291bb4e946f027990",
+      "site_token": "5e2c4246271c454aa38adfc0fda628ce",
+      "created": "2026-04-13T00:47:05.201885Z",
+      "snippet": "<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{\"token\": \"5e2c4246271c454aa38adfc0fda628ce\"}'></script><!-- End Cloudflare Web Analytics -->",
+      "auto_install": true,
+      "ruleset": {
+        "zone_tag": "df4711b6c10cf3043898e21d6c23f007",
+        "zone_name": "ontariomenopauseclinic.ca",
+        "enabled": true,
+        "id": "ff8575a4-d2fa-4b88-bd2e-65593cc431ad",
+        "lite": true
+      }
+    },
+    {
+      "id_please_delete": 0,
+      "site_tag": "d11778ebdc964990883b8d10ca64eb97",
+      "site_token": "b4a8aa8f31b84b6ea42e130636ed3e7a",
+      "host": "(violet-6qt.pages.dev|ontariomenopauseclinic.ca|staging.ontariomenopauseclinic.ca)$",
+      "created": "2026-07-26T04:31:57.774171Z",
+      "snippet": "<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{\"token\": \"b4a8aa8f31b84b6ea42e130636ed3e7a\"}'></script><!-- End Cloudflare Web Analytics -->",
+      "is_host_regex": true,
+      "auto_install": false
+    }
+  ],
+  "success": true,
+  "errors": null
+}
