@@ -1,0 +1,77 @@
+{
+  "result": {
+    "id": "df4711b6c10cf3043898e21d6c23f007",
+    "name": "ontariomenopauseclinic.ca",
+    "status": "active",
+    "paused": false,
+    "type": "full",
+    "development_mode": 0,
+    "name_servers": [
+      "dax.ns.cloudflare.com",
+      "demi.ns.cloudflare.com"
+    ],
+    "original_name_servers": null,
+    "original_registrar": null,
+    "original_dnshost": null,
+    "modified_on": "2026-04-13T00:47:05.168747Z",
+    "created_on": "2026-04-13T00:46:57.483405Z",
+    "activated_on": "2026-04-13T00:47:05.033125Z",
+    "vanity_name_servers": [],
+    "vanity_name_servers_ips": null,
+    "meta": {
+      "step": 4,
+      "custom_certificate_quota": 0,
+      "page_rule_quota": 3,
+      "phishing_detected": false
+    },
+    "owner": {
+      "id": null,
+      "type": "user",
+      "email": null
+    },
+    "account": {
+      "id": "e25977153515229877c7598241ea95af",
+      "name": "Amarsh04@hotmail.com's Account"
+    },
+    "tenant": {
+      "id": null,
+      "name": null
+    },
+    "tenant_unit": {
+      "id": null
+    },
+    "permissions": [
+      "#zone:read",
+      "#zone_settings:read",
+      "#dns_records:read",
+      "#waf:read",
+      "#page_shield:read",
+      "#zone_versioning:read",
+      "#api_gateway:read",
+      "#zaraz:read",
+      "#web3:read",
+      "#healthchecks:read",
+      "#waitingroom:read",
+      "#access:read",
+      "#ssl:read",
+      "#worker:read",
+      "#logs:read",
+      "#lb:read",
+      "#analytics:read"
+    ],
+    "plan": {
+      "id": "0feeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Free Website",
+      "price": 0,
+      "currency": "USD",
+      "frequency": "",
+      "is_subscribed": false,
+      "can_subscribe": false,
+      "legacy_id": "free",
+      "legacy_discount": false,
+      "externally_managed": false
+    }
+  },
+  "success": true,
+  "errors": []
+}

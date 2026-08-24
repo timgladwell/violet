@@ -1,0 +1,48 @@
+{
+  "result": [
+    {
+      "name": "violet",
+      "subdomain": "violet-6qt.pages.dev",
+      "production_branch": "release",
+      "created_on": "2026-04-16T00:36:49.360165Z",
+      "build_config": {
+        "build_command": "bash build.sh",
+        "destination_dir": "public",
+        "root_dir": "site",
+        "web_analytics_tag": "d11778ebdc964990883b8d10ca64eb97",
+        "web_analytics_token": "b4a8aa8f31b84b6ea42e130636ed3e7a"
+      },
+      "domains": [
+        "violet-6qt.pages.dev",
+        "ontariomenopauseclinic.ca",
+        "staging.ontariomenopauseclinic.ca"
+      ],
+      "deployment_configs": {
+        "preview": {
+          "compatibility_date": "2026-04-16",
+          "compatibility_flags": [],
+          "build_image_major_version": 3,
+          "env_var_names": [
+            "HUGO_PARAMS_BOOKINGURL",
+            "HUGO_PARAMS_INFOCONTACTEMAIL",
+            "HUGO_PARAMS_MAINTENANCEMODE",
+            "HUGO_PARAMS_PRIVACYCONTACTEMAIL",
+            "HUGO_VERSION"
+          ]
+        },
+        "production": {
+          "compatibility_date": "2026-04-16",
+          "compatibility_flags": [],
+          "build_image_major_version": 3,
+          "env_var_names": [
+            "HUGO_PARAMS_BOOKINGURL",
+            "HUGO_PARAMS_INFOCONTACTEMAIL",
+            "HUGO_PARAMS_MAINTENANCEMODE",
+            "HUGO_PARAMS_PRIVACYCONTACTEMAIL",
+            "HUGO_VERSION"
+          ]
+        }
+      }
+    }
+  ]
+}

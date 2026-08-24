@@ -1,0 +1,24 @@
+{
+  "result": [
+    {
+      "id": "0fe458e44e1544f0b2347b87ae809ff4",
+      "tag": "0fe458e44e1544f0b2347b87ae809ff4",
+      "name": "",
+      "matchers": [
+        {
+          "type": "all"
+        }
+      ],
+      "actions": [
+        {
+          "type": "drop"
+        }
+      ],
+      "enabled": false,
+      "priority": 2147483647,
+      "source": "api"
+    }
+  ],
+  "success": true,
+  "errors": []
+}

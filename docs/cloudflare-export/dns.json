@@ -1,0 +1,201 @@
+{
+  "result": [
+    {
+      "id": "1d6188d15cfddf648dc82c2b1e2049b2",
+      "name": "www.ontariomenopauseclinic.ca",
+      "type": "A",
+      "content": "192.0.2.1",
+      "proxiable": true,
+      "proxied": true,
+      "ttl": 1,
+      "settings": {},
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-08-24T01:31:49.051174Z",
+      "modified_on": "2026-08-24T01:31:49.051174Z"
+    },
+    {
+      "id": "48431d8fc01183a3fd9ece080001c250",
+      "name": "4c2a2c0a2413e7ec9186152562a7c3d7.ontariomenopauseclinic.ca",
+      "type": "CNAME",
+      "content": "verify.bing.com",
+      "proxiable": true,
+      "proxied": false,
+      "ttl": 1,
+      "settings": {
+        "flatten_cname": false
+      },
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-07-22T17:07:27.3853Z",
+      "modified_on": "2026-07-22T17:08:26.090139Z"
+    },
+    {
+      "id": "c8660d0be841af6a25ca5efa80542e01",
+      "name": "autodiscover.ontariomenopauseclinic.ca",
+      "type": "CNAME",
+      "content": "autodiscover.outlook.com",
+      "proxiable": true,
+      "proxied": false,
+      "ttl": 3600,
+      "settings": {
+        "flatten_cname": false
+      },
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-04-16T17:47:32.717225Z",
+      "modified_on": "2026-04-16T17:47:32.717225Z"
+    },
+    {
+      "id": "462fb7c14369d30ea87a5c531480b1c0",
+      "name": "ontariomenopauseclinic.ca",
+      "type": "CNAME",
+      "content": "violet-6qt.pages.dev",
+      "proxiable": true,
+      "proxied": true,
+      "ttl": 1,
+      "settings": {
+        "flatten_cname": false
+      },
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-04-16T00:37:53.509239Z",
+      "modified_on": "2026-04-16T00:37:53.509239Z"
+    },
+    {
+      "id": "6e695d8f9fbca1b1d26967476c3b61ee",
+      "name": "selector1._domainkey.ontariomenopauseclinic.ca",
+      "type": "CNAME",
+      "content": "selector1-ontariomenopauseclinic-ca._domainkey.ontariomenopauseclinic.a-v1.dkim.mail.microsoft",
+      "proxiable": true,
+      "proxied": false,
+      "ttl": 1,
+      "settings": {
+        "flatten_cname": false
+      },
+      "meta": {},
+      "comment": "Microsoft DKIM requirement",
+      "tags": [],
+      "created_on": "2026-04-17T05:31:29.897926Z",
+      "modified_on": "2026-04-17T05:33:57.042925Z",
+      "comment_modified_on": "2026-04-17T05:33:57.042925Z"
+    },
+    {
+      "id": "a512f6d2be181aef064079f3371cb904",
+      "name": "selector2._domainkey.ontariomenopauseclinic.ca",
+      "type": "CNAME",
+      "content": "selector2-ontariomenopauseclinic-ca._domainkey.ontariomenopauseclinic.a-v1.dkim.mail.microsoft",
+      "proxiable": true,
+      "proxied": false,
+      "ttl": 1,
+      "settings": {
+        "flatten_cname": false
+      },
+      "meta": {},
+      "comment": "Microsoft DKIM requirement",
+      "tags": [],
+      "created_on": "2026-04-17T05:31:57.832862Z",
+      "modified_on": "2026-04-17T05:34:26.805798Z",
+      "comment_modified_on": "2026-04-17T05:34:26.805798Z"
+    },
+    {
+      "id": "f3451adfabb47a5323da38077007e0b1",
+      "name": "staging.ontariomenopauseclinic.ca",
+      "type": "CNAME",
+      "content": "staging.violet-6qt.pages.dev",
+      "proxiable": true,
+      "proxied": true,
+      "ttl": 1,
+      "settings": {
+        "flatten_cname": false
+      },
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-08-24T01:06:28.744665Z",
+      "modified_on": "2026-08-24T01:18:10.95395Z"
+    },
+    {
+      "id": "85554692def8e5a0965ae3a4a5942600",
+      "name": "ontariomenopauseclinic.ca",
+      "type": "MX",
+      "content": "ontariomenopauseclinic-ca.mail.protection.outlook.com",
+      "priority": 0,
+      "proxiable": false,
+      "proxied": false,
+      "ttl": 3600,
+      "settings": {},
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-04-16T17:47:32.711695Z",
+      "modified_on": "2026-04-16T17:47:32.711695Z"
+    },
+    {
+      "id": "fbf0ac88d2226b32c1f0bbb758b08866",
+      "name": "_dmarc.ontariomenopauseclinic.ca",
+      "type": "TXT",
+      "content": "\"v=DMARC1; p=quarantine; rua=mailto:cea6b6a7fa294e928c7497395cfd0d92@dmarc-reports.cloudflare.net\"",
+      "proxiable": false,
+      "proxied": false,
+      "ttl": 1,
+      "settings": {},
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-04-17T01:07:50.284279Z",
+      "modified_on": "2026-04-17T01:09:11.613974Z"
+    },
+    {
+      "id": "b3bf11cc282859f9af951a70d43286b0",
+      "name": "ontariomenopauseclinic.ca",
+      "type": "TXT",
+      "content": "\"google-site-verification=tODX81MrmffD_AQW5F5VM8bT_Rvyh8wagwtazeut6TE\"",
+      "proxiable": false,
+      "proxied": false,
+      "ttl": 3600,
+      "settings": {},
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-07-22T17:03:33.400517Z",
+      "modified_on": "2026-07-22T17:03:33.400517Z"
+    },
+    {
+      "id": "b81d7c5c6fefabaab6083930a65e28fa",
+      "name": "ontariomenopauseclinic.ca",
+      "type": "TXT",
+      "content": "\"v=spf1 include:spf.protection.outlook.com ~all\"",
+      "proxiable": false,
+      "proxied": false,
+      "ttl": 3600,
+      "settings": {},
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-04-16T17:47:32.721423Z",
+      "modified_on": "2026-04-16T17:47:32.721423Z"
+    },
+    {
+      "id": "1e2a7836b5e976597fa1f0df22e911b1",
+      "name": "ontariomenopauseclinic.ca",
+      "type": "TXT",
+      "content": "\"MS=ms74690258\"",
+      "proxiable": false,
+      "proxied": false,
+      "ttl": 3600,
+      "settings": {},
+      "meta": {},
+      "comment": null,
+      "tags": [],
+      "created_on": "2026-04-16T17:42:30.070083Z",
+      "modified_on": "2026-04-16T17:42:30.070083Z"
+    }
+  ],
+  "success": true,
+  "errors": []
+}
