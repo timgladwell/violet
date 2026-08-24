@@ -16,6 +16,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 | `./validate.sh` | Full validation suite: build + environment checks + markdown lint + a11y. Starts the dev server automatically if needed, stops it when done. |
 | `./check-environments.sh` | Builds development/staging/production (staging and production via `site/build.sh`, simulating Cloudflare's `CF_PAGES_BRANCH`) and asserts each produces the expected output. Catches a typo'd `--environment` value before it ships. Runs in CI on every PR (`.github/workflows/check-environments.yml`). |
 | `./deploy-staging.sh <slug>` | Push current branch to a staging environment. |
+| `./export-cloudflare.sh` | Export the live Cloudflare config to `docs/cloudflare-export/` (read-only API token required). Cloudflare holds configuration this repo cannot reproduce; the export is the record to rebuild from. Run it after **any** Cloudflare change and commit the diff — `git status` afterwards is the drift check. |
 
 * **Before pushing a PR**, run `./validate.sh` and fix any failures.
 * **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
@@ -50,7 +51,8 @@ All local development is managed through these scripts. Do not construct raw `hu
 
 * Staging publishing happens when any code is pushed to a remote branch matching the `staging*` pattern.
 * Use `./deploy-staging.sh <slug>` to push all commits on the local branch to the named local, then remote, staging branch (e.g. `./deploy-staging.sh 4` deploys to `staging4`). Use the `slug` value provided by the user.
-* Staging site is published at `https://staging<slug>.violet-6qt.pages.dev/`
+* The default staging slot (`./deploy-staging.sh` with no slug) is published **in-zone** at `https://staging.ontariomenopauseclinic.ca/`, so it inherits the zone's Cloudflare settings and behaves like production.
+* Numbered slots are published at `https://staging<slug>.violet-6qt.pages.dev/`. These sit outside the zone, so zone-level features (Cloudflare Fonts, cache rules, redirect rules) do **not** apply - use them for UX comparisons, not for verifying anything zone-dependent. See @docs/cloudflare-config.md.
 
 ## Project Context and Guiding Principles.
 

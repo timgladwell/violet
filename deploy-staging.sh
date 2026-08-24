@@ -10,7 +10,8 @@
 #   site/build.sh checks $CF_PAGES_BRANCH and runs Hugo with --environment staging
 #   on any branch matching staging*, which drives the staging banner, noindex,
 #   and maintenance-mode bypass (see baseof.html, robots.txt) off hugo.Environment.
-#   baseURL is set dynamically from $CF_PAGES_URL so each slot gets its own URL.
+#   The default `staging` slot is served in-zone and takes its baseURL from
+#   config/staging/hugo.toml; numbered slots use the per-deployment $CF_PAGES_URL.
 #
 # USAGE:
 #   ./deploy-staging.sh              — push current branch to staging
@@ -48,8 +49,16 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   exit 1
 fi
 
-# Cloudflare Pages serves each branch at <branch-name>.<project>.pages.dev
-STAGING_URL="https://${TARGET_BRANCH}.violet-6qt.pages.dev/"
+# The default `staging` slot is served in-zone, so it gets the zone's settings
+# (Cloudflare Fonts, cache rules) and behaves like production. Numbered slots
+# stay on pages.dev, which is outside the zone — fine for comparing UX concepts,
+# but not for anything that depends on zone-level behaviour.
+# See docs/cloudflare-config.md.
+if [[ -z "$SLUG" ]]; then
+  STAGING_URL="https://staging.ontariomenopauseclinic.ca/"
+else
+  STAGING_URL="https://${TARGET_BRANCH}.violet-6qt.pages.dev/"
+fi
 
 echo "Branch : $CURRENT_BRANCH"
 echo "Commit : $CURRENT_SHA  $(git log -1 --pretty=%s)"
