@@ -2,8 +2,8 @@
 
 ## Cutting a new release
 
-Publishing to production happens by pushing a version tag, produced by three
-GitHub Actions run in sequence. All are in `.github/workflows/`.
+Publishing to production happens through two GitHub Actions run in sequence.
+Both are in `.github/workflows/`.
 
 1. **Draft Changelog** (`draft-changelog.yml`) — run manually from the Actions
    tab. Computes the next version (`vYYYY.MM.DD[.N]`), diffs `main` against the
@@ -17,20 +17,21 @@ GitHub Actions run in sequence. All are in `.github/workflows/`.
    `./deploy-staging.sh`. Reads `CHANGELOG.md` from the target commit (`main`
    HEAD by default; pass the `ref` input to promote an earlier `main` commit
    if a longer-running feature is mid-flight on `main`), then **fast-forwards
-   `release` to that exact commit**. It refuses to run unless you confirm the
-   `verified_on_staging` input, the commit is on `main`, `release` is an
+   `release` to that exact commit**, tags it, and publishes a GitHub Release
+   with the changelog entry as its notes. It refuses to run unless you confirm
+   the `verified_on_staging` input, the commit is on `main`, `release` is an
    ancestor of it, and the version's tag doesn't already exist. There is no
    release PR and no `release-candidate` branch — see below.
 
-3. **Tag Release** (`tag-release.yml`) — fires automatically on push to
-   `release`. Reads the version from `CHANGELOG.md` on `release`, creates and
-   pushes the `vX.X.X` tag, and publishes a GitHub Release with the changelog
-   entry as its notes. Step 2's push is the point the new version goes live
-   (Cloudflare Pages deploys production from `release`) — this step just
-   records it.
-
 Sequence: **Draft Changelog → merge to main → verify on staging → Cut Release
-→ tag + GitHub Release created automatically → production deploys.**
+→ production deploys, tagged, with a GitHub Release.**
+
+Tagging is part of Cut Release rather than a separate workflow triggered by the
+push to `release`. GitHub does not trigger workflows from pushes made with the
+default `GITHUB_TOKEN`, so a tag-on-push workflow silently never fires — the
+promotion succeeds, production updates, the run goes green, and only the tag and
+GitHub Release are missing. That is the revert path, so its absence is invisible
+until it is needed ([#145](https://github.com/timgladwell/violet/issues/145)).
 
 ### Why `release` is fast-forwarded, not merged
 

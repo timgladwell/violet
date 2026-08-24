@@ -1,7 +1,8 @@
 name: Cut Release
 
-# Fast-forwards `release` to a commit already on `main`, which is how
-# production gets changes that have been verified on staging.
+# Promotes a commit already on `main` to production: fast-forwards `release`
+# to it, tags it, and publishes the GitHub Release. One workflow owns the whole
+# sequence - see the note above the tagging step for why.
 #
 # Fast-forward, not a PR merge: it moves the branch pointer to the exact commit
 # already on `main`, preserving its SHA and its signature. That is what stops
@@ -110,13 +111,41 @@ jobs:
       - name: Promote
         run: git push origin HEAD:refs/heads/release
 
+      # Tagging lives here rather than in a workflow triggered by the push to
+      # `release`. GitHub does not trigger workflows from pushes made with the
+      # default GITHUB_TOKEN - an anti-recursion safeguard - so a separate
+      # tag-on-push workflow never fires and the release ships untagged while
+      # this run still reports success. That is exactly what happened to
+      # v2026.08.24 (#145). One workflow owning promote-tag-release has no
+      # cross-workflow trigger to be silently suppressed.
+      - name: Tag the release
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION" HEAD
+          git push origin "$VERSION"
+          echo "Tagged $(git rev-parse --short HEAD) as $VERSION"
+
+      - name: Publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Lines from the first ## heading up to (not including) the next one.
+          awk '/^## /{found++} found==1{print} found==2{exit}' CHANGELOG.md > /tmp/changelog_entry.txt
+          cat /tmp/changelog_entry.txt
+          gh release create "${{ steps.version.outputs.version }}" --notes-file /tmp/changelog_entry.txt
+
       - name: Summary
         run: |
+          VERSION="${{ steps.version.outputs.version }}"
           {
-            echo "### Promoted to \`release\`"
+            echo "### Released **${VERSION}**"
             echo
-            echo "\`release\` is now at \`$(git rev-parse --short HEAD)\` (**${{ steps.version.outputs.version }}**)."
+            echo "\`release\` is now at \`$(git rev-parse --short HEAD)\`, tagged \`${VERSION}\`,"
+            echo "with a GitHub Release published from the CHANGELOG entry."
             echo
-            echo "Tag Release will tag it and publish the GitHub Release."
             echo "Cloudflare Pages deploys production from \`release\`."
           } >> "$GITHUB_STEP_SUMMARY"
