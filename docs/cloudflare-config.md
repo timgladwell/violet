@@ -22,6 +22,7 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | 2026-07-28 | `www`-to-apex Redirect Rule added, after Search Console flagged duplicate `www` content ([#124](https://github.com/timgladwell/violet/issues/124)). |
 | 2026-08-24 | `www` removed from the Pages custom domains; removing it also deleted its DNS record, replaced by a proxied A record to `192.0.2.1`. |
 | 2026-08-24 | `staging.ontariomenopauseclinic.ca` added as an in-zone staging hostname, so staging inherits zone-level features that `*.pages.dev` cannot. |
+| 2026-08-24 | Brand fonts self-hosted and preloaded ([#139](https://github.com/timgladwell/violet/issues/139)). Cloudflare Fonts is still on but now has nothing to rewrite; its inline `font-display: swap` is gone with it. |
 
 ---
 
@@ -119,7 +120,7 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | `http2` | `on` | Not editable |
 | `browser_cache_ttl` | `14400` (4 hours) | |
 | `rocket_loader` | `off` | Cloudflare's async JS loader — off is appropriate for a Hugo static site |
-| `fonts` (Speed → Optimization → Fonts) | **on** | Rewrites Google Fonts requests (`fonts.googleapis.com`/`fonts.gstatic.com`) to serve from the same origin via Cloudflare's edge, removing the extra third-party DNS/TLS hops. Enabled 2026-07-28 in response to a PageSpeed Insights finding — see `site/layouts/partials/fonts.html` for the paired non-blocking `<link>` change. |
+| `fonts` (Speed → Optimization → Fonts) | **on**, but inert | Rewrites Google Fonts requests (`fonts.googleapis.com`/`fonts.gstatic.com`) to serve from the same origin via Cloudflare's edge. Enabled 2026-07-28. The site stopped using Google Fonts in [#139](https://github.com/timgladwell/violet/issues/139) — the brand fonts are self-hosted and preloaded from `site/assets/fonts/` — so there is nothing left for this setting to rewrite. |
 
 `min_tls_version` is `1.0`; raising it to `1.2` is tracked in
 [#143](https://github.com/timgladwell/violet/issues/143).

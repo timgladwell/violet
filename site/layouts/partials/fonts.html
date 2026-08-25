@@ -1,6 +1,54 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-{{/* Loaded blocking, deliberately: the brand fonts must never flash-swap (see #126 discussion).
-     Cloudflare's Fonts feature (docs/cloudflare-config.md) serves these same-origin from the
-     edge in production, keeping the blocking cost small without introducing layout shift. */}}
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+{{/* Self-hosted brand fonts (#139).
+
+     The site has almost no imagery, so the fonts carry the presentation and must
+     never render as a fallback face. That rules out font-display: swap/optional.
+     Here: font-display: block plus a preload of the two upright faces, so the
+     block window should be over before first paint.
+
+     Google Fonts is not used at all any more — Cloudflare Fonts rewrote the
+     <link> into inline CSS carrying font-display: swap regardless of how it was
+     written, and its /cf-fonts/ URLs carry a version Cloudflare bumps, so they
+     cannot be safely preloaded. Fingerprinted, self-hosted URLs can be.
+
+     Latin subset only (drops cyrillic/vietnamese). Variable fonts, so one file
+     per face covers every weight the CSS asks for.
+
+     Downloaded 2026-08-24 from Google Fonts: DM Sans v17, Playfair Display v40.
+     These are static assets, not a dependency — re-download only for a glyph bug
+     we actually hit or missing coverage, never on a schedule (#139).
+
+     The @font-face rules live here rather than in main.css because they need the
+     fingerprinted RelPermalinks, which plain CSS cannot template. This partial is
+     their single point of definition; main.css only references --sans/--serif. */}}
+
+{{ $dmSans          := resources.Get "fonts/dm-sans-latin-var.woff2" | fingerprint }}
+{{ $playfair        := resources.Get "fonts/playfair-display-latin-var.woff2" | fingerprint }}
+{{ $playfairItalic  := resources.Get "fonts/playfair-display-latin-var-italic.woff2" | fingerprint }}
+
+<link rel="preload" as="font" type="font/woff2" href="{{ $dmSans.RelPermalink }}" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{{ $playfair.RelPermalink }}" crossorigin>
+{{/* Italic is not above the fold, so it is not preloaded. */}}
+
+<style>
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 100 1000;
+    font-display: block;
+    src: url({{ $dmSans.RelPermalink }}) format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: block;
+    src: url({{ $playfair.RelPermalink }}) format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: italic;
+    font-weight: 400 900;
+    font-display: block;
+    src: url({{ $playfairItalic.RelPermalink }}) format('woff2');
+  }
+</style>
