@@ -30,7 +30,15 @@ ul, ol { list-style: none; }
 
   /* Typography */
   --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --sans:  'DM Sans', system-ui, -apple-system, sans-serif;
+  /* One fallback, not a per-platform lottery. Arial ships on macOS, iOS/iPadOS
+     and Windows — so it is a real face on every platform most of this site's
+     traffic comes from — and is aliased to a metric-compatible face elsewhere
+     (Liberation Sans on Linux, Roboto on Android). That gives a single fallback
+     appearance to check rather than four we would never all see. Closer
+     geometric faces exist per platform (Avenir Next on Apple), but picking them
+     means the fallback looks different depending on who is visiting.
+     Only ever seen if the self-hosted font misses the ~3s block window (#139). */
+  --sans:  'DM Sans', Arial, sans-serif;
 
   /* Layout */
   --container:        1160px;
