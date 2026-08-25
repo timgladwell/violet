@@ -1518,7 +1518,15 @@ p:last-child { margin-bottom: 0; }
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }
-  .about-preview__photo img { height: 380px; }
+  /* Single column: the photo would stretch to the full container width. A
+     fixed height then crops the portrait to a letterbox strip across the
+     eyes, so hold the portrait ratio and cap the width instead. Width is
+     explicit rather than max-width because auto inline margins would make
+     the box shrink-to-fit, collapsing the image's `width: 100%` to zero. */
+  .about-preview__photo {
+    width: min(360px, 100%);
+  }
+  .about-preview__photo img { height: auto; aspect-ratio: 4 / 5; }
 }
 
 @media (max-width: 800px) {
