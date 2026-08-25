@@ -1,5 +1,14 @@
 # Changelog
 
+## v2026.08.25
+_Released 2026-08-25_
+
+### Changes
+- PR #152: Changelog: v2026.08.25
+- PR #148: Self-host brand fonts with preload (#139)
+- PR #150: fix: keep Andrea's headshot portrait below the 860px breakpoint
+- PR #146: Fold tagging into Cut Release
+
 ## v2026.08.24
 _Released 2026-08-24_
 
