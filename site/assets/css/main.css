@@ -187,17 +187,6 @@ p:last-child { margin-bottom: 0; }
 }
 .btn--outline-light:hover { background: rgba(255,255,255,0.12); border-color: var(--white); }
 
-/* ── Staging banner ─────────────────────────────────────────── */
-.staging-banner {
-  background: var(--ink);
-  color: var(--white);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-align: center;
-  padding: 0.5rem 1.5rem;
-}
-
 /* ── Navigation ─────────────────────────────────────────────── */
 .nav {
   position: sticky;
@@ -1917,14 +1906,26 @@ p:last-child { margin-bottom: 0; }
    ============================================ */
 
 .staging-banner {
+  /* Amber rather than a brand colour, and deliberately not a design token:
+     this is a warning that the page is not live, so it should not look like
+     part of the site. */
   background: #7A4F00;
   color: #FFF8E1;
   text-align: center;
   padding: 0.5rem 1rem;
   font-family: var(--sans);
   font-size: 0.8125rem;
+  font-weight: 600;
   letter-spacing: 0.01em;
   position: sticky;
   top: 0;
   z-index: 200;
+}
+
+.staging-banner__build {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
 }

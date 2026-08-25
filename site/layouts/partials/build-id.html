@@ -1,0 +1,23 @@
+{{/* Build identifier: which release, which commit, which environment, which build.
+
+     Single point of definition — rendered as <meta name="build"> on every page
+     (baseof.html) and shown in the staging banner. Returns a string; call with
+     {{ partial "build-id.html" . }}.
+
+     buildSha and buildVersion are exported by site/build.sh, which is the only
+     place that knows what is being deployed. They come through HUGO_PARAMS_*
+     rather than Hugo's getenv, which is allowlisted to ^HUGO_ names by default.
+     Local builds have neither, hence the "dev"/"local" fallbacks.
+
+     The timestamp matters as well as the SHA: a maintenance-mode toggle is a
+     "Retry deployment" of the same commit (docs/runbook.md), so the SHA alone
+     cannot distinguish one from the other.
+
+     The version is the newest entry in CHANGELOG.md. On `release` that is the
+     released version; on main or staging it is the last release the commit sits
+     after — which the SHA disambiguates. */}}
+{{- $sha := default "" .Site.Params.buildSha -}}
+{{- $short := "local" -}}
+{{- if $sha }}{{ $short = substr $sha 0 7 }}{{ end -}}
+{{- $version := default "dev" .Site.Params.buildVersion -}}
+{{- return (printf "%s | %s | %s | %s" $version $short hugo.Environment (now.UTC.Format "2006-01-02T15:04Z")) -}}
