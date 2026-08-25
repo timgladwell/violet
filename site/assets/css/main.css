@@ -1928,3 +1928,11 @@ p:last-child { margin-bottom: 0; }
   top: 0;
   z-index: 200;
 }
+
+.staging-banner__build {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+}

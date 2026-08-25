@@ -22,6 +22,19 @@
 
 set -euo pipefail
 
+# Build identifier, surfaced as <meta name="build"> on every page and in the
+# staging banner so a deployed page can be traced back to an exact commit.
+#
+# Exported as HUGO_PARAMS_* rather than read in the template with getenv, which
+# Hugo allowlists to ^HUGO_ names by default — getenv "CF_PAGES_COMMIT_SHA"
+# would silently return empty. These are derived here rather than configured in
+# the Cloudflare dashboard, so there is nothing to keep in sync across the
+# Production and Preview scopes.
+#
+# CHANGELOG.md is at the repo root; this script runs from site/.
+export HUGO_PARAMS_BUILDSHA="${CF_PAGES_COMMIT_SHA:-}"
+export HUGO_PARAMS_BUILDVERSION="$(sed -n 's/^## \(v[0-9][^ ]*\)$/\1/p' ../CHANGELOG.md | head -1)"
+
 if [[ "${CF_PAGES_BRANCH:-}" == staging* ]]; then
   if [[ "${CF_PAGES_BRANCH:-}" == "staging" ]]; then
     echo "Building for staging (branch: $CF_PAGES_BRANCH, baseURL from config/staging/hugo.toml)"
