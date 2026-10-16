@@ -1,7 +1,7 @@
 {
-  "plugins": ["stylelint-value-no-unknown-custom-properties"],
+  "referenceFiles": ["site/assets/css/main.css"],
   "overrides": [{ "files": ["**/*.html"], "customSyntax": "postcss-html" }],
   "rules": {
-    "csstools/value-no-unknown-custom-properties": [true, { "importFrom": ["site/assets/css/main.css"] }]
+    "no-unknown-custom-properties": true
   }
 }
