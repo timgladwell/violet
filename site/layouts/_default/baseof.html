@@ -16,6 +16,9 @@
   <link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
   <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
+  {{/* Booking CTAs are on every page and the modal only sets the iframe src on
+       click, so pay Avaros's DNS+TLS (90-170ms measured, #140) up front. */}}
+  {{ with .Site.Params.bookingURL }}{{ with urls.Parse . }}{{ if .Host }}<link rel="preconnect" href="{{ .Scheme }}://{{ .Host }}">{{ end }}{{ end }}{{ end }}
 
   <!-- Open Graph -->
   <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
