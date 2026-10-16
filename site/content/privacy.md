@@ -6,7 +6,7 @@ sitemap:
   priority: 0.3
 ---
 **Effective Date:** April 6, 2026  
-**Last Updated:** April 6, 2026
+**Last Updated:** October 16, 2026
 
 At **The Ontario Menopause Clinic**, we are committed to protecting the privacy of our website visitors. This Privacy Policy outlines how we collect, use, disclose, and protect the personal information of individuals who visit and interact with our website.
 
@@ -95,33 +95,23 @@ We may disclose your information for other purposes with your explicit consent.
 
 ## Cookies and Tracking Technologies
 
-We use cookies and similar technologies to enhance your experience.
+Our website does not use cookies for analytics, advertising, or tracking.
 
-### Cookies
+### Analytics
 
-Cookies are small files stored on your device that help us:
+We use Cloudflare Web Analytics to understand, in aggregate, how visitors use our website, such as which pages are visited and how quickly they load. It does not place cookies or similar identifiers on your device, and it is not used to follow you across other websites.
 
-- Maintain website functionality
-- Understand user behavior
-- Improve performance
+### Security Cookies
 
-### Analytics Tools
+Our website is hosted by Cloudflare. If Cloudflare needs to check that a visit comes from a person rather than an automated program, it may place a strictly necessary security cookie on your device. This cookie is used only for that check.
 
-We may use analytics services to understand how visitors use our website. These tools may collect:
+### Online Booking
 
-- IP address
-- Geographic location
-- Pages visited
-- Time spent on pages
+Our online booking form is provided by Avaros, our electronic medical records provider, and is displayed within our website. Avaros may use cookies that the booking form needs in order to work. These are governed by Avaros's own privacy practices.
 
 ### Managing Cookies
 
-You can manage or disable cookies through:
-
-- Our website cookie banner
-- Your browser settings
-
-Please note that disabling cookies may impact website functionality.
+Because we do not use cookies for analytics or tracking, our website does not show a cookie banner. You can block or delete cookies at any time through your browser settings. Blocking the security or booking cookies described above may prevent those features from working.
 
 ## Data Security
 
