@@ -227,21 +227,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--sand-light);
+      background-color: var(--parchment);
       font-family: var(--serif);
     }
 
     .maintenance {
       text-align: center;
-      padding: var(--s-8);
+      /* Vertical only: the heading is held on one line (~350px on phones), so
+         inline padding would overflow narrow viewports. */
+      padding: var(--s-8) 0;
       max-width: 560px;
     }
 
     .maintenance__heading {
-      font-family: var(--font-serif);
+      font-family: var(--serif);
       font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 300;
-      color: var(--black);
+      color: var(--ink);
       line-height: 1.15;
       margin-bottom: var(--s-6);
     }
@@ -249,7 +251,7 @@
     .maintenance__rule {
       width: 40px;
       height: 1px;
-      background-color: var(--pink-mid);
+      background-color: var(--rose-mid);
       margin: var(--s-8) auto;
     }
   </style>
