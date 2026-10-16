@@ -4,19 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import type { Result } from 'axe-core';
 import axeConfig from '../.axe.json';
-
-const PAGES = [
-  '/',
-  '/about/',
-  '/services/',
-  '/what-we-treat/',
-  '/faq/',
-  '/privacy/',
-  '/medical-disclaimer/',
-  '/tos/',
-  '/quiz/',
-  '/book/',
-];
+import { PAGES } from './pages';
 
 interface PageResult {
   path: string;
