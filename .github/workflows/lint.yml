@@ -25,5 +25,5 @@ jobs:
       - name: Lint markdown
         run: npm run lint:md
 
-      - name: Check CSS custom properties are defined
-        run: npm run lint:css-vars
+      - name: Lint CSS
+        run: npm run lint:css

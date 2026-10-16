@@ -4,14 +4,17 @@
   "scripts": {
     "a11y": "playwright test --config a11y/playwright.config.ts",
     "generate:og-image": "node scripts/og-image/generate.mjs",
-    "lint:css-vars": "scripts/check-css-vars.sh",
+    "lint:css": "stylelint \"site/assets/css/**/*.css\" \"site/layouts/**/*.html\"",
     "lint:md": "markdownlint-cli2 \"site/content/**/*.md\"",
     "validate": "./validate.sh"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
     "@playwright/test": "^1.52.0",
-    "markdownlint-cli2": "^0.17.0"
+    "markdownlint-cli2": "^0.17.0",
+    "postcss-html": "^2.0.0",
+    "stylelint": "^17.16.0",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1"
   },
   "allowScripts": {
     "chromedriver@149.0.2": true
