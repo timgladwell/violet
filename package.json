@@ -4,6 +4,7 @@
   "scripts": {
     "a11y": "playwright test --config a11y/playwright.config.ts",
     "generate:og-image": "node scripts/og-image/generate.mjs",
+    "lint:css-vars": "scripts/check-css-vars.sh",
     "lint:md": "markdownlint-cli2 \"site/content/**/*.md\"",
     "validate": "./validate.sh"
   },

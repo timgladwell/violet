@@ -1571,8 +1571,8 @@ p:last-child { margin-bottom: 0; }
    Prose
    ============================================ */
 
-.prose h2 { font-size: 1.625rem; margin-top: var(--s-10); margin-bottom: var(--s-4); }
-.prose p { margin-bottom: var(--s-4); font-size: 1rem; line-height: 1.75; color: #444; }
+.prose h2 { font-size: 1.625rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+.prose p { margin-bottom: 1rem; font-size: 1rem; line-height: 1.75; color: #444; }
 
 /* ============================================
    Utilities
@@ -1631,7 +1631,7 @@ p:last-child { margin-bottom: 0; }
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  transition: background var(--transition), box-shadow var(--transition);
+  transition: background 0.15s, box-shadow 0.15s;
   color: var(--ink);
 }
 
@@ -1642,7 +1642,7 @@ p:last-child { margin-bottom: 0; }
 
 .modal__panel {
   background: #fff;
-  border-radius: var(--radius-lg);
+  border-radius: var(--r-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1670,7 +1670,7 @@ p:last-child { margin-bottom: 0; }
   border: none;
   width: 100%;
   height: min(900px, 80vh);
-  border-radius: var(--radius-lg);
+  border-radius: var(--r-lg);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
 }
 
@@ -1896,7 +1896,7 @@ p:last-child { margin-bottom: 0; }
 .quiz-page {
   width: min(560px, 94vw);
   background: #fff;
-  border-radius: var(--radius-lg);
+  border-radius: var(--r-lg);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   margin: 2rem auto;
 }

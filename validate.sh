@@ -34,6 +34,7 @@ echo "Validating site..."
 step "Build"         hugo build site --source site --environment development --logLevel debug
 step "Environments"  ./check-environments.sh
 step "Markdown lint" npm run lint:md
+step "CSS variables" npm run lint:css-vars
 
 ./dev-server.sh --ci
 STARTED_SERVER=false
