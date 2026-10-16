@@ -22,7 +22,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 * **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
 * **A11y only**: `npm run a11y` (requires dev server running first). One-time setup on a new machine: `npx playwright install chromium`.
 * **Markdown lint only**: `npm run lint:md`.
-* **CSS lint only**: `npm run lint:css` — stylelint over `main.css` and the `<style>` blocks/attributes in `site/layouts`. Currently one rule: every `var(--x)` must be defined (#157).
+* **CSS lint only**: `npm run lint:css` — stylelint (`stylelint.config.mjs`) over `main.css` and the `<style>` blocks/attributes in `site/layouts`. Keep Hugo tags inside CSS quoted (`url("{{ ... }}")`) so the parser sees a string.
 * Hugo version is pinned in `.tool-versions` and used by CI; `dev-server.sh`/`validate.sh` warn (don't fail) if your local `hugo` doesn't match it.
 
 ## Environment variables

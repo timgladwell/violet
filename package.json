@@ -13,7 +13,8 @@
     "@playwright/test": "^1.52.0",
     "markdownlint-cli2": "^0.17.0",
     "postcss-html": "^2.0.0",
-    "stylelint": "^17.16.0"
+    "stylelint": "^17.16.0",
+    "stylelint-config-recommended": "^18.0.0"
   },
   "allowScripts": {
     "chromedriver@149.0.2": true

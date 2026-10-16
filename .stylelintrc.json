@@ -1,7 +1,0 @@
-{
-  "referenceFiles": ["site/assets/css/main.css"],
-  "overrides": [{ "files": ["**/*.html"], "customSyntax": "postcss-html" }],
-  "rules": {
-    "no-unknown-custom-properties": true
-  }
-}
