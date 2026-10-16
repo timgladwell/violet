@@ -1574,6 +1574,8 @@ p:last-child { margin-bottom: 0; }
   .footer__bottom { flex-direction: column; align-items: flex-start; }
   .hero__actions { flex-direction: column; align-items: flex-start; }
   .hero__actions .btn { width: 100%; justify-content: center; }
+  /* Long labels must wrap rather than overflow narrow screens (#151) */
+  .btn { white-space: normal; text-align: center; }
 }
 
 /* ============================================
@@ -1664,6 +1666,7 @@ p:last-child { margin-bottom: 0; }
   position: relative;
   width: min(660px, 96vw);
   height: min(780px, 92vh);
+  height: min(780px, 92dvh);
 }
 
 .modal--booking .modal__frame {
@@ -1735,6 +1738,8 @@ p:last-child { margin-bottom: 0; }
 .modal--quiz .modal__panel {
   width: min(560px, 96vw);
   max-height: 92vh;
+  /* dvh keeps the panel's buttons above iOS Safari's address bar (#114) */
+  max-height: 92dvh;
   overflow-y: auto;
 }
 
