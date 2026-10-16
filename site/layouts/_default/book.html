@@ -13,7 +13,10 @@
 
   <section class="section">
     <div class="container">
-      <iframe class="book-page__frame" title="Book an Appointment" src="{{ .Site.Params.bookingURL | default "#" }}"></iframe>
+      <div class="book-page__wrap">
+        {{ partial "booking-loading.html" . }}
+        <iframe class="book-page__frame" title="Book an Appointment" src="{{ .Site.Params.bookingURL | default "#" }}"></iframe>
+      </div>
     </div>
   </section>
 

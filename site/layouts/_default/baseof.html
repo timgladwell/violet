@@ -325,6 +325,18 @@
     const bookingURL   = bookingModal && bookingModal.dataset.bookingUrl;
     const bookingFrame = bookingModal && bookingModal.querySelector('.modal__frame');
 
+    // Avaros's load event fires once its shell's scripts run, before the app has
+    // fetched availability and painted; it is cross-origin, so real readiness
+    // can't be observed. Hold the loader a beat past load instead (#140).
+    document.querySelectorAll('.booking-loading').forEach(loader => {
+      const frame = loader.parentElement.querySelector('iframe');
+      frame.addEventListener('load', () => {
+        // The modal iframe starts src-less; its about:blank can fire load too
+        if (!frame.getAttribute('src')) return;
+        setTimeout(() => loader.classList.add('is-done'), 600);
+      });
+    });
+
     function openBookingModal() {
       // Close quiz modal first if it was the entry point
       if (quizModal && !quizModal.hidden) { quizModal.hidden = true; if (typeof window.resetQuiz === 'function') window.resetQuiz(); }
