@@ -1574,6 +1574,10 @@ p:last-child { margin-bottom: 0; }
   .footer__bottom { flex-direction: column; align-items: flex-start; }
   .hero__actions { flex-direction: column; align-items: flex-start; }
   .hero__actions .btn { width: 100%; justify-content: center; }
+  /* Tightened so the trust bullets fit on a ~667px-tall phone screen (#114) */
+  .hero { padding-block: 2rem 3rem; }
+  .hero__body { margin-bottom: 1.5rem; }
+  .hero__trust { margin-top: 1.5rem; gap: 0.75rem 1.5rem; }
   /* Long labels must wrap rather than overflow narrow screens (#151) */
   .btn { white-space: normal; text-align: center; }
   /* Two-part labels break between their parts rather than mid-phrase */
@@ -1668,6 +1672,7 @@ p:last-child { margin-bottom: 0; }
   position: relative;
   width: min(660px, 96vw);
   height: min(780px, 92vh);
+  height: min(780px, 92dvh);
 }
 
 .modal--booking .modal__frame {
@@ -1739,6 +1744,8 @@ p:last-child { margin-bottom: 0; }
 .modal--quiz .modal__panel {
   width: min(560px, 96vw);
   max-height: 92vh;
+  /* dvh keeps the panel's buttons above iOS Safari's address bar (#114) */
+  max-height: 92dvh;
   overflow-y: auto;
 }
 
@@ -1959,6 +1966,12 @@ p:last-child { margin-bottom: 0; }
   border-radius: var(--radius-lg);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   margin: 2rem auto;
+}
+
+/* Start the quiz card just below the nav rather than ~80px down (#114) */
+@media (max-width: 480px) {
+  .quiz-page-wrap { padding: 1rem 0.75rem; }
+  .quiz-page { margin-block: 0; }
 }
 
 /* ============================================
