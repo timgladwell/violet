@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "a11y": "playwright test --config a11y/playwright.config.ts",
+    "avaros:measure": "node scripts/measure-avaros.mjs",
     "generate:og-image": "node scripts/og-image/generate.mjs",
     "lint:css": "stylelint \"site/assets/css/**/*.css\" \"site/layouts/**/*.html\"",
     "lint:md": "markdownlint-cli2 \"site/content/**/*.md\"",

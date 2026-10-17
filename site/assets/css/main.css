@@ -1690,9 +1690,22 @@ p:last-child { margin-bottom: 0; }
   display: block;
   border: none;
   width: 100%;
-  height: min(900px, 80vh);
+  /* Floor fits Avaros's landing page (683px tall at phone widths) so its
+     "Book an appointment" button is never hidden below the frame's edge.
+     a11y/booking.spec.ts checks this against measurements of the real page
+     that booking-check.yml refreshes daily (#165). */
+  height: clamp(720px, 80vh, 900px);
   border-radius: var(--radius-lg);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+}
+
+/* Avaros stops shrinking at ~335px wide, so below 335px + the container's
+   1.5rem gutters, run the frame edge to edge rather than cut off the right
+   side of its "Book an appointment" button (#165). */
+@media (max-width: 383px) {
+  .book-page__wrap { margin-inline: -1.5rem; }
+  .book-page__wrap,
+  .book-page__frame { border-radius: 0; }
 }
 
 /* Booking loading overlay (partials/booking-loading.html) */
