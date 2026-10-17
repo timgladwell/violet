@@ -124,6 +124,33 @@ a real regression for a while after a deploy that's actually fine. Purge the
 cache (Caching → Configuration → Purge Everything) and reload before
 assuming the release itself is broken.
 
+## When the Avaros booking page changes size
+
+The booking form on `/book/` (and in the desktop modal) is an iframe of
+Avaros's booking page, whose content is edited in Avaros, not here. If that
+page grows — longer welcome text, a bigger logo — its "Book an appointment"
+button can drop below or past the frame's edge, where phone visitors won't
+find it
+([#165](https://github.com/timgladwell/violet/issues/165)).
+
+The **Booking Check** workflow (`booking-check.yml`) re-measures the real page
+every morning into `a11y/fixtures/avaros-landing.json`, which
+`a11y/booking.spec.ts` uses as a stand-in for the iframe on every test run. On
+any change it opens, or updates, an **"Avaros booking page changed size"** PR:
+
+- **✅ still fits** — review the numbers and merge; nothing else to do.
+- **❌ no longer fits** — the run also fails, which emails you. On the PR's
+  branch, adjust the frame in `site/assets/css/main.css` until the booking
+  tests pass: its height (`.book-page__frame`, or `.modal--booking
+  .modal__panel` for the modal) if the button fell below the bottom edge, or
+  the edge-to-edge breakpoint below it if Avaros's minimum width grew and the
+  button overhangs the right edge. Then merge and cut a release; production
+  shows the hidden button until then.
+
+The job finds the booking URL on production's `/book/`, falling back to
+staging; it fails with an error if both are in maintenance mode. To measure by
+hand: `npm run avaros:measure -- <booking URL>`.
+
 ## Toggle maintenance mode (no deploy required)
 
 Use this to take the production site down (incident, planned downtime) or bring it
