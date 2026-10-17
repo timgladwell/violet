@@ -26,6 +26,16 @@ Both are in `.github/workflows/`.
 Sequence: **Draft Changelog → merge to main → verify on staging → Cut Release
 → production deploys, tagged, with a GitHub Release.**
 
+Verifying on staging includes running the Playwright suite against it:
+
+```sh
+BASE_URL=https://staging.ontariomenopauseclinic.ca npm run a11y
+```
+
+CI builds with the placeholder booking URL, so only a run against staging
+embeds the real Avaros page and can catch its content outgrowing the `/book/`
+frame ([#165](https://github.com/timgladwell/violet/issues/165)).
+
 Tagging is part of Cut Release rather than a separate workflow triggered by the
 push to `release`. GitHub does not trigger workflows from pushes made with the
 default `GITHUB_TOKEN`, so a tag-on-push workflow silently never fires — the

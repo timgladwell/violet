@@ -33,3 +33,32 @@ test.describe('above the fold at 375x667', () => {
     await expect(page.locator('.quiz-page .quiz__disclaimer:visible')).toBeInViewport({ ratio: 1 });
   });
 });
+
+// Phones always land on /book/. The Avaros landing page is ~683px tall at
+// phone widths; a shorter frame hides its "Book an appointment" button below
+// the iframe's edge, behind an inner scroll nobody notices (#165).
+test.describe('/book/ shows the Avaros booking button', () => {
+  // iPhone 16 width; height is Safari's vh there (its 80vh frame measured
+  // ~587px on-device), which Chromium's own chrome-less viewport overstates.
+  test.use({ viewport: { width: 393, height: 734 } });
+
+  test('frame height floor', async ({ page }) => {
+    await page.goto('/book/');
+    const box = await page.locator('.book-page__frame').boundingBox();
+    expect(box!.height).toBeGreaterThanOrEqual(720);
+  });
+
+  // Avaros owns this content, so only a run against real content can catch it
+  // growing: BASE_URL=https://staging.ontariomenopauseclinic.ca npm run a11y
+  test('live Avaros button inside the frame', async ({ page }) => {
+    await page.goto('/book/');
+    const frame = page.locator('.book-page__frame');
+    const src = (await frame.getAttribute('src')) ?? '';
+    test.skip(!src.includes('avaros.ca'), 'placeholder booking URL (CI); run against staging');
+    const button = page.frameLocator('.book-page__frame').getByText(/book an appointment/i);
+    await button.waitFor({ timeout: 20_000 });
+    const f = (await frame.boundingBox())!;
+    const b = (await button.boundingBox())!;
+    expect(b.y + b.height).toBeLessThanOrEqual(f.y + f.height);
+  });
+});
