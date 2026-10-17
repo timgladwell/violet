@@ -150,6 +150,10 @@ down, come back later" signals — fine for short outages, but see
 3. Deployments tab → find the latest production deployment → **Retry deployment**. This reruns the build with the new env var — no git push, no PR.
 4. Once the new deployment is live, **purge the Cloudflare cache** (Caching → Configuration → Purge Everything). The zone's `browser_cache_ttl` is 4 hours (see `docs/cloudflare-config.md`), so without a purge visitors can keep seeing the old state for up to 4 hours.
 
-Local/CI/staging builds always run with `maintenanceMode = false` regardless of
-this env var (see `site/config/development/hugo.toml`, `site/config/staging/hugo.toml`)
-— the env var only affects the Cloudflare Pages production build.
+Every other build defaults to `maintenanceMode = false` (`site/hugo.toml`;
+`site/config/development/hugo.toml` also sets it explicitly), but the env var
+overrides config in **every** environment it is set for, development included.
+Local and CI builds stay off only because nothing sets it there. Setting it in
+Cloudflare's **Preview** scope puts staging deployments into maintenance mode
+too — handy for checking the placeholder on staging, but remove it and
+redeploy afterwards: while it is set, staging can't be used to verify a release.
