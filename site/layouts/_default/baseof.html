@@ -236,10 +236,9 @@
 
     .maintenance {
       text-align: center;
-      /* Vertical only: the heading is held on one line (~350px on phones), so
-         inline padding would overflow narrow viewports. */
-      padding: var(--s-8) 0;
-      max-width: 560px;
+      padding: var(--s-8) var(--s-4);
+      width: 100%;
+      max-width: 640px;
     }
 
     .maintenance__heading {
@@ -249,6 +248,9 @@
       color: var(--ink);
       line-height: 1.15;
       margin-bottom: var(--s-6);
+      /* One line where it fits; on narrow phones wrap into even lines rather
+         than overflowing or leaving "ready." alone (#151). */
+      text-wrap: balance;
     }
 
     .maintenance__rule {
@@ -268,7 +270,7 @@
 
   <main class="maintenance" aria-label="Maintenance">
     <div class="maintenance__rule" role="presentation"></div>
-    <h1 class="maintenance__heading">We&rsquo;re&nbsp;almost&nbsp;ready.</h1>
+    <h1 class="maintenance__heading">We&rsquo;re almost ready.</h1>
     <div class="maintenance__rule" role="presentation"></div>
   </main>
 
