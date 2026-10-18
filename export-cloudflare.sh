@@ -169,6 +169,17 @@ probe "zones/$ZONE_ID/firewall/access_rules/rules" firewall_access.json "firewal
 probe "zones/$ZONE_ID/ssl/certificate_packs" cert_packs.json         "certificate packs"
 probe "zones/$ZONE_ID/custom_certificates"  custom_certs.json        "custom certificates"
 
+# Fields Cloudflare rewrites on its own schedule: Universal SSL renews the cert
+# every ~90 days, and the managed DDoS ruleset is versioned by Cloudflare. Left
+# in, they make every run show a diff, which defeats `git status` as the drift
+# check. Hosts, status and settings stay, so a real change still shows up.
+strip() { # strip <outfile> <jq-filter>
+  [[ -f "$OUT/$1" ]] || return 0
+  jq "$2" "$OUT/$1" > "$OUT/$1.tmp" && mv "$OUT/$1.tmp" "$OUT/$1"
+}
+strip rulesets.json   '(.result[]? | select(.kind=="managed")) |= del(.version, .last_updated)'
+strip cert_packs.json '.result[]? |= (del(.primary_certificate) | .certificates[]? |= del(.id, .uploaded_on, .modified_on, .expires_on))'
+
 echo "== pages"
 ACCOUNT_ID=$(jq -r '.result.account.id // empty' "$OUT/zone.json" 2>/dev/null)
 if [[ -n "$ACCOUNT_ID" ]]; then
