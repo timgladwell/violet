@@ -1,0 +1,154 @@
+name: Booking Check
+
+# Avaros content (e.g. the welcome text on its landing page) is edited in
+# Avaros, outside this repo's release cycle, and can push the "Book an
+# appointment" button out of the booking frame (#165). Daily, re-measure the
+# real page into a11y/fixtures/avaros-landing.json. On any change, run the
+# booking tests against the new measurements and open (or update) a PR with
+# the new fixture, requesting the repo owner's review; if the frame no longer
+# fits, also fail this run, which emails whoever last edited the cron line.
+#
+# PRs opened with GITHUB_TOKEN don't trigger other workflows (see #145), so
+# this job runs the booking tests itself and reports the result in the PR.
+
+on:
+  schedule:
+    - cron: '0 11 * * *' # 07:00 Toronto (EDT), 06:00 (EST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  BRANCH: avaros/landing-measurements
+  FIXTURE: a11y/fixtures/avaros-landing.json
+
+jobs:
+  booking:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v6.0.3
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Find the booking URL
+        # The URL lives in Cloudflare's env vars, not the repo, so read it off
+        # the live /book/ page. Staging is the fallback for when production is
+        # in maintenance mode (no booking frame).
+        id: url
+        run: |
+          for host in ontariomenopauseclinic.ca staging.ontariomenopauseclinic.ca; do
+            url=$(curl -fsSL "https://$host/book/" \
+              | grep -o 'class="book-page__frame"[^>]*src="[^"]*"' \
+              | sed 's/.*src="//; s/"$//; s/&amp;/\&/g' || true)
+            [ -n "$url" ] && break
+          done
+          if [ -z "$url" ]; then
+            echo "::error::No booking URL on production or staging /book/ (both in maintenance mode?)"
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Measure the Avaros landing page
+        id: measure
+        run: |
+          npm run -s avaros:measure -- "${{ steps.url.outputs.url }}" | tee measure.log
+          if grep -qx changed measure.log; then echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Load env
+        if: steps.measure.outputs.changed
+        id: load-env
+        uses: ./.github/actions/load-env
+
+      - name: Setup Hugo
+        if: steps.measure.outputs.changed
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ steps.load-env.outputs.hugo-version }}
+          extended: true
+
+      - name: Run the booking tests against the new measurements
+        if: steps.measure.outputs.changed
+        id: test
+        run: |
+          hugo --source site --environment development
+          python3 -m http.server 8080 --directory site/public &
+          for i in $(seq 1 15); do curl -s http://localhost:8080 > /dev/null && break; sleep 1; done
+          if BASE_URL=http://localhost:8080 npx playwright test --config a11y/playwright.config.ts booking; then
+            echo "fits=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update the measurements PR
+        if: steps.measure.outputs.changed
+        # Commits through the contents API so GitHub signs them; main requires
+        # signed commits. An open PR's branch is added to, never reset, so a
+        # fix pushed to it by hand survives the next run.
+        run: |
+          repo=${{ github.repository }}
+          pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            main=$(gh api "repos/$repo/git/ref/heads/main" --jq .object.sha)
+            gh api -X PATCH "repos/$repo/git/refs/heads/$BRANCH" -f sha="$main" -F force=true >/dev/null 2>&1 \
+              || gh api "repos/$repo/git/refs" -f ref="refs/heads/$BRANCH" -f sha="$main" >/dev/null
+          fi
+          sha=$(gh api "repos/$repo/contents/$FIXTURE?ref=$BRANCH" --jq .sha)
+          gh api -X PUT "repos/$repo/contents/$FIXTURE" \
+            -f message="Update Avaros landing page measurements" \
+            -f content="$(base64 -w0 "$FIXTURE")" -f sha="$sha" -f branch="$BRANCH" >/dev/null
+
+          if [ "${{ steps.test.outputs.fits }}" = "true" ]; then
+            verdict="✅ The booking button still fits inside the frame at every tested size."
+          else
+            verdict="❌ **The booking button no longer fits inside the frame.** Raise the frame height in \`site/assets/css/main.css\` on this branch until the booking tests pass, then merge and release."
+          fi
+          {
+            echo "🤖 *Opened by the Booking Check workflow.*"
+            echo
+            echo "The Avaros booking landing page changed size — most likely its welcome text was edited in Avaros (see #165)."
+            echo
+            echo "$verdict"
+            echo
+            echo '```'
+            grep -v -x -e changed -e unchanged measure.log
+            echo '```'
+            echo
+            echo "Booking tests run: ${{ github.server_url }}/$repo/actions/runs/${{ github.run_id }}"
+          } > body.md
+          # Review request + assignment email the owner on every change, pass or
+          # fail; the failed-run email alone only reaches one person.
+          owner=${{ github.repository_owner }}
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --body-file body.md --add-reviewer "$owner" --add-assignee "$owner"
+          else
+            gh pr create --head "$BRANCH" --base main --title "Avaros booking page changed size" \
+              --body-file body.md --reviewer "$owner" --assignee "$owner"
+          fi
+
+      - name: Fail if the booking button no longer fits
+        if: steps.measure.outputs.changed && steps.test.outputs.fits != 'true'
+        run: |
+          echo "::error::The Avaros booking button no longer fits inside the booking frame. See the measurements PR."
+          exit 1
