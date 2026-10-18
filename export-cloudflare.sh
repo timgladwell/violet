@@ -105,6 +105,8 @@ echo "== zone"
 get "zones/$ZONE_ID"                          zone.json     "zone"
 get "zones/$ZONE_ID/dns_records?per_page=200" dns.json      "dns records"
 get "zones/$ZONE_ID/settings"                 settings.json "zone settings"
+# Cloudflare Fonts is missing from the bulk list above; it only answers on its own path.
+get "zones/$ZONE_ID/settings/fonts"           settings_fonts.json "zone setting: fonts"
 
 echo "== rulesets"
 get "zones/$ZONE_ID/rulesets" rulesets.json "ruleset index"
@@ -168,6 +170,17 @@ probe "zones/$ZONE_ID/workers/routes"       workers_routes.json      "workers ro
 probe "zones/$ZONE_ID/firewall/access_rules/rules" firewall_access.json "firewall access rules"
 probe "zones/$ZONE_ID/ssl/certificate_packs" cert_packs.json         "certificate packs"
 probe "zones/$ZONE_ID/custom_certificates"  custom_certs.json        "custom certificates"
+
+# Fields Cloudflare rewrites on its own schedule: Universal SSL renews the cert
+# every ~90 days, and the managed DDoS ruleset is versioned by Cloudflare. Left
+# in, they make every run show a diff, which defeats `git status` as the drift
+# check. Hosts, status and settings stay, so a real change still shows up.
+strip() { # strip <outfile> <jq-filter>
+  [[ -f "$OUT/$1" ]] || return 0
+  jq "$2" "$OUT/$1" > "$OUT/$1.tmp" && mv "$OUT/$1.tmp" "$OUT/$1"
+}
+strip rulesets.json   '(.result[]? | select(.kind=="managed")) |= del(.version, .last_updated)'
+strip cert_packs.json '.result[]? |= (del(.primary_certificate) | .certificates[]? |= del(.id, .uploaded_on, .modified_on, .expires_on))'
 
 echo "== pages"
 ACCOUNT_ID=$(jq -r '.result.account.id // empty' "$OUT/zone.json" 2>/dev/null)
@@ -278,8 +291,8 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       echo "| Setting | Value |"
       echo "|---------|-------|"
-      jq -r '.result[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level")) |
-        "| `\(.id)` | `\(.value|tostring)` |"' "$OUT/settings.json" | sort
+      jq -rn '[inputs.result] | flatten | .[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level")) |
+        "| `\(.id)` | `\(.value|tostring)` |"' "$OUT/settings.json" "$OUT"/settings_fonts.json | sort
       echo
     fi
   } > "$OUT/SUMMARY.md"

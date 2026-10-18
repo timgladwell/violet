@@ -7,11 +7,9 @@
         "*.ontariomenopauseclinic.ca",
         "ontariomenopauseclinic.ca"
       ],
-      "primary_certificate": "0c026b76-ef45-4b50-8cd2-797a2cf83bd6",
       "status": "active",
       "certificates": [
         {
-          "id": "0c026b76-ef45-4b50-8cd2-797a2cf83bd6",
           "hosts": [
             "*.ontariomenopauseclinic.ca",
             "ontariomenopauseclinic.ca"
@@ -21,9 +19,6 @@
           "status": "active",
           "bundle_method": "ubiquitous",
           "zone_id": "df4711b6c10cf3043898e21d6c23f007",
-          "uploaded_on": "2026-08-24T02:43:17.871065Z",
-          "modified_on": "2026-08-09T02:46:28.291216Z",
-          "expires_on": "2026-11-07T01:47:54.000000Z",
           "priority": null
         }
       ],
