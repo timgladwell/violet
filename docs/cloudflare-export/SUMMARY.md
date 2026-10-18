@@ -71,7 +71,7 @@ and must be recreated when rebuilding.
 | `email_obfuscation` | `on` |
 | `fonts` | `off` |
 | `http2` | `on` |
-| `min_tls_version` | `1.0` |
+| `min_tls_version` | `1.2` |
 | `rocket_loader` | `off` |
 | `security_level` | `medium` |
 | `ssl` | `full` |

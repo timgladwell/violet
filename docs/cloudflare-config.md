@@ -24,6 +24,7 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | 2026-08-24 | `staging.ontariomenopauseclinic.ca` added as an in-zone staging hostname, so staging inherits zone-level features that `*.pages.dev` cannot. |
 | 2026-08-24 | Brand fonts self-hosted and preloaded ([#139](https://github.com/timgladwell/violet/issues/139)). Cloudflare Fonts is still on but now has nothing to rewrite; its inline `font-display: swap` is gone with it. |
 | 2026-10-18 | Cloudflare Fonts turned off ([#149](https://github.com/timgladwell/violet/issues/149)). Nothing was using it, and left on it would silently reinstate `font-display: swap` if a Google Fonts `<link>` were ever reintroduced. The export now captures it (`settings_fonts.json`). Before this, it did not: the bulk settings endpoint omits `fonts`. |
+| 2026-10-18 | `min_tls_version` raised from `1.0` to `1.2` ([#143](https://github.com/timgladwell/violet/issues/143)). Clients that only speak TLS 1.0/1.1 now fail the handshake; the 24 hours before the change showed none. |
 
 ---
 
@@ -115,16 +116,13 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 |---------|-------|-------|
 | `always_use_https` | `on` | |
 | `ssl` | `full` | Certificate active |
-| `min_tls_version` | `1.0` | Consider raising to `1.2` |
+| `min_tls_version` | `1.2` | TLS 1.0/1.1 are refused. No current browser or crawler needs them ([#143](https://github.com/timgladwell/violet/issues/143)). TLS 1.3 (`tls_1_3`) is on. |
 | `email_obfuscation` | **on** | Rewrites email addresses in HTML before delivery to prevent scraping |
 | `brotli` | `on` | |
 | `http2` | `on` | Not editable |
 | `browser_cache_ttl` | `14400` (4 hours) | |
 | `rocket_loader` | `off` | Cloudflare's async JS loader — off is appropriate for a Hugo static site |
 | `fonts` (Speed → Optimization → Fonts) | `off` | Rewrites Google Fonts requests to same-origin `/cf-fonts/` URLs, replacing the `<link>` with inline CSS that carries `font-display: swap`. The site makes no Google Fonts requests: the brand fonts are self-hosted and preloaded from `site/assets/fonts/` ([#139](https://github.com/timgladwell/violet/issues/139)). Leave it off. Turned on, it would silently undo the font-loading choices if a Google Fonts `<link>` ever came back. Exported separately as `settings_fonts.json`, because the bulk settings endpoint omits it. |
-
-`min_tls_version` is `1.0`; raising it to `1.2` is tracked in
-[#143](https://github.com/timgladwell/violet/issues/143).
 
 ---
 
