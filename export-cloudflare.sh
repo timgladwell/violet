@@ -105,6 +105,8 @@ echo "== zone"
 get "zones/$ZONE_ID"                          zone.json     "zone"
 get "zones/$ZONE_ID/dns_records?per_page=200" dns.json      "dns records"
 get "zones/$ZONE_ID/settings"                 settings.json "zone settings"
+# Cloudflare Fonts is missing from the bulk list above; it only answers on its own path.
+get "zones/$ZONE_ID/settings/fonts"           settings_fonts.json "zone setting: fonts"
 
 echo "== rulesets"
 get "zones/$ZONE_ID/rulesets" rulesets.json "ruleset index"
@@ -289,8 +291,8 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       echo "| Setting | Value |"
       echo "|---------|-------|"
-      jq -r '.result[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level")) |
-        "| `\(.id)` | `\(.value|tostring)` |"' "$OUT/settings.json" | sort
+      jq -rn '[inputs.result] | flatten | .[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level")) |
+        "| `\(.id)` | `\(.value|tostring)` |"' "$OUT/settings.json" "$OUT"/settings_fonts.json | sort
       echo
     fi
   } > "$OUT/SUMMARY.md"
