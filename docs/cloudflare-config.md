@@ -25,6 +25,7 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | 2026-08-24 | Brand fonts self-hosted and preloaded ([#139](https://github.com/timgladwell/violet/issues/139)). Cloudflare Fonts is still on but now has nothing to rewrite; its inline `font-display: swap` is gone with it. |
 | 2026-10-18 | Cloudflare Fonts turned off ([#149](https://github.com/timgladwell/violet/issues/149)). Nothing was using it, and left on it would silently reinstate `font-display: swap` if a Google Fonts `<link>` were ever reintroduced. The export now captures it (`settings_fonts.json`). Before this, it did not: the bulk settings endpoint omits `fonts`. |
 | 2026-10-18 | `min_tls_version` raised from `1.0` to `1.2` ([#143](https://github.com/timgladwell/violet/issues/143)). Clients that only speak TLS 1.0/1.1 now fail the handshake; the 24 hours before the change showed none. |
+| 2026-10-18 | Encryption mode `full` → `strict`, and automatic key exchange turned on ([#176](https://github.com/timgladwell/violet/issues/176)). The mode had not been changed since the zone was created (2026-04-13). Key exchange was off before; it wasn't exported until this change, so the export has no earlier record of it. |
 
 ---
 
@@ -115,7 +116,9 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | Setting | Value | Notes |
 |---------|-------|-------|
 | `always_use_https` | `on` | |
-| `ssl` | `full` | Certificate active |
+| `ssl` | `strict` | Full (Strict): Cloudflare validates the origin's certificate. The origin is Pages, which serves a valid public certificate ([#176](https://github.com/timgladwell/violet/issues/176)). |
+| `ssl_automatic_mode` | `custom` | Automatic SSL/TLS is off so the mode stays an explicit choice. On, Cloudflare could change the mode without anyone noticing until the export drifted. Exported separately as `settings_ssl_automatic_mode.json`, because the bulk settings endpoint omits it. |
+| Automatic key exchange (SSL/TLS → Configure encryption mode) | on | Cloudflare leads its handshake with Pages using the best algorithm Pages supports, including post-quantum. Exported as `settings_auto_origin_tls_kex.json` (`enabled`), because the bulk settings endpoint omits it. Its Compliance requirements checkboxes (post-quantum hybrid / FIPS) are both unchecked, which means any key agreement Pages supports is allowed. Exported as `settings_origin_tls_compliance_modes.json` (`[]`). The response's `id` is `origin_tls_cmpl`, not the path name. Don't use `cache/origin_post_quantum_encryption` (`origin_pqe`) instead: Cloudflare [documents it as a no-op](https://developers.cloudflare.com/ssl/origin-configuration/automatic-key-exchange/), and it read `supported` before and after the toggle changed. |
 | `min_tls_version` | `1.2` | TLS 1.0/1.1 are refused. No current browser or crawler needs them ([#143](https://github.com/timgladwell/violet/issues/143)). TLS 1.3 (`tls_1_3`) is on. |
 | `email_obfuscation` | **on** | Rewrites email addresses in HTML before delivery to prevent scraping |
 | `brotli` | `on` | |

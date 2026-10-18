@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "errors": [],
+  "result": {
+    "id": "ssl_automatic_mode",
+    "value": "custom",
+    "editable": true,
+    "modified_on": "2026-10-18T22:31:23.531Z"
+  }
+}
