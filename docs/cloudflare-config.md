@@ -2,7 +2,7 @@
 
 Reference document for the Cloudflare setup for `ontariomenopauseclinic.ca`.
 
-A future Terraform implementation should be able to reconstruct this configuration from scratch — tracked in [#40](https://github.com/timgladwell/violet/issues/40). Until then, `./export-cloudflare.sh` is the continuity plan: it dumps the live config to [`cloudflare-export/`](cloudflare-export/), which is committed.
+None of this configuration is infrastructure as code. Moving it there is exploratory work in [#40](https://github.com/timgladwell/violet/issues/40). Until then, `./export-cloudflare.sh` is the continuity plan: it dumps the live config to [`cloudflare-export/`](cloudflare-export/), which is committed.
 
 **Which file to trust:** [`cloudflare-export/SUMMARY.md`](cloudflare-export/) is generated from the API and is authoritative for *what is configured*. This document is hand-written and is authoritative for *why* — the reasoning, the failure modes, and the decisions that are not recoverable from a config dump. When they disagree, the export is right about the facts and this file needs updating.
 
