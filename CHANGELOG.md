@@ -1,5 +1,22 @@
 # Changelog
 
+## v2026.10.19
+_Released 2026-10-19_
+
+### Changes
+- PR #186: Changelog: v2026.10.19
+- PR #185: Record Production HUGO_VERSION 0.168.0 in the Cloudflare export
+- PR #180: Bump Hugo to 0.168.0 and track Cloudflare's HUGO_VERSION
+- PR #177: Switch to Full (Strict) and automatic key exchange, captured as activated
+- PR #175: Record Cloudflare min_tls_version raised to 1.2
+- PR #170: Turn off Cloudflare Fonts and export the setting
+- PR #166: Keep the Avaros booking button inside the booking frame, tested against daily measurements
+- PR #167: Runbook: the maintenance env var overrides every environment, staging included
+- PR #163: Fix phone layout: nothing wider than 320px; hero bullets and quiz on the first screen
+- PR #156: Show a loading state while the Avaros booking iframe loads
+- PR #158: Define every CSS custom property the site uses
+- PR #153: Add a build identifier to every page
+
 ## v2026.08.25
 _Released 2026-08-25_
 
