@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Where every kind of information lives — comments, docs, ADRs, runbooks, issues,
+PRs — and how temporary things are tagged:
+
+@CONTRIBUTING.md
+
 ## Technical processes
 
 * Always work in a feature branch or a worktree - do not work directly in the `main` branch
@@ -22,6 +27,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 * **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
 * **A11y only**: `npm run a11y` (requires dev server running first). One-time setup on a new machine: `npx playwright install chromium`.
 * **Markdown lint only**: `npm run lint:md`.
+* **Compare two deployments**: `npm run compare` (production vs default staging) or `npm run compare -- <before> <after>`. Element-by-element computed-style diff; see [Testing Changes Before Release](docs/runbooks/testing-changes-before-release.md).
 * **CSS lint only**: `npm run lint:css` — stylelint (`stylelint.config.mjs`) over `main.css` and the `<style>` blocks/attributes in `site/layouts`. Keep Hugo tags inside CSS quoted (`url("{{ ... }}")`) so the parser sees a string.
 * Hugo version is pinned in `.tool-versions` and used by CI; `dev-server.sh`/`validate.sh` warn (don't fail) if your local `hugo` doesn't match it.
 
@@ -43,9 +49,9 @@ All local development is managed through these scripts. Do not construct raw `hu
 * Production publishing happens when the `Cut Release` GitHub Action **fast-forwards** `release` to a commit already on `main`. The process is assisted by Github actions:
   * All releases have a CHANGELOG. Generation of the changelog is assisted by a Github action.
   * `Cut Release` also tags the promoted commit and publishes a GitHub Release with the changelog entry, for easy reverts — one workflow owns promote, tag and release.
-  * `release` is never merged into — not by PR, not by hand. It is a pointer that only moves forward to a reviewed, signed commit from `main`, which is what keeps it a plain ancestor of `main`. See @docs/runbook.md for why this matters.
+  * `release` is never merged into — not by PR, not by hand. It is a pointer that only moves forward to a reviewed, signed commit from `main`, which is what keeps it a plain ancestor of `main`. See [ADR 0001](docs/adr/0001-release-promotion.md) for why this matters.
   * `main` requires a PR (merge commits only) and signed commits. Re-sign a branch with `git rebase -f -S main` before merging, or the merge button is blocked.
-* See @docs/runbook.md for the full cut-release sequence.
+* See [Cutting a Release](docs/runbooks/cutting-a-release.md) for the full sequence.
 * Production site is published at `https://ontariomenopauseclinic.ca` (the apex; `www` 301s to it — see @docs/cloudflare-config.md)
 
 ### Pushing to staging
@@ -54,6 +60,15 @@ All local development is managed through these scripts. Do not construct raw `hu
 * Use `./deploy-staging.sh <slug>` to push all commits on the local branch to the named local, then remote, staging branch (e.g. `./deploy-staging.sh 4` deploys to `staging4`). Use the `slug` value provided by the user.
 * The default staging slot (`./deploy-staging.sh` with no slug) is published **in-zone** at `https://staging.ontariomenopauseclinic.ca/`, so it inherits the zone's Cloudflare settings and behaves like production.
 * Numbered slots are published at `https://staging<slug>.violet-6qt.pages.dev/`. These sit outside the zone, so zone-level features (Cloudflare Fonts, cache rules, redirect rules) do **not** apply - use them for UX comparisons, not for verifying anything zone-dependent. See @docs/cloudflare-config.md.
+
+## Before changing…
+
+| Change | Follow |
+|---|---|
+| Anything that will be released | [Testing Changes Before Release](docs/runbooks/testing-changes-before-release.md) — every difference `npm run compare` reports must be intended |
+| `baseof.html`, or `main.css` tokens the maintenance placeholder uses | The maintenance-page step of that runbook; staging never renders the placeholder |
+| Any Cloudflare setting | Update [`docs/cloudflare-config.md`](docs/cloudflare-config.md) and rerun `./export-cloudflare.sh` in the same PR |
+| The booking frame's height or breakpoints | [When the Avaros Booking Page Changes Size](docs/runbooks/avaros-booking-page-size.md) |
 
 ## Project Context and Guiding Principles.
 
@@ -80,6 +95,9 @@ docs/
   competitive_analysis_and_recommendations.md     # Claude-authored analysis of similar websites
   website_content_draft.md                        # Claude-authored worksheet for gathering Andrea's notes on website content and structure
   "Website Content Draft.md"                      # Andrea's notes into the `website_content_draft.md` worksheet
-  runbook.md                                       # Operational procedures (e.g. toggling maintenance mode)
+  adr/                                            # One design decision per file (README.md has the format)
+  runbooks.md                                     # Index of runbooks, by kind
+  runbooks/                                       # One procedure per file (releasing, maintenance mode, ...)
+  cloudflare-config.md                            # Cloudflare state this repo cannot reproduce, plus cloudflare-export/
 site/                                             # Hugo-based website
 ```

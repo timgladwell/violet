@@ -20,7 +20,7 @@ name: Cut Release
 # bypass: with no bypass actor, `non_fast_forward` applies to everyone
 # including the repository owner, so `release` can only ever move forward.
 #
-# See docs/runbook.md.
+# Why: docs/adr/0001-release-promotion.md. Procedure: docs/runbooks/cutting-a-release.md.
 
 on:
   workflow_dispatch:
@@ -83,7 +83,7 @@ jobs:
             echo "genuinely unique (git cherry origin/main origin/release) before"
             echo "doing anything: a '-' prefix means the patch is already in main"
             echo "under a different SHA, and release can be reset without loss."
-            echo "See docs/runbook.md."
+            echo "See docs/runbooks/cutting-a-release.md."
             exit 1
           fi
 
