@@ -27,6 +27,7 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | 2026-10-18 | `min_tls_version` raised from `1.0` to `1.2` ([#143](https://github.com/timgladwell/violet/issues/143)). Clients that only speak TLS 1.0/1.1 now fail the handshake; the 24 hours before the change showed none. |
 | 2026-10-18 | Encryption mode `full` → `strict`, and automatic key exchange turned on ([#176](https://github.com/timgladwell/violet/issues/176)). The mode had not been changed since the zone was created (2026-04-13). Key exchange was off before; it wasn't exported until this change, so the export has no earlier record of it. |
 | 2026-10-19 | Preview `HUGO_VERSION` `0.163.0` → `0.168.0`; Production follows when the release carrying the matching `.tool-versions` is cut. This doc had said `0.162.0`, but the API showed `0.163.0`: the earlier bump to `0.163.0` never got recorded here. The export now records allowlisted values (`HUGO_VERSION`, `HUGO_PARAMS_MAINTENANCEMODE`), so drift like that shows in `git status`. |
+| 2026-10-19 | Production `HUGO_VERSION` `0.163.0` → `0.168.0`, just before cutting the release that carries the matching `.tool-versions`. Both scopes match again. |
 
 ---
 
