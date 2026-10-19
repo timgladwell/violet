@@ -160,6 +160,9 @@ strip() { # strip <outfile> <jq-filter>
 }
 strip rulesets.json   '(.result[]? | select(.kind=="managed")) |= del(.version, .last_updated)'
 strip cert_packs.json '.result[]? |= (del(.primary_certificate) | .certificates[]? |= del(.id, .uploaded_on, .modified_on, .expires_on))'
+# The account name defaults to the owner's email address. The id is kept: the
+# pages step reads it.
+strip zone.json       'del(.result.account.name)'
 
 echo "== pages"
 ACCOUNT_ID=$(jq -r '.result.account.id // empty' "$OUT/zone.json" 2>/dev/null)
@@ -285,6 +288,12 @@ fi
 echo
 echo "== secret check"
 LEAKS=$(grep -rlEi 'avaros|@ontariomenopauseclinic\.ca|Bearer ' "$OUT" 2>/dev/null || true)
+# Any other email address is personal data (an account name defaults to the
+# owner's address). Cloudflare's DMARC reporting address is the one expected.
+EMAILS=$(grep -rlE '[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z.]+' "$OUT" 2>/dev/null \
+  | while read -r f; do grep -oE '[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z.]+' "$f" \
+      | grep -qvE '@dmarc-reports\.cloudflare\.net$' && echo "$f"; done)
+LEAKS=$(printf '%s\n%s\n' "$LEAKS" "$EMAILS" | sed '/^$/d' | sort -u)
 if [[ -n "$LEAKS" ]]; then
   echo "  REFUSING TO LEAVE THESE IN PLACE - secret-looking content found:" >&2
   echo "$LEAKS" | sed 's/^/    /' >&2
