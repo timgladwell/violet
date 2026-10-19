@@ -12,6 +12,14 @@ Both are in `.github/workflows/`.
    branch into `main`. Review/edit the entry for anything the commit list
    didn't capture, then merge the PR.
 
+   **Pre-check — Hugo version.** If `git diff release <target> -- .tool-versions`
+   shows a Hugo change, set the Cloudflare Pages **Production** `HUGO_VERSION`
+   to the same bare `X.Y.Z` now, just before step 2 (Preview was bumped when
+   the change merged). The two must match or the production build fails; see
+   the header of `.tool-versions`. Rerun `./export-cloudflare.sh` and commit
+   the diff. Cut Release refuses a Hugo change unless its
+   `hugo_version_set_in_production` input is `yes`.
+
 2. **Cut Release** (`cut-release.yml`) — run manually, after step 1's PR is
    merged to `main`, and after you've verified the change on staging via
    `./deploy-staging.sh`. Reads `CHANGELOG.md` from the target commit (`main`
