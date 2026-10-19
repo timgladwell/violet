@@ -26,6 +26,7 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | 2026-10-18 | Cloudflare Fonts turned off ([#149](https://github.com/timgladwell/violet/issues/149)). Nothing was using it, and left on it would silently reinstate `font-display: swap` if a Google Fonts `<link>` were ever reintroduced. The export now captures it (`settings_fonts.json`). Before this, it did not: the bulk settings endpoint omits `fonts`. |
 | 2026-10-18 | `min_tls_version` raised from `1.0` to `1.2` ([#143](https://github.com/timgladwell/violet/issues/143)). Clients that only speak TLS 1.0/1.1 now fail the handshake; the 24 hours before the change showed none. |
 | 2026-10-18 | Encryption mode `full` → `strict`, and automatic key exchange turned on ([#176](https://github.com/timgladwell/violet/issues/176)). The mode had not been changed since the zone was created (2026-04-13). Key exchange was off before; it wasn't exported until this change, so the export has no earlier record of it. |
+| 2026-10-19 | Preview `HUGO_VERSION` `0.163.0` → `0.168.0`; Production follows when the release carrying the matching `.tool-versions` is cut. This doc had said `0.162.0`, but the API showed `0.163.0`: the earlier bump to `0.163.0` never got recorded here. The export now records allowlisted values (`HUGO_VERSION`, `HUGO_PARAMS_MAINTENANCEMODE`), so drift like that shows in `git status`. |
 
 ---
 
@@ -246,11 +247,11 @@ Configured via `site/build.sh` (checked into the repo). Cloudflare Pages build r
 
 ### Environment variables
 
-Both production and preview environments are configured identically.
+Both production and preview environments are configured identically, except while a `HUGO_VERSION` bump is between merge and release (see below). Current non-secret values are in `cloudflare-export/pages_project.json`.
 
 | Variable | Value |
 |----------|-------|
-| `HUGO_VERSION` | `0.162.0` (must be kept in sync with `.tool-versions` at repo root — Cloudflare Pages reads this dashboard value directly, it can't read the repo file) |
+| `HUGO_VERSION` | Bare `X.Y.Z` (value in the export) — Cloudflare adds the `extended_` prefix. Must match `.tool-versions` on the branch being built: this value decides which Hugo the build image installs, and asdf then runs the version `.tool-versions` names, failing with "No preset version installed for command hugo" if the two differ. Bump Preview when the `.tool-versions` change merges, Production when it is released; see the header of `.tool-versions`. |
 | `HUGO_PARAMS_BOOKINGURL` | _(secret — see `.env.local.example`)_ |
 | `HUGO_PARAMS_INFOCONTACTEMAIL` | _(secret — see `.env.local.example`)_ |
 | `HUGO_PARAMS_PRIVACYCONTACTEMAIL` | _(secret — see `.env.local.example`)_ |

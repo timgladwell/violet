@@ -16,23 +16,13 @@
 #   the reason it now lives here rather than in someone's home directory.
 #
 # WHAT IT DOES NOT CAPTURE
-#   Secret values. Pages environment variable *names* are exported; their values
-#   are not - those live in 1Password, with placeholders in .env.local.example.
-#   The API token itself is never written anywhere.
+#   Secret values. Pages environment variable names are exported, but values
+#   only for the allowlist in the pages step below; the rest live in 1Password,
+#   with placeholders in .env.local.example. The API token itself is never
+#   written anywhere.
 #
 # USAGE
-#   ./export-cloudflare.sh          # prompts for the token; hidden, no shell history
-#
-#   With the 1Password CLI (brew install 1password-cli, then enable
-#   Settings -> Developer -> Integrate with 1Password CLI in the desktop app):
-#     CLOUDFLARE_API_TOKEN="$(op read 'op://Private/Cloudflare Read All Token/credential')" ./export-cloudflare.sh
-#
-#   The last path segment is the FIELD name, and it varies by item type:
-#     API Credential item -> credential      Login item -> password
-#   Confirm with: op item get "Cloudflare Read All Token" --format json | jq -r ".fields[].label"
-#
-#   Passing the token inline puts it in shell history verbatim; prefer the
-#   prompt, or `op`, which substitutes at run time.
+#   ./export-cloudflare.sh   # token from 1Password or a prompt - see cloudflare-token.sh
 #
 #   Then review and commit the diff. `git status` after a run IS the drift
 #   check: if the export changes, Cloudflare changed since the last commit.
@@ -58,24 +48,7 @@ OUT="$REPO_ROOT/docs/cloudflare-export"
 
 command -v jq >/dev/null || { echo "ERROR: jq is required (brew install jq)" >&2; exit 1; }
 
-# Prompt rather than require the token on the command line: a read-only token is
-# still a credential, and `CLOUDFLARE_API_TOKEN=... ./export-cloudflare.sh` lands
-# it in shell history verbatim. Reading it here keeps it out of history entirely.
-if [[ -z "${CLOUDFLARE_API_TOKEN:-}" ]]; then
-  if [[ -t 0 ]]; then
-    printf 'Cloudflare API token (read-only; input hidden): ' >&2
-    read -rs CLOUDFLARE_API_TOKEN
-    printf '\n' >&2
-  else
-    echo "ERROR: CLOUDFLARE_API_TOKEN is not set and stdin is not a terminal." >&2
-    echo "       See the header of this script." >&2
-    exit 1
-  fi
-fi
-if [[ -z "$CLOUDFLARE_API_TOKEN" ]]; then
-  echo "ERROR: no token supplied." >&2
-  exit 1
-fi
+. "$REPO_ROOT/cloudflare-token.sh"
 
 auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json")
 FAILED=0
@@ -195,7 +168,9 @@ if [[ -n "$ACCOUNT_ID" ]]; then
   code=$(curl -s -o "$raw" -w '%{http_code}' "${auth[@]}" "$API/accounts/$ACCOUNT_ID/pages/projects")
   if [[ "$code" == "200" ]] && jq -e '.success == true' "$raw" >/dev/null 2>&1; then
     # Redact before anything touches the working tree: the raw response contains
-    # env var VALUES (booking URL, contact addresses).
+    # env var VALUES (booking URL, contact addresses). Only allowlisted values are
+    # kept; any other var, including new ones, records as "(redacted)".
+    # shortcut: hand-kept allowlist, retired when Terraform owns env vars (#40).
     jq '{result: [.result[] | {
           name, subdomain, production_branch, created_on,
           build_config,
@@ -204,7 +179,8 @@ if [[ -n "$ACCOUNT_ID" ]]; then
             compatibility_date,
             compatibility_flags,
             build_image_major_version,
-            env_var_names: ((.env_vars // {}) | keys)
+            env_vars: ((.env_vars // {}) | with_entries(.value =
+              if (.key | IN("HUGO_VERSION", "HUGO_PARAMS_MAINTENANCEMODE")) then .value.value else "(redacted)" end))
           }))
         }]}' "$raw" > "$OUT/pages_project.json"
     printf '  ok    pages project (env var values redacted)\n'
@@ -257,9 +233,9 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       jq -r '.result[0] | "- Project: `\(.name)`\n- Subdomain: `\(.subdomain)`\n- Production branch: `\(.production_branch)`"' "$OUT/pages_project.json"
       echo
-      echo "Environment variable names (values in 1Password / \`.env.local.example\`):"
+      echo "Environment variables (redacted values in 1Password / \`.env.local.example\`):"
       echo
-      jq -r '.result[0].deployment_configs | to_entries[] | "- **\(.key)**: " + ((.value.env_var_names // []) | map("`"+.+"`") | join(", "))' "$OUT/pages_project.json"
+      jq -r '.result[0].deployment_configs | to_entries[] | "- **\(.key)**: " + ((.value.env_vars // {}) | to_entries | map("`" + .key + (if .value == "(redacted)" then "" else "=" + .value end) + "`") | join(", "))' "$OUT/pages_project.json"
       echo
     fi
 

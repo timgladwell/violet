@@ -37,6 +37,14 @@ on:
         options: ["no", "yes"]
         default: "no"
         required: true
+      hugo_version_set_in_production:
+        description: >
+          Only checked if this release changes Hugo in .tool-versions: Cloudflare
+          Pages Production HUGO_VERSION is set to the new version
+        type: choice
+        options: ["no", "yes"]
+        default: "no"
+        required: true
 
 concurrency:
   group: cut-release
@@ -89,6 +97,24 @@ jobs:
 
           echo "Fast-forwarding release by:"
           git log --oneline origin/release..HEAD | sed 's/^/  /'
+
+      # Cloudflare installs the Hugo that Production HUGO_VERSION names and runs
+      # the one .tool-versions names; a mismatch fails the production build.
+      # The workflow can't read Cloudflare, so it asks. Retired by #40.
+      - name: Require the Hugo version gate
+        env:
+          CONFIRMED: ${{ inputs.hugo_version_set_in_production }}
+        run: |
+          set -euo pipefail
+          BEFORE=$(git show origin/release:.tool-versions | grep '^hugo ' | sed 's/^hugo extended_//')
+          AFTER=$(grep '^hugo ' .tool-versions | sed 's/^hugo extended_//')
+          if [ "$BEFORE" != "$AFTER" ] && [ "$CONFIRMED" != "yes" ]; then
+            echo "::error::Cut refused — this release changes Hugo $BEFORE → $AFTER."
+            echo "Set Cloudflare Pages Production HUGO_VERSION to $AFTER, then rerun"
+            echo "with hugo_version_set_in_production = yes. See docs/runbook.md."
+            exit 1
+          fi
+          echo "Hugo: $BEFORE → $AFTER"
 
       - name: Read version from CHANGELOG
         id: version

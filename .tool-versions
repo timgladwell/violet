@@ -1,4 +1,9 @@
 # Cloudflare Pages' asdf preset is named "extended_X.Y.Z", not "X.Y.Z" -
 # using the bare version number fails Cloudflare builds with
 # "No preset version installed for command hugo". Keep the "extended_" prefix.
-hugo extended_0.163.0
+# The Cloudflare Pages HUGO_VERSION env var must be bumped to the same bare
+# X.Y.Z - Preview when this change merges, Production when it is released (see
+# the release pre-check in docs/runbook.md). It decides which Hugo gets
+# installed and this file decides which one runs, so a mismatch fails the build
+# with the same error. See docs/cloudflare-config.md.
+hugo extended_0.168.0
