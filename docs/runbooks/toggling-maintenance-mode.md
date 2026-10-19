@@ -37,7 +37,7 @@ Cloudflare edge).
    This reruns the build with the new env var — no git push, no PR.
 4. Once the new deployment is live, **purge the Cloudflare cache** (Caching →
    Configuration → Purge Everything). The zone's `browser_cache_ttl` is 4 hours
-   (see [`cloudflare-config.md`](../cloudflare-config.md)), so without a purge
+   (see [`cloudflare-config.md`](../current-state/cloudflare-config.md)), so without a purge
    visitors can keep seeing the old state for up to 4 hours.
 
 ## Post-checks

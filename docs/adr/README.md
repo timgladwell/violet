@@ -5,7 +5,7 @@ requirements, this is the decision, and these are the alternatives rejected.
 ADRs exist so that every change reaches for the same patterns, and so that a
 decision is not re-litigated without its context.
 
-They are not where current state is described (`docs/cloudflare-config.md`) or
+They are not where current state is described (`docs/current-state/cloudflare-config.md`) or
 requirements are set (`docs/website_design.md`), where a procedure
 is written down (`docs/runbooks/`), or where work is queued (issues).
 `docs/decision_log.md` is the frozen record of decisions made before ADRs and

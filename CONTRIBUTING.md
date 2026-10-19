@@ -82,9 +82,9 @@ Anything tied to specific code is a comment on that code instead.
 ## Current-state docs
 
 Cloudflare holds configuration this repo cannot reproduce: the zone, DNS,
-Pages settings and environment variables. `docs/cloudflare-config.md` says
+Pages settings and environment variables. `docs/current-state/cloudflare-config.md` says
 **what** that state is, why, and how to change it without breaking something;
-`docs/cloudflare-export/` is the raw export it is checked against
+`docs/current-state/cloudflare-export/` is the raw export it is checked against
 (`./export-cloudflare.sh`, rerun after any Cloudflare change). A procedure for
 changing it is a runbook, and the two link to each other.
 

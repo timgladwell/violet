@@ -21,7 +21,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 | `./validate.sh` | Full validation suite: build + environment checks + markdown lint + a11y. Starts the dev server automatically if needed, stops it when done. |
 | `./check-environments.sh` | Builds development/staging/production (staging and production via `site/build.sh`, simulating Cloudflare's `CF_PAGES_BRANCH`) and asserts each produces the expected output. Catches a typo'd `--environment` value before it ships. Runs in CI on every PR (`.github/workflows/check-environments.yml`). |
 | `./deploy-staging.sh <slug>` | Push current branch to a staging environment. |
-| `./export-cloudflare.sh` | Export the live Cloudflare config to `docs/cloudflare-export/` (read-only API token required). Cloudflare holds configuration this repo cannot reproduce; the export is the record to rebuild from. Run it after **any** Cloudflare change and commit the diff — `git status` afterwards is the drift check. |
+| `./export-cloudflare.sh` | Export the live Cloudflare config to `docs/current-state/cloudflare-export/` (read-only API token required). Cloudflare holds configuration this repo cannot reproduce; the export is the record to rebuild from. Run it after **any** Cloudflare change and commit the diff — `git status` afterwards is the drift check. |
 
 * **Before pushing a PR**, run `./validate.sh` and fix any failures.
 * **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
@@ -52,14 +52,14 @@ All local development is managed through these scripts. Do not construct raw `hu
   * `release` is never merged into — not by PR, not by hand. It is a pointer that only moves forward to a reviewed, signed commit from `main`, which is what keeps it a plain ancestor of `main`. See [ADR 0001](docs/adr/0001-release-promotion.md) for why this matters.
   * `main` requires a PR (merge commits only) and signed commits. Re-sign a branch with `git rebase -f -S main` before merging, or the merge button is blocked.
 * See [Cutting a Release](docs/runbooks/cutting-a-release.md) for the full sequence.
-* Production site is published at `https://ontariomenopauseclinic.ca` (the apex; `www` 301s to it — see @docs/cloudflare-config.md)
+* Production site is published at `https://ontariomenopauseclinic.ca` (the apex; `www` 301s to it — see @docs/current-state/cloudflare-config.md)
 
 ### Pushing to staging
 
 * Staging publishing happens when any code is pushed to a remote branch matching the `staging*` pattern.
 * Use `./deploy-staging.sh <slug>` to push all commits on the local branch to the named local, then remote, staging branch (e.g. `./deploy-staging.sh 4` deploys to `staging4`). Use the `slug` value provided by the user.
 * The default staging slot (`./deploy-staging.sh` with no slug) is published **in-zone** at `https://staging.ontariomenopauseclinic.ca/`, so it inherits the zone's Cloudflare settings and behaves like production.
-* Numbered slots are published at `https://staging<slug>.violet-6qt.pages.dev/`. These sit outside the zone, so zone-level features (Cloudflare Fonts, cache rules, redirect rules) do **not** apply - use them for UX comparisons, not for verifying anything zone-dependent. See @docs/cloudflare-config.md.
+* Numbered slots are published at `https://staging<slug>.violet-6qt.pages.dev/`. These sit outside the zone, so zone-level features (Cloudflare Fonts, cache rules, redirect rules) do **not** apply - use them for UX comparisons, not for verifying anything zone-dependent. See @docs/current-state/cloudflare-config.md.
 
 ## Before changing…
 
@@ -67,7 +67,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 |---|---|
 | Anything that will be released | [Testing Changes Before Release](docs/runbooks/testing-changes-before-release.md) — every difference `npm run compare` reports must be intended |
 | `baseof.html`, or `main.css` tokens the maintenance placeholder uses | The maintenance-page step of that runbook; staging never renders the placeholder |
-| Any Cloudflare setting | Update [`docs/cloudflare-config.md`](docs/cloudflare-config.md) and rerun `./export-cloudflare.sh` in the same PR |
+| Any Cloudflare setting | Update [`docs/current-state/cloudflare-config.md`](docs/current-state/cloudflare-config.md) and rerun `./export-cloudflare.sh` in the same PR |
 | The booking frame's height or breakpoints | [When the Avaros Booking Page Changes Size](docs/runbooks/avaros-booking-page-size.md) |
 
 ## Project Context and Guiding Principles.
@@ -98,6 +98,6 @@ docs/
   adr/                                            # One design decision per file (README.md has the format)
   runbooks.md                                     # Index of runbooks, by kind
   runbooks/                                       # One procedure per file (releasing, maintenance mode, ...)
-  cloudflare-config.md                            # Cloudflare state this repo cannot reproduce, plus cloudflare-export/
+  current-state/                                  # State code does not define: cloudflare-config.md (why) and cloudflare-export/ (generated)
 site/                                             # Hugo-based website
 ```

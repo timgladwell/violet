@@ -2,7 +2,7 @@
 # export-cloudflare.sh
 #
 # Exports the live Cloudflare configuration for ontariomenopauseclinic.ca into
-# docs/cloudflare-export/ so it is committed to the repo.
+# docs/current-state/cloudflare-export/ so it is committed to the repo.
 #
 # WHY THIS EXISTS
 #   Cloudflare holds configuration that is not reproducible from this repo: DNS
@@ -54,7 +54,7 @@ set -uo pipefail
 ZONE_ID="${CF_ZONE_ID:-df4711b6c10cf3043898e21d6c23f007}"
 API=https://api.cloudflare.com/client/v4
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OUT="$REPO_ROOT/docs/cloudflare-export"
+OUT="$REPO_ROOT/docs/current-state/cloudflare-export"
 
 command -v jq >/dev/null || { echo "ERROR: jq is required (brew install jq)" >&2; exit 1; }
 
@@ -229,7 +229,7 @@ fi
 
 # ---------------------------------------------------------------- summary
 # Facts are generated here so they cannot drift; the reasoning behind them
-# stays hand-written in docs/cloudflare-config.md.
+# stays hand-written in docs/current-state/cloudflare-config.md.
 if [[ -f "$OUT/dns.json" ]]; then
   {
     echo "# Cloudflare export"
@@ -326,4 +326,4 @@ if [[ "$FAILED" -ne 0 ]]; then
   echo "Completed WITH ERRORS - the export is incomplete, do not treat it as a full backup." >&2
   exit 1
 fi
-echo "Review with: git diff --stat docs/cloudflare-export/"
+echo "Review with: git diff --stat docs/current-state/cloudflare-export/"

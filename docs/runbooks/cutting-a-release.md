@@ -56,7 +56,7 @@ and tagging it. Why it works this way, and the rulesets that make it safe:
 ### If production looks broken right after a release
 
 Check Cloudflare cache propagation before rolling back — `browser_cache_ttl`
-is 4 hours (see [`cloudflare-config.md`](../cloudflare-config.md)), so a stale
+is 4 hours (see [`cloudflare-config.md`](../current-state/cloudflare-config.md)), so a stale
 asset can look like a real regression for a while after a deploy that's
 actually fine. Purge the cache (Caching → Configuration → Purge Everything) and
 reload before assuming the release itself is broken.

@@ -3,7 +3,7 @@
 Procedures for a specific outcome, one file each under `runbooks/`. Kinds and
 conventions are in [CONTRIBUTING.md](../CONTRIBUTING.md#runbooks).
 
-See also [Cloudflare configuration](cloudflare-config.md) — the state this repo
+See also [Cloudflare configuration](current-state/cloudflare-config.md) — the state this repo
 cannot reproduce.
 
 | Runbook | Kind |

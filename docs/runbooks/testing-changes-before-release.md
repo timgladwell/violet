@@ -107,5 +107,5 @@ Each slot holds one branch at a time; deploying replaces whatever is there.
 
 What this does not cover, and what does: structured data, metadata and crawler
 directives are asserted per environment by `./check-environments.sh`; zone
-configuration is checked against `docs/cloudflare-export/` by
+configuration is checked against `docs/current-state/cloudflare-export/` by
 `./export-cloudflare.sh`.
