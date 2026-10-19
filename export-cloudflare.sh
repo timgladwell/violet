@@ -16,9 +16,10 @@
 #   the reason it now lives here rather than in someone's home directory.
 #
 # WHAT IT DOES NOT CAPTURE
-#   Secret values. Pages environment variable *names* are exported; their values
-#   are not - those live in 1Password, with placeholders in .env.local.example.
-#   The API token itself is never written anywhere.
+#   Secret values. Pages environment variable names are exported, but values
+#   only for the allowlist in the pages step below; the rest live in 1Password,
+#   with placeholders in .env.local.example. The API token itself is never
+#   written anywhere.
 #
 # USAGE
 #   ./export-cloudflare.sh          # prompts for the token; hidden, no shell history
@@ -195,7 +196,9 @@ if [[ -n "$ACCOUNT_ID" ]]; then
   code=$(curl -s -o "$raw" -w '%{http_code}' "${auth[@]}" "$API/accounts/$ACCOUNT_ID/pages/projects")
   if [[ "$code" == "200" ]] && jq -e '.success == true' "$raw" >/dev/null 2>&1; then
     # Redact before anything touches the working tree: the raw response contains
-    # env var VALUES (booking URL, contact addresses).
+    # env var VALUES (booking URL, contact addresses). Only allowlisted values are
+    # kept; any other var, including new ones, records as "(redacted)".
+    # shortcut: hand-kept allowlist, retired when Terraform owns env vars (#40).
     jq '{result: [.result[] | {
           name, subdomain, production_branch, created_on,
           build_config,
@@ -204,7 +207,8 @@ if [[ -n "$ACCOUNT_ID" ]]; then
             compatibility_date,
             compatibility_flags,
             build_image_major_version,
-            env_var_names: ((.env_vars // {}) | keys)
+            env_vars: ((.env_vars // {}) | with_entries(.value =
+              if (.key | IN("HUGO_VERSION", "HUGO_PARAMS_MAINTENANCEMODE")) then .value.value else "(redacted)" end))
           }))
         }]}' "$raw" > "$OUT/pages_project.json"
     printf '  ok    pages project (env var values redacted)\n'
@@ -257,9 +261,9 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       jq -r '.result[0] | "- Project: `\(.name)`\n- Subdomain: `\(.subdomain)`\n- Production branch: `\(.production_branch)`"' "$OUT/pages_project.json"
       echo
-      echo "Environment variable names (values in 1Password / \`.env.local.example\`):"
+      echo "Environment variables (redacted values in 1Password / \`.env.local.example\`):"
       echo
-      jq -r '.result[0].deployment_configs | to_entries[] | "- **\(.key)**: " + ((.value.env_var_names // []) | map("`"+.+"`") | join(", "))' "$OUT/pages_project.json"
+      jq -r '.result[0].deployment_configs | to_entries[] | "- **\(.key)**: " + ((.value.env_vars // {}) | to_entries | map("`" + .key + (if .value == "(redacted)" then "" else "=" + .value end) + "`") | join(", "))' "$OUT/pages_project.json"
       echo
     fi
 

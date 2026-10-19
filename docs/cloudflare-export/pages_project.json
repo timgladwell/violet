@@ -22,25 +22,25 @@
           "compatibility_date": "2026-04-16",
           "compatibility_flags": [],
           "build_image_major_version": 3,
-          "env_var_names": [
-            "HUGO_PARAMS_BOOKINGURL",
-            "HUGO_PARAMS_INFOCONTACTEMAIL",
-            "HUGO_PARAMS_MAINTENANCEMODE",
-            "HUGO_PARAMS_PRIVACYCONTACTEMAIL",
-            "HUGO_VERSION"
-          ]
+          "env_vars": {
+            "HUGO_PARAMS_BOOKINGURL": "(redacted)",
+            "HUGO_PARAMS_INFOCONTACTEMAIL": "(redacted)",
+            "HUGO_PARAMS_MAINTENANCEMODE": "false",
+            "HUGO_PARAMS_PRIVACYCONTACTEMAIL": "(redacted)",
+            "HUGO_VERSION": "0.168.0"
+          }
         },
         "production": {
           "compatibility_date": "2026-04-16",
           "compatibility_flags": [],
           "build_image_major_version": 3,
-          "env_var_names": [
-            "HUGO_PARAMS_BOOKINGURL",
-            "HUGO_PARAMS_INFOCONTACTEMAIL",
-            "HUGO_PARAMS_MAINTENANCEMODE",
-            "HUGO_PARAMS_PRIVACYCONTACTEMAIL",
-            "HUGO_VERSION"
-          ]
+          "env_vars": {
+            "HUGO_PARAMS_BOOKINGURL": "(redacted)",
+            "HUGO_PARAMS_INFOCONTACTEMAIL": "(redacted)",
+            "HUGO_PARAMS_MAINTENANCEMODE": "false",
+            "HUGO_PARAMS_PRIVACYCONTACTEMAIL": "(redacted)",
+            "HUGO_VERSION": "0.163.0"
+          }
         }
       }
     }
