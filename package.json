@@ -4,6 +4,7 @@
   "scripts": {
     "a11y": "playwright test --config a11y/playwright.config.ts",
     "avaros:measure": "node scripts/measure-avaros.mjs",
+    "compare": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/compare-sites.mjs",
     "generate:og-image": "node scripts/og-image/generate.mjs",
     "lint:css": "stylelint \"site/assets/css/**/*.css\" \"site/layouts/**/*.html\"",
     "lint:md": "markdownlint-cli2 \"site/content/**/*.md\"",
