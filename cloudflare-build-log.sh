@@ -11,8 +11,7 @@
 #
 # TOKEN
 #   The same read-only token as ./export-cloudflare.sh (needs Account ->
-#   Cloudflare Pages -> Read), supplied the same way: CLOUDFLARE_API_TOKEN, or
-#   a hidden prompt. See that script's header.
+#   Cloudflare Pages -> Read), found the same way - see cloudflare-token.sh.
 
 set -euo pipefail
 
@@ -22,17 +21,7 @@ API=https://api.cloudflare.com/client/v4
 
 command -v jq >/dev/null || { echo "ERROR: jq is required (brew install jq)" >&2; exit 1; }
 
-# Same prompt as export-cloudflare.sh: keeps the token out of shell history.
-if [[ -z "${CLOUDFLARE_API_TOKEN:-}" ]]; then
-  if [[ -t 0 ]]; then
-    printf 'Cloudflare API token (read-only; input hidden): ' >&2
-    read -rs CLOUDFLARE_API_TOKEN
-    printf '\n' >&2
-  else
-    echo "ERROR: CLOUDFLARE_API_TOKEN is not set and stdin is not a terminal." >&2
-    exit 1
-  fi
-fi
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/cloudflare-token.sh"
 auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN")
 
 ACCOUNT_ID=$(curl -s "${auth[@]}" "$API/zones/$ZONE_ID" | jq -r '.result.account.id // empty')
