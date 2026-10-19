@@ -300,8 +300,8 @@
     },
     {
       "id": "ssl",
-      "value": "full",
-      "modified_on": null,
+      "value": "strict",
+      "modified_on": "2026-10-18T22:29:36.475634Z",
       "certificate_status": "active",
       "validation_errors": [],
       "editable": true

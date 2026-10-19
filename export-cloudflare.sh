@@ -107,6 +107,12 @@ get "zones/$ZONE_ID/dns_records?per_page=200" dns.json      "dns records"
 get "zones/$ZONE_ID/settings"                 settings.json "zone settings"
 # Cloudflare Fonts is missing from the bulk list above; it only answers on its own path.
 get "zones/$ZONE_ID/settings/fonts"           settings_fonts.json "zone setting: fonts"
+# Same gap for the encryption-mode page: automatic SSL/TLS, automatic key exchange to the origin,
+# and its compliance requirements (answers with id "origin_tls_cmpl", not the path name).
+# Not cache/origin_post_quantum_encryption: Cloudflare documents that one as a no-op.
+get "zones/$ZONE_ID/settings/ssl_automatic_mode"         settings_ssl_automatic_mode.json "zone setting: ssl_automatic_mode"
+get "zones/$ZONE_ID/settings/auto_origin_tls_kex"        settings_auto_origin_tls_kex.json "zone setting: auto_origin_tls_kex"
+get "zones/$ZONE_ID/settings/origin_tls_compliance_modes" settings_origin_tls_compliance_modes.json "zone setting: origin_tls_compliance_modes"
 
 echo "== rulesets"
 get "zones/$ZONE_ID/rulesets" rulesets.json "ruleset index"
@@ -291,8 +297,8 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       echo "| Setting | Value |"
       echo "|---------|-------|"
-      jq -rn '[inputs.result] | flatten | .[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level")) |
-        "| `\(.id)` | `\(.value|tostring)` |"' "$OUT/settings.json" "$OUT"/settings_fonts.json | sort
+      jq -rn '[inputs.result] | flatten | .[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level","ssl_automatic_mode","auto_origin_tls_kex","origin_tls_cmpl","pq_keyex")) |
+        "| `\(.id)` | `\(.value // .enabled|tostring)` |"' "$OUT/settings.json" "$OUT"/settings_fonts.json "$OUT"/settings_ssl_automatic_mode.json "$OUT"/settings_auto_origin_tls_kex.json "$OUT"/settings_origin_tls_compliance_modes.json | sort
       echo
     fi
   } > "$OUT/SUMMARY.md"
