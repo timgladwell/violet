@@ -23,12 +23,14 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | 2026-08-24 | `www` removed from the Pages custom domains; removing it also deleted its DNS record, replaced by a proxied A record to `192.0.2.1`. |
 | 2026-08-24 | `staging.ontariomenopauseclinic.ca` added as an in-zone staging hostname, so staging inherits zone-level features that `*.pages.dev` cannot. |
 | 2026-08-24 | Brand fonts self-hosted and preloaded ([#139](https://github.com/timgladwell/violet/issues/139)). Cloudflare Fonts is still on but now has nothing to rewrite; its inline `font-display: swap` is gone with it. |
+| 2026-10-08 | DNSSEC last modified, per the API's `modified_on`. It is the only date on record: nobody noted when DNSSEC was turned on, so this may or may not be that day. |
 | 2026-10-18 | Cloudflare Fonts turned off ([#149](https://github.com/timgladwell/violet/issues/149)). Nothing was using it, and left on it would silently reinstate `font-display: swap` if a Google Fonts `<link>` were ever reintroduced. The export now captures it (`settings_fonts.json`). Before this, it did not: the bulk settings endpoint omits `fonts`. |
 | 2026-10-18 | `min_tls_version` raised from `1.0` to `1.2` ([#143](https://github.com/timgladwell/violet/issues/143)). Clients that only speak TLS 1.0/1.1 now fail the handshake; the 24 hours before the change showed none. |
 | 2026-10-18 | Encryption mode `full` → `strict`, and automatic key exchange turned on ([#176](https://github.com/timgladwell/violet/issues/176)). The mode had not been changed since the zone was created (2026-04-13). Key exchange was off before; it wasn't exported until this change, so the export has no earlier record of it. |
 | 2026-10-19 | Preview `HUGO_VERSION` `0.163.0` → `0.168.0`; Production follows when the release carrying the matching `.tool-versions` is cut. This doc had said `0.162.0`, but the API showed `0.163.0`: the earlier bump to `0.163.0` never got recorded here. The export now records allowlisted values (`HUGO_VERSION`, `HUGO_PARAMS_MAINTENANCEMODE`), so drift like that shows in `git status`. |
 | 2026-10-19 | Production `HUGO_VERSION` `0.163.0` → `0.168.0`, just before cutting the release that carries the matching `.tool-versions`. Both scopes match again. |
 | 2026-10-19 | The export stopped writing the account name, which is the owner's email address and had been in `zone.json` since the first export ([#191](https://github.com/timgladwell/violet/issues/191)). Its secret check now flags any email address other than Cloudflare's DMARC reporting one; it used to look only for clinic addresses. |
+| 2026-10-19 | The export now captures everything a sweep of Cloudflare's read-only API (`./cloudflare-sweep.sh`) found missing: DNSSEC, the Pages Git connection including preview branch control, the domain registration, bot and AI-crawler settings, Managed Transforms, zone DNS settings, Universal SSL, CT alerting, zone hold, tiered caching, 14 individual zone settings, the Access organization, notification policies and the account's security settings. The DNSSEC and preview gaps had led to wrong guesses in [#189](https://github.com/timgladwell/violet/issues/189): that DNSSEC was off, and that every pushed branch got a public preview. |
 
 ---
 
@@ -67,6 +69,79 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 - The DKIM `selector1`/`selector2` records are managed by Microsoft 365. They will rotate automatically; the DNS records must be updated when Microsoft rotates them.
 - The DMARC reporting address (`...@dmarc-reports.cloudflare.net`) is Cloudflare's managed DMARC reporting — reports are viewable in the Cloudflare dashboard.
 - `MS=ms74690258` is the Microsoft 365 domain verification TXT record. It can be removed once verification is no longer required, but removing it is low priority.
+
+---
+
+## DNSSEC
+
+| Field | Value |
+|-------|-------|
+| Status | Active |
+| Key | ECDSA P-256 (algorithm 13), key tag 2371 |
+| DS record | Published in the `.ca` zone through Cloudflare Registrar (value in `cloudflare-export/dnssec.json`) |
+
+Cloudflare signs the zone, and the DS record at the registry is what makes
+validating resolvers (1.1.1.1 and 8.8.8.8 among them) trust the signatures.
+Every answer they return for this zone, the website and the Microsoft 365 mail
+records alike, is authenticated. DNS-AID, if it is ever published, depends on
+this ([#189](https://github.com/timgladwell/violet/issues/189)).
+
+**Turning it off, or moving the zone to another DNS provider, starts with the
+DS record, not the signing.** If Cloudflare stops signing while the DS record
+is still published, validating resolvers treat every answer as forged and
+return SERVFAIL. The site and email stop resolving for most of the internet,
+with nothing on the Cloudflare side to show why. Remove the DS record first,
+confirm it is gone (`dig +short DS ontariomenopauseclinic.ca @1.1.1.1` returns
+nothing), wait out its TTL, then disable DNSSEC. The registrar is Cloudflare
+too (see Domain Registration), so both steps happen in this account. Whether
+Cloudflare sequences them by itself when DNSSEC is turned off is unverified, so
+check the DS record rather than relying on it.
+
+To confirm it is working, look for the `ad` (authenticated data) flag:
+
+```sh
+dig +dnssec A ontariomenopauseclinic.ca @1.1.1.1 | grep '^;; flags'
+# expect: flags: qr rd ra ad; ...
+```
+
+---
+
+## Domain Registration
+
+| Field | Value |
+|-------|-------|
+| Registrar | Cloudflare Registrar, in this account |
+| Auto-renew | On |
+| Transfer lock | On |
+| WHOIS privacy | On |
+| Expires | In `cloudflare-export/registrar.json` and `SUMMARY.md` (2027-04-13 as of 2026-10-19) |
+
+Auto-renew charges the payment method on the Cloudflare account. If that
+charge fails, the domain lapses, and with it the website and the Microsoft 365
+mail. The account has **no notification policies** (`alerting_policies.json`
+records none), so nothing in Cloudflare alerts anyone before or after that
+happens ([#192](https://github.com/timgladwell/violet/issues/192)).
+
+The account doesn't enforce two-factor login for its members
+(`enforce_twofactor: false` in `account.json`). Whether each member has it
+turned on individually isn't in the export: member details are personal data
+and deliberately not exported.
+
+---
+
+## Bots and AI crawlers
+
+Every Cloudflare bot and AI-crawler control is **off**: Bot Fight Mode, AI-bot
+blocking, crawler protection, and the AI training, search and user-agent
+settings (`bot_management.json`). Cloudflare's managed `robots.txt` is off
+too, so the `robots.txt` crawlers see is the one the site builds from
+`site/layouts/robots.txt`.
+
+This matches the requirement that the site be indexable by search and AI
+crawlers alike (`docs/website_design.md`). Turning any of these on would
+override the site's own `robots.txt` and `llms.txt` choices at the edge, where
+nothing in the repo shows it. See [#57](https://github.com/timgladwell/violet/issues/57)
+for the crawler-readiness work.
 
 ---
 
@@ -129,6 +204,12 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | `browser_cache_ttl` | `14400` (4 hours) | |
 | `rocket_loader` | `off` | Cloudflare's async JS loader — off is appropriate for a Hugo static site |
 | `fonts` (Speed → Optimization → Fonts) | `off` | Rewrites Google Fonts requests to same-origin `/cf-fonts/` URLs, replacing the `<link>` with inline CSS that carries `font-display: swap`. The site makes no Google Fonts requests: the brand fonts are self-hosted and preloaded from `site/assets/fonts/` ([#139](https://github.com/timgladwell/violet/issues/139)). Leave it off. Turned on, it would silently undo the font-loading choices if a Google Fonts `<link>` ever came back. Exported separately as `settings_fonts.json`, because the bulk settings endpoint omits it. |
+| `rum` (Web Analytics) | `on` | Cloudflare Web Analytics for the zone. Exported as `settings_rum.json`. Thirteen other settings the bulk endpoint omits (`speed_brain`, `h2_prioritization`, `origin_max_http_version` and so on) are exported as `settings_<id>.json`. No change to any of them is recorded, and whether each is Cloudflare's default is unknown. |
+| Universal SSL | on, Let's Encrypt | The edge certificate. `ssl_universal.json`. |
+| Certificate Transparency alerting | off | Every publicly trusted certificate is published in Certificate Transparency logs. With this on, Cloudflare emails a list of addresses when one is issued for the domain: the early warning for someone impersonating the site. Available on every plan. `ct_alerting.json` records how many recipients there are, not who they are. |
+| Zone hold | off | A hold blocks other Cloudflare accounts from creating or activating a zone for this hostname. It adds little here: activating the zone elsewhere would mean changing the domain's nameservers, and the domain is registered and transfer-locked in this account (see Domain Registration). The schema doesn't say which plans can enable it. `zone_hold.json`. |
+| Managed Transforms | all off | Including "Add security headers" and "Remove `X-Powered-By`". No security headers are set anywhere yet: `site/static/_headers` sets only a `Link` header, and [#42](https://github.com/timgladwell/violet/issues/42) owns adding them. `managed_headers.json`. |
+| DNS settings | standard nameservers; `flatten_all_cnames` off | The apex CNAME is still flattened, as Cloudflare always does at the apex. SOA values are Cloudflare's defaults. `dns_settings.json`. |
 
 ---
 
@@ -224,8 +305,29 @@ in-zone slot needs that condition widened.
 | Project name | `violet` |
 | Pages subdomain | `violet-6qt.pages.dev` |
 | Production branch | `release` |
+| Preview branches | `staging*` only (custom preview branch control) |
 | Build image | v3 |
 | Compatibility date | 2026-04-16 |
+
+### Preview deployments
+
+Only branches matching `staging*` build previews. Every other branch, `main`
+included, is never built or served anywhere, so a branch can be pushed for review
+(a draft PR, say) without anything going live.
+
+Anything pushed to a `staging*` branch is public, though: the default `staging`
+slot at `staging.ontariomenopauseclinic.ca`, and numbered slots at
+`stagingN.violet-6qt.pages.dev`. That includes Pages Functions as well as static
+files, and `noindex` keeps search engines out but not people.
+`./deploy-staging.sh` relies on the `staging*` pattern. If the setting is ever
+widened to all branches, every pushed branch becomes a public preview.
+
+The account has a Cloudflare Access organization (created 2026-06-03, with a
+one-time-PIN login named "violet - Cloudflare Pages") but **no Access
+applications**, so nothing sits behind an Access login. Previews are not
+protected by it. The organization looks like what Pages leaves behind when
+its preview-protection option is turned on and later off, but that is an
+inference; nothing recorded it. `access_organization.json`.
 
 ### Custom domains
 

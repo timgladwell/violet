@@ -1,0 +1,8 @@
+{
+  "result": {
+    "scope": "incoming",
+    "type": "cloudflare"
+  },
+  "success": true,
+  "errors": []
+}

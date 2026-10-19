@@ -17,6 +17,28 @@
         "ontariomenopauseclinic.ca",
         "staging.ontariomenopauseclinic.ca"
       ],
+      "source": {
+        "type": "github",
+        "config": {
+          "owner": "timgladwell",
+          "owner_id": "17774743",
+          "repo_name": "violet",
+          "repo_id": "1161208347",
+          "production_branch": "release",
+          "pr_comments_enabled": true,
+          "deployments_enabled": true,
+          "production_deployments_enabled": true,
+          "preview_deployment_setting": "custom",
+          "preview_branch_includes": [
+            "staging*"
+          ],
+          "preview_branch_excludes": [],
+          "path_includes": [
+            "*"
+          ],
+          "path_excludes": []
+        }
+      },
       "deployment_configs": {
         "preview": {
           "compatibility_date": "2026-04-16",

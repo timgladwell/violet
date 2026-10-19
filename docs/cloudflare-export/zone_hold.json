@@ -1,0 +1,9 @@
+{
+  "result": {
+    "hold": false,
+    "hold_after": null,
+    "include_subdomains": false
+  },
+  "success": true,
+  "errors": null
+}

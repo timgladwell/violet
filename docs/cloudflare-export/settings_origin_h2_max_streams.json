@@ -1,0 +1,9 @@
+{
+  "result": {
+    "editable": true,
+    "id": "origin_h2_max_streams",
+    "value": 100
+  },
+  "success": true,
+  "errors": []
+}

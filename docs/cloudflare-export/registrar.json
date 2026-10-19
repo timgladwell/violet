@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "errors": [],
+  "result": [
+    {
+      "domain_name": "ontariomenopauseclinic.ca",
+      "status": "active",
+      "created_at": "2026-04-13T00:47:00Z",
+      "expires_at": "2027-04-13T00:47:00Z",
+      "auto_renew": true,
+      "privacy_mode": "redaction",
+      "locked": true
+    }
+  ]
+}

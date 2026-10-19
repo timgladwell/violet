@@ -86,6 +86,25 @@ get "zones/$ZONE_ID/settings/fonts"           settings_fonts.json "zone setting:
 get "zones/$ZONE_ID/settings/ssl_automatic_mode"         settings_ssl_automatic_mode.json "zone setting: ssl_automatic_mode"
 get "zones/$ZONE_ID/settings/auto_origin_tls_kex"        settings_auto_origin_tls_kex.json "zone setting: auto_origin_tls_kex"
 get "zones/$ZONE_ID/settings/origin_tls_compliance_modes" settings_origin_tls_compliance_modes.json "zone setting: origin_tls_compliance_modes"
+# DNSSEC is neither a DNS record nor a zone setting; it only answers on its own path.
+get "zones/$ZONE_ID/dnssec"                   dnssec.json   "dnssec"
+# More settings the bulk list omits, found by ./cloudflare-sweep.sh on 2026-10-19.
+# Rerun the sweep to find the next gap rather than guessing at defaults.
+# cloudflare-sweep.sh reads this loop's list, so keep it one `for s in` loop.
+for s in aegis automatic_platform_optimization binary_ast csam_scanner_third_party h2_prioritization \
+         image_resizing nel origin_h2_max_streams origin_max_http_version rum speed_brain \
+         transformations_allowed_origins transformations_c2pa transformations_config; do
+  get "zones/$ZONE_ID/settings/$s" "settings_$s.json" "zone setting: $s"
+done
+get "zones/$ZONE_ID/dns_settings"             dns_settings.json    "dns settings (nameservers, SOA, CNAME flattening)"
+get "zones/$ZONE_ID/bot_management"           bot_management.json  "bot management (AI crawlers, managed robots.txt)"
+get "zones/$ZONE_ID/managed_headers"          managed_headers.json "managed transforms"
+get "zones/$ZONE_ID/url_normalization"        url_normalization.json "url normalization"
+get "zones/$ZONE_ID/ssl/universal/settings"   ssl_universal.json   "universal ssl"
+get "zones/$ZONE_ID/ct/alerting"              ct_alerting.json     "certificate transparency alerting"
+get "zones/$ZONE_ID/hold"                     zone_hold.json       "zone hold"
+get "zones/$ZONE_ID/argo/tiered_caching"      tiered_caching.json  "tiered caching"
+get "zones/$ZONE_ID/cache/tiered_cache_smart_topology_enable" tiered_cache_smart_topology.json "tiered cache topology"
 
 echo "== rulesets"
 get "zones/$ZONE_ID/rulesets" rulesets.json "ruleset index"
@@ -163,6 +182,8 @@ strip cert_packs.json '.result[]? |= (del(.primary_certificate) | .certificates[
 # The account name defaults to the owner's email address. The id is kept: the
 # pages step reads it.
 strip zone.json       'del(.result.account.name)'
+# CT alerting lists who receives the emails; record how many, not who.
+strip ct_alerting.json '.result |= ((.recipients = ((.emails // []) | length)) | del(.emails))'
 
 echo "== pages"
 ACCOUNT_ID=$(jq -r '.result.account.id // empty' "$OUT/zone.json" 2>/dev/null)
@@ -178,6 +199,8 @@ if [[ -n "$ACCOUNT_ID" ]]; then
           name, subdomain, production_branch, created_on,
           build_config,
           domains,
+          # The Git connection, including which branches build public previews.
+          source,
           deployment_configs: (.deployment_configs | with_entries(.value |= {
             compatibility_date,
             compatibility_flags,
@@ -201,6 +224,20 @@ if [[ -n "$ACCOUNT_ID" ]]; then
   probe "accounts/$ACCOUNT_ID/rum/site_info/list"      web_analytics.json        "web analytics sites"
   probe "accounts/$ACCOUNT_ID/challenges/widgets"      turnstile.json            "turnstile widgets"
   probe "accounts/$ACCOUNT_ID/access/apps"             access_apps.json          "access applications"
+  probe "accounts/$ACCOUNT_ID/access/organizations"    access_organization.json  "access organization"
+  probe "accounts/$ACCOUNT_ID/alerting/v3/policies"    alerting_policies.json    "notification policies"
+  # Destinations can name people's addresses; which alerts exist is the config.
+  strip alerting_policies.json '.result[]? |= del(.mechanisms)'
+
+  echo "== account"
+  # The domain is registered through Cloudflare: renewal, lock and expiry live here.
+  # registrations, not registrar/domains, which also carries contact details.
+  get "accounts/$ACCOUNT_ID/registrar/registrations" registrar.json "registrar (renewal, lock, expiry)"
+  # Only the security settings (2FA enforcement and the like). Not the account
+  # name, which defaults to the owner's email address; members and billing are
+  # personal data too, and are deliberately not exported.
+  get "accounts/$ACCOUNT_ID"                          account.json  "account settings"
+  strip account.json '{result: {settings: (.result.settings | del(.abuse_contact_email))}, success, errors}'
 else
   echo "  SKIP  pages + account features - no account id in zone.json" >&2
   FAILED=1
@@ -227,6 +264,27 @@ if [[ -f "$OUT/dns.json" ]]; then
       "$OUT/dns.json"
     echo
 
+    if [[ -f "$OUT/dnssec.json" ]]; then
+      echo "## DNSSEC"
+      echo
+      jq -r '.result | "- Status: `\(.status)`\n- DS record (published at the registrar): `\(.ds // "none")`"' "$OUT/dnssec.json"
+      echo
+    fi
+
+    if [[ -f "$OUT/registrar.json" ]]; then
+      echo "## Registrar (Cloudflare Registrar)"
+      echo
+      jq -r '.result[]? | "- `\(.domain_name)`: status `\(.status)`, expires `\(.expires_at[:10])`, auto-renew `\(.auto_renew)`, locked `\(.locked)`"' "$OUT/registrar.json"
+      echo
+    fi
+
+    if [[ -f "$OUT/bot_management.json" ]]; then
+      echo "## Bots and AI crawlers"
+      echo
+      jq -r '.result | to_entries[] | select(.key | IN("fight_mode","ai_bots_protection","crawler_protection","ai_training","ai_search","ai_user","is_robots_txt_managed")) | "- `\(.key)`: `\(.value)`"' "$OUT/bot_management.json"
+      echo
+    fi
+
     if [[ -f "$OUT/pages_project.json" ]]; then
       echo "## Pages custom domains"
       echo
@@ -234,7 +292,7 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       echo "## Pages project"
       echo
-      jq -r '.result[0] | "- Project: `\(.name)`\n- Subdomain: `\(.subdomain)`\n- Production branch: `\(.production_branch)`"' "$OUT/pages_project.json"
+      jq -r '.result[0] | "- Project: `\(.name)`\n- Subdomain: `\(.subdomain)`\n- Production branch: `\(.production_branch)`\n- Preview deployments: `\(.source.config.preview_deployment_setting // "?")` (include: `\(.source.config.preview_branch_includes // [] | join(", "))`, exclude: `\(.source.config.preview_branch_excludes // [] | join(", "))`)"' "$OUT/pages_project.json"
       echo
       echo "Environment variables (redacted values in 1Password / \`.env.local.example\`):"
       echo
@@ -276,8 +334,8 @@ if [[ -f "$OUT/dns.json" ]]; then
       echo
       echo "| Setting | Value |"
       echo "|---------|-------|"
-      jq -rn '[inputs.result] | flatten | .[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level","ssl_automatic_mode","auto_origin_tls_kex","origin_tls_cmpl","pq_keyex")) |
-        "| `\(.id)` | `\(.value // .enabled|tostring)` |"' "$OUT/settings.json" "$OUT"/settings_fonts.json "$OUT"/settings_ssl_automatic_mode.json "$OUT"/settings_auto_origin_tls_kex.json "$OUT"/settings_origin_tls_compliance_modes.json | sort
+      jq -rn '[inputs.result] | flatten | .[] | select(.id | IN("always_use_https","ssl","min_tls_version","email_obfuscation","brotli","http2","browser_cache_ttl","rocket_loader","fonts","automatic_https_rewrites","security_level","ssl_automatic_mode","auto_origin_tls_kex","origin_tls_cmpl","pq_keyex","rum","speed_brain")) |
+        "| `\(.id)` | `\(.value // .enabled|tostring)` |"' "$OUT"/settings.json "$OUT"/settings_*.json | sort
       echo
     fi
   } > "$OUT/SUMMARY.md"
