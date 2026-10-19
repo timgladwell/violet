@@ -17,6 +17,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 | `./check-environments.sh` | Builds development/staging/production (staging and production via `site/build.sh`, simulating Cloudflare's `CF_PAGES_BRANCH`) and asserts each produces the expected output. Catches a typo'd `--environment` value before it ships. Runs in CI on every PR (`.github/workflows/check-environments.yml`). |
 | `./deploy-staging.sh <slug>` | Push current branch to a staging environment. |
 | `./export-cloudflare.sh` | Export the live Cloudflare config to `docs/cloudflare-export/` (read-only API token required). Cloudflare holds configuration this repo cannot reproduce; the export is the record to rebuild from. Run it after **any** Cloudflare change and commit the diff — `git status` afterwards is the drift check. |
+| `./cloudflare-build-log.sh [branch]` | Print the Cloudflare Pages build log for a branch's latest deployment (default `staging`), waiting if it is still building. Same read-only token as the export. |
 
 * **Before pushing a PR**, run `./validate.sh` and fix any failures.
 * **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
