@@ -1,0 +1,17 @@
+{
+  "result": {
+    "id": "csam_scanner",
+    "editable": true,
+    "value": {
+      "email_state": "unverified",
+      "enabled": false,
+      "cybertip": {
+        "verified": false
+      }
+    },
+    "modified_on": null,
+    "is_cf_third_party_enabled": false
+  },
+  "success": true,
+  "errors": []
+}

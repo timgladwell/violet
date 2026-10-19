@@ -1,0 +1,12 @@
+{
+  "result": {
+    "settings": {
+      "enforce_twofactor": false,
+      "api_access_enabled": null,
+      "access_approval_expiry": null,
+      "oauth_app_access_enabled": true
+    }
+  },
+  "success": true,
+  "errors": []
+}

@@ -1,0 +1,11 @@
+{
+  "result": {
+    "editable": true,
+    "id": "aegis",
+    "value": {
+      "enabled": false
+    }
+  },
+  "success": true,
+  "errors": []
+}

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "algorithm": "13",
+    "digest": "B1001B5763EFFA9152E520B8410122346E997EAC9121DDB3C52139F88A3B71F5",
+    "digest_algorithm": "SHA256",
+    "digest_type": "2",
+    "ds": "ontariomenopauseclinic.ca. 3600 IN DS 2371 13 2 B1001B5763EFFA9152E520B8410122346E997EAC9121DDB3C52139F88A3B71F5",
+    "flags": 257,
+    "key_tag": 2371,
+    "key_type": "ECDSAP256SHA256",
+    "modified_on": "2026-10-08T03:00:14.156885+00:00",
+    "public_key": "mdsswUyr3DPW132mOi8V9xESWE8jTo0dxCjjnopKl+GqJxpVXckHAeF+KkxLbxILfDLUT0rAK9iUzy1L53eKGQ==",
+    "status": "active"
+  },
+  "success": true,
+  "errors": []
+}

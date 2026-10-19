@@ -1,0 +1,15 @@
+{
+  "result": {
+    "cf_zone_tag": "df4711b6c10cf3043898e21d6c23f007",
+    "id": "image_resizing_config",
+    "editable": true,
+    "value": {
+      "transformations": "off",
+      "allowed_origins": "*",
+      "c2pa": "off"
+    },
+    "modified_on": null
+  },
+  "success": true,
+  "errors": []
+}

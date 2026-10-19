@@ -22,6 +22,25 @@ Exported: 2026-10-19
 | TXT | `ontariomenopauseclinic.ca` | `"v=spf1 include:spf.protection.outlook.com ~all"` | No | 3600 |
 | TXT | `ontariomenopauseclinic.ca` | `"MS=ms74690258"` | No | 3600 |
 
+## DNSSEC
+
+- Status: `active`
+- DS record (published at the registrar): `ontariomenopauseclinic.ca. 3600 IN DS 2371 13 2 B1001B5763EFFA9152E520B8410122346E997EAC9121DDB3C52139F88A3B71F5`
+
+## Registrar (Cloudflare Registrar)
+
+- `ontariomenopauseclinic.ca`: status `active`, expires `2027-04-13`, auto-renew `true`, locked `true`
+
+## Bots and AI crawlers
+
+- `fight_mode`: `false`
+- `ai_bots_protection`: `disabled`
+- `crawler_protection`: `disabled`
+- `ai_training`: `disabled`
+- `ai_search`: `disabled`
+- `ai_user`: `disabled`
+- `is_robots_txt_managed`: `false`
+
 ## Pages custom domains
 
 - `violet-6qt.pages.dev`
@@ -33,6 +52,7 @@ Exported: 2026-10-19
 - Project: `violet`
 - Subdomain: `violet-6qt.pages.dev`
 - Production branch: `release`
+- Preview deployments: `custom` (include: `staging*`, exclude: ``)
 
 Environment variables (redacted values in 1Password / `.env.local.example`):
 
@@ -49,6 +69,7 @@ Environment variables (redacted values in 1Password / `.env.local.example`):
 - email routing required DNS
 - certificate packs
 - web analytics sites
+- access organization
 
 Raw responses are alongside this file. Anything listed here is in use
 and must be recreated when rebuilding.
@@ -76,7 +97,9 @@ and must be recreated when rebuilding.
 | `origin_tls_cmpl` | `[]` |
 | `pq_keyex` | `on` |
 | `rocket_loader` | `off` |
+| `rum` | `on` |
 | `security_level` | `medium` |
+| `speed_brain` | `off` |
 | `ssl_automatic_mode` | `custom` |
 | `ssl` | `strict` |
 

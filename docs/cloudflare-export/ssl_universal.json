@@ -1,0 +1,8 @@
+{
+  "result": {
+    "enabled": true,
+    "certificate_authority": "lets_encrypt"
+  },
+  "success": true,
+  "errors": []
+}

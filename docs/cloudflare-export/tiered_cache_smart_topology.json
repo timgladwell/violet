@@ -1,0 +1,9 @@
+{
+  "result": {
+    "editable": true,
+    "id": "tiered_cache_smart_topology_enable",
+    "value": "off"
+  },
+  "success": true,
+  "errors": []
+}
