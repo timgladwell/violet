@@ -66,6 +66,11 @@ Avaros, the clinic's electronic medical records system.
   the in-zone default slot.
 - **Andrea's headshot appears only with "About Andrea" content**, never in the
   hero. The hero is about her whole-person approach to care.
+- **Andrea's Mount Sinai experience is framed as selection, never training.**
+  Never name "Mount Sinai" or "Sinai": its usage guidelines forbid implying
+  that Andrea gained from the association. Say a recognised menopause program
+  selected or employed her to deliver clinical care, which credits her
+  competence, not that she trained in or benefited from it.
 
 Anything in [`docs/legacy/`](docs/legacy/) is frozen and out of date: read it
 for background, never as a source of truth.

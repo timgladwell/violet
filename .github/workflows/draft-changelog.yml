@@ -156,6 +156,10 @@ jobs:
           PR_NUM=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number')
           echo "number=${PR_NUM}" >> "$GITHUB_OUTPUT"
 
+      # The drafting PR belongs in the release it introduces, but its number
+      # only exists once the PR does, so the entry is amended after creation
+      # rather than computed up front. Keep the collect -> create PR ->
+      # self-reference order.
       - name: Add this PR to its own CHANGELOG entry
         run: |
           VERSION="${{ steps.version.outputs.version }}"
