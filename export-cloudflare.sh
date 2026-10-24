@@ -186,7 +186,7 @@ if [[ -n "$ACCOUNT_ID" ]]; then
     # Redact before anything touches the working tree: the raw response contains
     # env var VALUES (booking URL, contact addresses). Only allowlisted values are
     # kept; any other var, including new ones, records as "(redacted)".
-    # shortcut: hand-kept allowlist, retired if infrastructure as code ever owns env vars (#40).
+    # shortcut: hand-kept allowlist; replace if env vars ever move to infrastructure as code.
     jq '{result: [.result[] | {
           name, subdomain, production_branch, created_on,
           build_config,
