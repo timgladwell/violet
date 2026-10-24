@@ -127,7 +127,7 @@ fast-forward promotions only ever introduce new, signed commits.
 ### If prod looks broken right after a release
 
 Check Cloudflare cache propagation before rolling back — `browser_cache_ttl`
-is 4 hours (see `docs/cloudflare-config.md`), so a stale asset can look like
+is 4 hours (see `docs/current-state/cloudflare-config.md`), so a stale asset can look like
 a real regression for a while after a deploy that's actually fine. Purge the
 cache (Caching → Configuration → Purge Everything) and reload before
 assuming the release itself is broken.
@@ -183,7 +183,7 @@ down, come back later" signals — fine for short outages, but see
 1. Cloudflare dashboard → Pages → `violet` project → Settings → Environment variables → **Production** scope.
 2. Set `HUGO_PARAMS_MAINTENANCEMODE` to `true` (down) or `false` (up).
 3. Deployments tab → find the latest production deployment → **Retry deployment**. This reruns the build with the new env var — no git push, no PR.
-4. Once the new deployment is live, **purge the Cloudflare cache** (Caching → Configuration → Purge Everything). The zone's `browser_cache_ttl` is 4 hours (see `docs/cloudflare-config.md`), so without a purge visitors can keep seeing the old state for up to 4 hours.
+4. Once the new deployment is live, **purge the Cloudflare cache** (Caching → Configuration → Purge Everything). The zone's `browser_cache_ttl` is 4 hours (see `docs/current-state/cloudflare-config.md`), so without a purge visitors can keep seeing the old state for up to 4 hours.
 
 Every other build defaults to `maintenanceMode = false` (`site/hugo.toml`;
 `site/config/development/hugo.toml` also sets it explicitly), but the env var

@@ -5,5 +5,5 @@
 # X.Y.Z - Preview when this change merges, Production when it is released (see
 # the release pre-check in docs/runbook.md). It decides which Hugo gets
 # installed and this file decides which one runs, so a mismatch fails the build
-# with the same error. See docs/cloudflare-config.md.
+# with the same error. See docs/current-state/cloudflare-config.md.
 hugo extended_0.168.0

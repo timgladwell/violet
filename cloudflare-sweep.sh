@@ -31,7 +31,7 @@ OUT="$(mktemp -d -t cloudflare-sweep)"
 command -v jq >/dev/null || { echo "ERROR: jq is required (brew install jq)" >&2; exit 1; }
 . "$REPO_ROOT/cloudflare-token.sh"
 auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN")
-ACCOUNT_ID=$(jq -r '.result.account.id' "$REPO_ROOT/docs/cloudflare-export/zone.json")
+ACCOUNT_ID=$(jq -r '.result.account.id' "$REPO_ROOT/docs/current-state/cloudflare-export/zone.json")
 mkdir -p "$OUT/raw"
 
 echo "== schema"

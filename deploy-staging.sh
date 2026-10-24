@@ -53,7 +53,7 @@ fi
 # (Cloudflare Fonts, cache rules) and behaves like production. Numbered slots
 # stay on pages.dev, which is outside the zone — fine for comparing UX concepts,
 # but not for anything that depends on zone-level behaviour.
-# See docs/cloudflare-config.md.
+# See docs/current-state/cloudflare-config.md.
 if [[ -z "$SLUG" ]]; then
   STAGING_URL="https://staging.ontariomenopauseclinic.ca/"
 else
