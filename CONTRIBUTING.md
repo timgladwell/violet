@@ -1,0 +1,274 @@
+# Contributing
+
+Where each kind of information lives, and why. This applies to people and to
+Claude Code alike; `CLAUDE.md` imports this file so it is loaded every session.
+
+<!-- TEMPORARY(until: 2026-12-31, issue: https://github.com/timgladwell/homelab/issues/425):
+adapted from homelab's CONTRIBUTING.md, where this taxonomy is trialled before
+being promoted to the global CLAUDE.md in the dotfiles repo. Where it disagrees
+with the global file, this file wins. Retire by promoting it, then replacing
+this file with whatever per-repo deltas remain. -->
+
+## The rule
+
+**Everything in source control describes current state.** History, plans,
+findings and anything that *should* change live in issues. A file may point at
+an issue; it never holds the work itself.
+
+The one kind of document that describes something other than the deployed
+site is an [ADR](#adrs): it specifies the **target** design. The gap between
+the two is work, and lives in issues.
+
+Two exceptions:
+
+- Something known to be temporary — a workaround, a runbook for a
+  long-running investigation — stays, but carries a
+  [`TEMPORARY` tag](#temporary-things) saying why and until when.
+- [`docs/legacy/`](#legacy-documents) holds the documents written before this
+  convention. They are frozen, out of date, and kept only for reference.
+
+## Where things live
+
+| Kind | Holds | Never holds |
+|---|---|---|
+| [Code comment](#code-comments) | Why this code is the way it is, and how to change it without breaking something | History, plans |
+| [`CLAUDE.md`](#claudemd) | Repo-wide boundaries and invariants, the principles every change is held to, the development scripts, and an index of change-triggered runbooks | Anything a lower-level home can carry |
+| [`docs/current-state/`](#current-state-docs) | The state of Cloudflare and GitHub, which code does not define | Procedures, plans, history |
+| [`docs/adr/`](#adrs) | The target design that solves one product problem, and why it was chosen | How to implement it, progress toward it |
+| [`docs/runbooks/`](#runbooks) | A procedure for a specific outcome | One-off history, past-run logs |
+| [Issues](#issues) | Plans and their structure, tasks, findings, decisions, history | — |
+| [Pull requests](#pull-requests) | Why this change is built this way | Analysis results, discovered work |
+| [`README.md`](#readme) | Purpose, scope, getting started, licence | Everything else |
+| [`docs/legacy/`](#legacy-documents) | Frozen pre-convention documents, for reference | Anything current |
+| Claude's memory | How the user prefers to work | Any technical fact |
+
+Across all of them: describe what is true now, do not restate what `git log`
+and `git blame` already answer, and never add a "TODO", "Next steps" or
+"Action items" section — those are issues.
+
+### Where a warning goes
+
+A "don't change this without…" warning goes on the **narrowest thing that
+exists**, because that is where it is read at the moment it matters:
+
+1. **The line or block** it protects — a code comment.
+2. **The file** — a header comment. In this repo a template, script or
+   workflow header is file level.
+3. **A runbook's pre-checks**, when the warning is about a *kind of change*
+   rather than any existing line (cutting a release, resizing the booking
+   frame). `CLAUDE.md` indexes it in one line.
+4. **A current-state doc**, for state that lives outside the code (Cloudflare,
+   GitHub).
+
+`CLAUDE.md` holds the warning itself only when it is genuinely repo-wide.
+
+## Code comments
+
+A comment says why the code is the way it is and what else has to change with
+it: "keep in sync with the service list in `services.html`; see #123". The
+reasoning and history live in the linked issue; the comment carries only what
+the next editor needs.
+
+Comment length scales with the level of the code. A line gets one to a few
+lines; a template, script or workflow header may carry dozens. A long comment
+on a single line usually belongs higher up.
+
+## `CLAUDE.md`
+
+Loaded into every session, so every line costs tokens on every task. It holds
+only what applies repo-wide:
+
+- the principles every change is held to: what the business and the site
+  need (they change when the requirements do, not when the code does);
+- boundaries and repo-wide invariants (branching, signing, environment
+  variables, staging parity);
+- the development scripts;
+- the architecture in outline, linking to ADRs and current-state docs for depth;
+- an index of change-triggered runbooks: "before cutting a release, follow
+  [runbook]";
+- `@CONTRIBUTING.md`.
+
+Anything tied to specific code is a comment on that code instead. Incident
+stories are issues.
+
+**Load on demand.** `CLAUDE.md` links to everything else rather than
+`@`-importing it, because an import loads the whole file into every session.
+What it carries instead is enough to know *when* to read each link: the
+"Before changing…" table says which runbook or doc a kind of change needs.
+`@CONTRIBUTING.md` is the one import, because where things live applies to
+every task. The same goes for any other doc: say when to read what it links.
+
+## Current-state docs
+
+`docs/current-state/` describes the configuration this repo depends on but
+cannot reproduce:
+
+- **Cloudflare** — the zone, DNS, redirect rules, the Pages project and its
+  environment variables: [`cloudflare-config.md`](docs/current-state/cloudflare-config.md).
+- **GitHub** — branch rulesets, merge settings, Actions permissions and the
+  Cloudflare Pages integration: [`github-config.md`](docs/current-state/github-config.md).
+
+Each says **what** the state is, why, and how to change it without breaking
+something. Each has an export beside it (`cloudflare-export/`,
+`github-export/`), written by `./export-cloudflare.sh` and `./export-github.sh`
+and committed. The export is authoritative for the facts and the doc for the
+reasoning; rerun the script after any change and commit the diff, so
+`git status` is the drift check. **How to reproduce the state** from scratch is
+a provisioning runbook, and the two link to each other.
+
+No change tables. A dashboard change still reaches the repo, as the export
+diff committed afterwards, so the record of each change and its reasoning is
+in git history, PRs and issues.
+
+## ADRs
+
+An ADR specifies the **target state** of part of the site or its tooling: the
+design that solves one product problem — "how is production promoted", "how is
+staging kept faithful to production" — under the constraints it is solved in.
+It is a system-design and decision-making document.
+
+**It holds** the problem and its constraints, the decision, its consequences,
+and the alternatives rejected, with the trade-offs that decided between them.
+Implementation detail appears only where it is key to the decision: a platform
+feature the choice depends on, or a limitation that rules an option out.
+
+**It does not hold:**
+
+- **How to carry out the implementation.** That is a runbook or an issue.
+- **Progress toward the target.** It does not say what is built yet, link the
+  issues delivering it, or describe how GitHub or Cloudflare is configured
+  today — that is a current-state doc. An issue cited as *evidence* for the
+  decision (an incident, a measurement) belongs; an issue that *queues the
+  work* to reach it does not. An ADR's status records the decision, not the
+  implementation: `Accepted` means decided, not built.
+
+**Targets and settings.** Concrete specifications (a cache TTL, a frame
+height) are not ADR material: the value is in code or a current-state doc, its
+derivation in an issue. A **target** is different: a value whose change would
+change what the site promises or accepts as lost, like how quickly a bad
+release can be reverted. Choosing one is a trade-off, so the ADR states it,
+with its reasoning and what it does not cover, and changing it is a revision of
+the ADR. The settings that implement it are in code or configuration, each with
+a comment or current-state entry naming the ADR; tuning a setting to meet a
+target stays there. The ADR names settings, not the files they are in, because
+files move; the exception is an ADR whose decision is the layout itself.
+
+**It is revised in place, and expected to be.** It keeps its problem and is
+never superseded by a new ADR; the answer changes when:
+
+- **Implementing it teaches something.** An ADR is always at least a little
+  off, and implementation is where the plan meets reality. A gap in the design
+  or the target state goes back into the ADR. A lesson about the
+  implementation stays in code and issues.
+- **A constraint changes.** A design for a one-practitioner clinic will not
+  serve a practice with staff, and a free-tier limit stops applying once the
+  business pays for the plan above it.
+
+It is retired (`Deprecated`) only when its product problem no longer exists.
+
+An ADR is the one document that keeps a change table: one short row per
+evolution of the answer, so its history reads at a glance.
+
+| Date | By | Description |
+| --- | --- | --- |
+| 2025-09-01 | Tim | Third-party API to send email during the bootstrap phase |
+| 2026-09-01 | Tim and Claude | Self-hosted sendmail; scale now justifies running it in-house over third-party cost |
+
+Format and numbering are in [`docs/adr/README.md`](docs/adr/README.md).
+
+## Runbooks
+
+A procedure for a specific outcome: **pre-checks** confirming scope and
+origin, **steps**, and **post-checks** confirming the outcome. Each is one
+file under `docs/runbooks/`, listed in [`docs/runbooks.md`](docs/runbooks.md)
+with its kind:
+
+| Kind | For | Examples |
+|---|---|---|
+| Operational | Running the site day to day, and responding when something happens | Cutting a release, toggling maintenance mode |
+| Maintenance | Keeping the site healthy | Upgrades, periodic audits |
+| Provisioning | Creating or recreating something | A new environment, a new service |
+
+A runbook may be temporary — written because a process will repeat a few times
+during a long piece of work. It carries a `TEMPORARY` tag at the top.
+
+**Retiring a runbook** deletes the file and moves its row to the *Retired*
+table in `docs/runbooks.md`, with a one-line summary and a link to the last
+commit that contained it, so it can still be found.
+
+## Issues
+
+Everything that should change, and the record of how it got that way: plans,
+tasks, findings, decisions, deferred work, and premises that turned out to be
+wrong. Issues are cheap to close and expensive to miss.
+
+**An issue must let someone start work from an empty context** — a person new
+to it, or an agent with nothing else loaded. Capture enough that the research
+does not need redoing: the evidence, the premises that turned out to be wrong,
+and during an investigation the specific measurements, with when and how they
+were taken.
+
+A plan is a tree of GitHub sub-issues. The parent's body is the current plan,
+edited in place as it changes; each child is a smaller area of the work, and
+may have children of its own. Discussion goes in comments. A leaf is closed by
+the PR that ships it, or by a decision recorded in it.
+
+**An issue records what was understood when it was written**, not settled fact.
+New information, new capabilities or more skill can overturn a conclusion. An
+issue that does so names the premise the old conclusion rested on, and the
+earlier issue gets a comment linking forward.
+
+Items that need Andrea's input are labelled `needs-andrea`.
+
+### Exploratory issues
+
+Context worth keeping for work that is not scheduled, and may never be: a
+brainstorm, a spike, a draft PR to look at. It stays open and labelled
+`exploratory`, so the question of when stays visible. A backlog view leaves it
+out with `-label:exploratory`.
+
+The body is a parent issue like any other (the gap, the findings, premises that
+turned out wrong, alternatives rejected), with two differences:
+
+- **The planned work is a list in the body, not sub-issues**, so the backlog
+  holds only work someone has committed to. A note at the top says so.
+- **Every finding is dated**, because it will be read long after it was true.
+
+Picking one up starts with rechecking its premises, its own findings included,
+then creating the sub-issues. The label comes off and it becomes an ordinary
+plan. One item can be split out earlier: open it as its own issue and replace
+it in the list with the link.
+
+## Pull requests
+
+The proposed change and nothing else: why it is built this way, the
+alternatives rejected, and what a reviewer needs. When a finding drives the
+change, the finding goes in an issue and the PR links it. Review replies answer
+the review point.
+
+## README
+
+Three things: the repo's purpose and scope, how to start developing (a link is
+fine), and the licence.
+
+## Legacy documents
+
+[`docs/legacy/`](docs/legacy/) holds the decision log, early research, content
+drafts and design notes written before this convention. They are frozen: not
+updated, out of date in places, and never a source of truth. Read them for
+background; take nothing from them as current without checking the code, an
+issue or an ADR. Something in one that is still true and still matters is
+moved into its proper home, not edited in place.
+
+## Temporary things
+
+Anything introduced as temporary carries a machine-readable tag where it lives:
+
+```sh
+# TEMPORARY(until: 2026-12-01, issue: #123): <why it exists, what retires it>
+```
+
+In Markdown and HTML templates, the same inside `<!-- -->` (or `{{/* */}}` in
+Hugo templates). Both fields are required. The issue owns the retirement work.
+Extending the date is a commit that changes it, with the reason in the commit
+message.

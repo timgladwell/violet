@@ -8,32 +8,6 @@ None of this configuration is infrastructure as code. Moving it there is explora
 
 The export also **probes for features nobody recorded** (email routing, page rules, workers routes, analytics, Turnstile, and so on) and lists anything it finds, because the dashboard has been changed by hand over time without notes.
 
----
-
-## Change history
-
-Only changes with consequences — something that altered behaviour, or that would
-bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
-
-| Date | Change |
-|------|--------|
-| 2026-06-05 | Initial capture of the Cloudflare configuration. |
-| 2026-07-28 | Cloudflare Fonts enabled, in response to a PageSpeed render-blocking finding. Rewrites Google Fonts to same-origin `/cf-fonts/` — and, unremarked at the time, replaces the `<link>` with inline CSS carrying `font-display: swap`, which is why #128's blocking-link revert is a no-op in production. |
-| 2026-07-28 | `www`-to-apex Redirect Rule added, after Search Console flagged duplicate `www` content ([#124](https://github.com/timgladwell/violet/issues/124)). |
-| 2026-08-24 | `www` removed from the Pages custom domains; removing it also deleted its DNS record, replaced by a proxied A record to `192.0.2.1`. |
-| 2026-08-24 | `staging.ontariomenopauseclinic.ca` added as an in-zone staging hostname, so staging inherits zone-level features that `*.pages.dev` cannot. |
-| 2026-08-24 | Brand fonts self-hosted and preloaded ([#139](https://github.com/timgladwell/violet/issues/139)). Cloudflare Fonts is still on but now has nothing to rewrite; its inline `font-display: swap` is gone with it. |
-| 2026-10-08 | DNSSEC last modified, per the API's `modified_on`. It is the only date on record: nobody noted when DNSSEC was turned on, so this may or may not be that day. |
-| 2026-10-18 | Cloudflare Fonts turned off ([#149](https://github.com/timgladwell/violet/issues/149)). Nothing was using it, and left on it would silently reinstate `font-display: swap` if a Google Fonts `<link>` were ever reintroduced. The export now captures it (`settings_fonts.json`). Before this, it did not: the bulk settings endpoint omits `fonts`. |
-| 2026-10-18 | `min_tls_version` raised from `1.0` to `1.2` ([#143](https://github.com/timgladwell/violet/issues/143)). Clients that only speak TLS 1.0/1.1 now fail the handshake; the 24 hours before the change showed none. |
-| 2026-10-18 | Encryption mode `full` → `strict`, and automatic key exchange turned on ([#176](https://github.com/timgladwell/violet/issues/176)). The mode had not been changed since the zone was created (2026-04-13). Key exchange was off before; it wasn't exported until this change, so the export has no earlier record of it. |
-| 2026-10-19 | Preview `HUGO_VERSION` `0.163.0` → `0.168.0`; Production follows when the release carrying the matching `.tool-versions` is cut. This doc had said `0.162.0`, but the API showed `0.163.0`: the earlier bump to `0.163.0` never got recorded here. The export now records allowlisted values (`HUGO_VERSION`, `HUGO_PARAMS_MAINTENANCEMODE`), so drift like that shows in `git status`. |
-| 2026-10-19 | Production `HUGO_VERSION` `0.163.0` → `0.168.0`, just before cutting the release that carries the matching `.tool-versions`. Both scopes match again. |
-| 2026-10-19 | The export stopped writing the account name, which is the owner's email address and had been in `zone.json` since the first export ([#191](https://github.com/timgladwell/violet/issues/191)). Its secret check now flags any email address other than Cloudflare's DMARC reporting one; it used to look only for clinic addresses. |
-| 2026-10-19 | The export now captures everything a sweep of Cloudflare's read-only API (`./cloudflare-sweep.sh`) found missing: DNSSEC, the Pages Git connection including preview branch control, the domain registration, bot and AI-crawler settings, Managed Transforms, zone DNS settings, Universal SSL, CT alerting, zone hold, tiered caching, 14 individual zone settings, the Access organization, notification policies and the account's security settings. The DNSSEC and preview gaps had led to wrong guesses in [#189](https://github.com/timgladwell/violet/issues/189): that DNSSEC was off, and that every pushed branch got a public preview. |
-
----
-
 ## Zone
 
 | Field | Value |
@@ -42,8 +16,6 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 | Zone ID | `df4711b6c10cf3043898e21d6c23f007` |
 | Plan | Free |
 | Status | Active |
-
----
 
 ## DNS Records
 
@@ -69,8 +41,6 @@ bite someone rebuilding this. Routine edits are `git log`'s job, not this table.
 - The DKIM `selector1`/`selector2` records are managed by Microsoft 365. They will rotate automatically; the DNS records must be updated when Microsoft rotates them.
 - The DMARC reporting address (`...@dmarc-reports.cloudflare.net`) is Cloudflare's managed DMARC reporting — reports are viewable in the Cloudflare dashboard.
 - `MS=ms74690258` is the Microsoft 365 domain verification TXT record. It can be removed once verification is no longer required, but removing it is low priority.
-
----
 
 ## DNSSEC
 
@@ -104,8 +74,6 @@ dig +dnssec A ontariomenopauseclinic.ca @1.1.1.1 | grep '^;; flags'
 # expect: flags: qr rd ra ad; ...
 ```
 
----
-
 ## Domain Registration
 
 | Field | Value |
@@ -127,8 +95,6 @@ The account doesn't enforce two-factor login for its members
 turned on individually isn't in the export: member details are personal data
 and deliberately not exported.
 
----
-
 ## Bots and AI crawlers
 
 Every Cloudflare bot and AI-crawler control is **off**: Bot Fight Mode, AI-bot
@@ -138,12 +104,10 @@ too, so the `robots.txt` crawlers see is the one the site builds from
 `site/layouts/robots.txt`.
 
 This matches the requirement that the site be indexable by search and AI
-crawlers alike (`docs/legacy/website_design.md`). Turning any of these on would
+crawlers alike ("SEO/GEO always wins" in `CLAUDE.md`). Turning any of these on would
 override the site's own `robots.txt` and `llms.txt` choices at the edge, where
 nothing in the repo shows it. See [#57](https://github.com/timgladwell/violet/issues/57)
 for the crawler-readiness work.
-
----
 
 ## Redirect Rules
 
@@ -187,8 +151,6 @@ for the crawler-readiness work.
   the site. Silent duplicate `www` content is what GSC flagged in the first
   place, so the noisy failure is the one worth having.
 
----
-
 ## Zone Settings
 
 | Setting | Value | Notes |
@@ -210,8 +172,6 @@ for the crawler-readiness work.
 | Zone hold | off | A hold blocks other Cloudflare accounts from creating or activating a zone for this hostname. It adds little here: activating the zone elsewhere would mean changing the domain's nameservers, and the domain is registered and transfer-locked in this account (see Domain Registration). The schema doesn't say which plans can enable it. `zone_hold.json`. |
 | Managed Transforms | all off | Including "Add security headers" and "Remove `X-Powered-By`". No security headers are set anywhere yet: `site/static/_headers` sets only a `Link` header, and [#42](https://github.com/timgladwell/violet/issues/42) owns adding them. `managed_headers.json`. |
 | DNS settings | standard nameservers; `flatten_all_cnames` off | The apex CNAME is still flattened, as Cloudflare always does at the apex. SOA values are Cloudflare's defaults. `dns_settings.json`. |
-
----
 
 ## Staging in-zone (`staging.ontariomenopauseclinic.ca`)
 

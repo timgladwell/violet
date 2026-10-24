@@ -6,7 +6,7 @@
 #   3. a hidden prompt, when stdin is a terminal.
 # Never pass the token inline on the command line: it lands in shell history.
 #
-# The token is the READ-ONLY one described in export-cloudflare.sh's header.
+# The token is the READ-ONLY one in docs/runbooks/cloudflare-read-token.md.
 
 # TEMPORARY(until: 2027-01-31, issue: #182): `op` can read the whole 1Password
 # account, not just this item - least-privilege violation; #182 replaces it.

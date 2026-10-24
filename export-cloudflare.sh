@@ -28,16 +28,8 @@
 #   check: if the export changes, Cloudflare changed since the last commit.
 #
 # TOKEN
-#   A READ-ONLY token is sufficient and is what should be used. Create at
-#   dash.cloudflare.com -> My Profile -> API Tokens. The "Read all resources"
-#   template works; a minimal custom token needs:
-#     Zone    -> Zone           -> Read
-#     Zone    -> DNS            -> Read
-#     Zone    -> Zone Settings  -> Read
-#     Zone    -> Config Rules   -> Read
-#     Account -> Cloudflare Pages -> Read
-#   The Pages permission is account-scoped; zone permissions alone will not
-#   return the Pages project, which is the most common reason for a partial run.
+#   A READ-ONLY token from the "Read all resources" template. Creating or
+#   rotating it: docs/runbooks/cloudflare-read-token.md.
 
 set -uo pipefail
 
