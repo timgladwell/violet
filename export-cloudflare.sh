@@ -2,7 +2,7 @@
 # export-cloudflare.sh
 #
 # Exports the live Cloudflare configuration for ontariomenopauseclinic.ca into
-# docs/cloudflare-export/ so it is committed to the repo.
+# docs/current-state/cloudflare-export/ so it is committed to the repo.
 #
 # WHY THIS EXISTS
 #   Cloudflare holds configuration that is not reproducible from this repo: DNS
@@ -28,23 +28,15 @@
 #   check: if the export changes, Cloudflare changed since the last commit.
 #
 # TOKEN
-#   A READ-ONLY token is sufficient and is what should be used. Create at
-#   dash.cloudflare.com -> My Profile -> API Tokens. The "Read all resources"
-#   template works; a minimal custom token needs:
-#     Zone    -> Zone           -> Read
-#     Zone    -> DNS            -> Read
-#     Zone    -> Zone Settings  -> Read
-#     Zone    -> Config Rules   -> Read
-#     Account -> Cloudflare Pages -> Read
-#   The Pages permission is account-scoped; zone permissions alone will not
-#   return the Pages project, which is the most common reason for a partial run.
+#   A READ-ONLY token from the "Read all resources" template. Creating or
+#   rotating it: docs/runbooks/cloudflare-read-token.md.
 
 set -uo pipefail
 
 ZONE_ID="${CF_ZONE_ID:-df4711b6c10cf3043898e21d6c23f007}"
 API=https://api.cloudflare.com/client/v4
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OUT="$REPO_ROOT/docs/cloudflare-export"
+OUT="$REPO_ROOT/docs/current-state/cloudflare-export"
 
 command -v jq >/dev/null || { echo "ERROR: jq is required (brew install jq)" >&2; exit 1; }
 
@@ -245,7 +237,7 @@ fi
 
 # ---------------------------------------------------------------- summary
 # Facts are generated here so they cannot drift; the reasoning behind them
-# stays hand-written in docs/cloudflare-config.md.
+# stays hand-written in docs/current-state/cloudflare-config.md.
 if [[ -f "$OUT/dns.json" ]]; then
   {
     echo "# Cloudflare export"
@@ -369,4 +361,4 @@ if [[ "$FAILED" -ne 0 ]]; then
   echo "Completed WITH ERRORS - the export is incomplete, do not treat it as a full backup." >&2
   exit 1
 fi
-echo "Review with: git diff --stat docs/cloudflare-export/"
+echo "Review with: git diff --stat docs/current-state/cloudflare-export/"
