@@ -7,8 +7,8 @@ it: [GitHub configuration](../current-state/github-config.md).
 
 ## Pre-checks
 
-1. **The commit has been verified on staging**
-   ([Deploying to Staging](deploying-to-staging.md), default slot). Cut
+1. **The commit has been verified on staging**, following
+   [Testing Changes Before Release](testing-changes-before-release.md). Cut
    Release asks you to confirm this and refuses without it.
 
 2. **Hugo version.** If `git diff release <target> -- .tool-versions` shows a

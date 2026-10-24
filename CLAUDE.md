@@ -99,6 +99,7 @@ All local development is managed through these scripts. Do not construct raw `hu
 * **If you start the dev server** (`./dev-server.sh`), stop it before exiting by running `./dev-server.sh --stop`. This is ownership-safe: it only stops a session `dev-server.sh` itself started (tracked via `.dev-server.lock`), so it will never kill a server someone else already had running.
 * **A11y only**: `npm run a11y` (requires dev server running first). One-time setup on a new machine: `npx playwright install chromium`.
 * **Markdown lint only**: `npm run lint:md`.
+* **Compare two deployments**: `npm run compare` (production vs default staging) or `npm run compare -- <before> <after>`. Element-by-element computed-style diff; see [Testing Changes Before Release](docs/runbooks/testing-changes-before-release.md).
 * **CSS lint only**: `npm run lint:css` — stylelint (`stylelint.config.mjs`) over `site/assets/css/main.css` and the `<style>` blocks/attributes in `site/layouts`. Keep Hugo tags inside CSS quoted (`url("{{ ... }}")`) so the parser sees a string.
 * Hugo version is pinned in `.tool-versions` and used by CI; `dev-server.sh`/`validate.sh` warn (don't fail) if your local `hugo` doesn't match it.
 
@@ -128,6 +129,8 @@ All local development is managed through these scripts. Do not construct raw `hu
 
 | Change | Follow |
 |---|---|
+| Anything that will be released | [Testing Changes Before Release](docs/runbooks/testing-changes-before-release.md) — every difference `npm run compare` reports must be intended |
+| `site/layouts/_default/baseof.html`, or `site/assets/css/main.css` tokens the maintenance placeholder uses | The maintenance-page step of that runbook; staging never renders the placeholder |
 | Any Cloudflare setting | Update [`docs/current-state/cloudflare-config.md`](docs/current-state/cloudflare-config.md) and rerun `./export-cloudflare.sh` in the same PR |
 | Any GitHub repository setting, ruleset or Actions permission | Update [`docs/current-state/github-config.md`](docs/current-state/github-config.md) and rerun `./export-github.sh` in the same PR |
 | The booking frame's height or breakpoints | [When the Avaros Booking Page Changes Size](docs/runbooks/avaros-booking-page-size.md) |
