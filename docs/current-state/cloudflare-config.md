@@ -138,7 +138,7 @@ too, so the `robots.txt` crawlers see is the one the site builds from
 `site/layouts/robots.txt`.
 
 This matches the requirement that the site be indexable by search and AI
-crawlers alike (`docs/website_design.md`). Turning any of these on would
+crawlers alike (`docs/legacy/website_design.md`). Turning any of these on would
 override the site's own `robots.txt` and `llms.txt` choices at the edge, where
 nothing in the repo shows it. See [#57](https://github.com/timgladwell/violet/issues/57)
 for the crawler-readiness work.

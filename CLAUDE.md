@@ -59,16 +59,16 @@ All local development is managed through these scripts. Do not construct raw `hu
 
 ## Project Context and Guiding Principles.
 
-See @docs/project_overview.md
+See @docs/legacy/project_overview.md
 
 ## Website Requirements
 
-See @docs/website_design.md
+See @docs/legacy/website_design.md
 
 ## Planning and Project Management
 
 * Open questions and project tasks are tracked as GitHub issues (`gh issue list`), not in a markdown file
-* @docs/decision_log.md is a historical record of past decisions and is no longer actively updated
+* @docs/legacy/decision_log.md is a historical record of past decisions and is no longer actively updated
 
 ## Repository Structure
 
