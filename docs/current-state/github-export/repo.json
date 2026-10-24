@@ -1,0 +1,34 @@
+{
+  "visibility": "public",
+  "default_branch": "main",
+  "has_issues": true,
+  "has_projects": true,
+  "has_wiki": true,
+  "has_discussions": false,
+  "allow_merge_commit": true,
+  "allow_squash_merge": false,
+  "allow_rebase_merge": false,
+  "allow_auto_merge": false,
+  "allow_update_branch": false,
+  "delete_branch_on_merge": true,
+  "merge_commit_title": "MERGE_MESSAGE",
+  "merge_commit_message": "PR_TITLE",
+  "web_commit_signoff_required": false,
+  "security_and_analysis": {
+    "secret_scanning": {
+      "status": "enabled"
+    },
+    "secret_scanning_push_protection": {
+      "status": "enabled"
+    },
+    "dependabot_security_updates": {
+      "status": "disabled"
+    },
+    "secret_scanning_non_provider_patterns": {
+      "status": "disabled"
+    },
+    "secret_scanning_validity_checks": {
+      "status": "disabled"
+    }
+  }
+}
